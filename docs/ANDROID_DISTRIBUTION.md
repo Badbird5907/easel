@@ -21,6 +21,12 @@ release `1.0.0` with version code 6 as **completed** (rolled out to internal tes
   icons), a live-font-scale fix (`plugins/withAndroidConfigChanges.js`), and the
   October 31 QA fixes.
 
+### Over-the-air updates for 1.0.0 (6)
+
+| Date | Update group | Commit | Contents |
+| --- | --- | --- | --- |
+| 2026-10-31 | [`72213c1d`](https://expo.dev/accounts/badbird5907/projects/easel/updates/72213c1d-577c-409b-b049-a2f3a57a17be) | `4abe13f` | Cache-first screens and cold starts, faster retries with backoff, To Do swipe and optimistic submissions, instant Settings |
+
 ### Version 5
 
 Version **1.0.0 (5)** was published on October 31, 2026, before OTA support. It

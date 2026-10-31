@@ -1,3 +1,5 @@
+import { Alert } from 'react-native';
+import { t as translate } from '@/i18n';
 import * as WebBrowser from 'expo-web-browser';
 
 import type { CanvasClient } from '@/canvas/client';
@@ -23,6 +25,7 @@ export async function sessionUrl(client: CanvasClient, url: string): Promise<str
 /** "Open in browser" that arrives signed in (PRD LTI-3).
  * An optional caller guard retires launch entry, not a browser already opened. */
 export async function openSignedIn(client: CanvasClient, url: string, mayOpen?: () => boolean) {
+  if (client.baseUrl === 'https://demo.easel.invalid') { Alert.alert(translate('demo.unavailable')); return; }
   if (mayOpen && !mayOpen()) return;
   const target = await sessionUrl(client, url);
   if (mayOpen && !mayOpen()) return;

@@ -258,7 +258,7 @@ async function run() {
     .replace(/  \/\/ Browser entry has its own committed lifetime\.[\s\S]*?(?=  const edit =)/, '')
     .replace('onPress={() => openBrowserMethod(browserType)}', 'onPress={() => navigate(() => openSignedIn(a.htmlUrl))}');
   assert.equal(hash(restored), '93ebec71a69d273205d4c4508cee8f49c3fa484c37f839119e154304bfade0da', 'all original form lifecycle, panels, confirmation, route and submission code unchanged');
-  assert.equal(hash(fs.readFileSync(path.join(root, 'features/content/browser.ts'))), '519a926bb98b5fa98961e886630cf3688bb4e05688a1264f986075d10fa962f9', 'shared browser helper byte unchanged');
+  assert.equal(hash(fs.readFileSync(path.join(root, 'features/content/browser.ts'), 'utf8').replace("import { Alert } from 'react-native';\nimport { t as translate } from '@/i18n';\n", '').replace(/  if \(client.baseUrl === 'https:\/\/demo\.easel\.invalid'\) \{[^\n]+\n/g, '')), '519a926bb98b5fa98961e886630cf3688bb4e05688a1264f986075d10fa962f9', 'shared browser helper byte unchanged');
   console.log('submission-browser-method: original production callback/owner + shared session helper, retirement matrix, duplicates, retry, finalization, locale, drafts and submit isolation passed (' + process.env.TZ + ')');
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });

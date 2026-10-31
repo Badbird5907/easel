@@ -115,7 +115,13 @@ export function RichContent({ html, onLinkPress, minHeight = 24, variant = 'body
     [account.id, width, document]);
   const height = measured?.key === heightKey ? measured.height : contentHeights.get(heightKey) ?? minHeight;
 
-  const source = useMemo(() => ({ html: document, baseUrl: account.baseUrl }), [document, account.baseUrl]);
+  const source = useMemo(() => ({
+    html: account.authMethod === 'demo'
+      ? document.replace(/<script\b[^>]*\bsrc=[^>]*><\/script>/gi, '').replace(/<link\b[^>]*>/gi, '')
+          .replace('<head>', `<head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline' 'unsafe-eval'">`)
+      : document,
+    baseUrl: account.baseUrl,
+  }), [document, account.baseUrl, account.authMethod]);
 
   const toolAction = useToolAction(JSON.stringify([document, account.baseUrl, online]), online);
 

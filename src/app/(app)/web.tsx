@@ -1,6 +1,9 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
 
+import { useCanvas } from '@/canvas/session';
+import { Screen, Text } from '@/design';
+import { useTranslation } from '@/i18n';
 import type { ToolLaunch } from '@/features/lti/launch';
 import { WebScreen } from '@/features/web/WebScreen';
 
@@ -31,9 +34,17 @@ function parse<T>(value: string | undefined): T | undefined {
  * `openWebView()` from `features/web/open.ts`.
  */
 export default function WebRoute() {
+  const { account } = useCanvas();
+  const { t } = useTranslation();
   const params = useLocalSearchParams<Params>();
   const launch = useMemo(() => parse<ToolLaunch>(params.launch), [params.launch]);
   const tool = useMemo(() => parse<{ id: string | null; name: string | null }>(params.tool), [params.tool]);
+  if (account.authMethod === 'demo')
+    return (
+      <Screen>
+        <Text>{t('demo.unavailable')}</Text>
+      </Screen>
+    );
   return (
     <WebScreen
       url={params.url ?? params.canvasUrl ?? ''}

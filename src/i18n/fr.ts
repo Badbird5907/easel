@@ -1,6 +1,16 @@
 import type { Catalog } from './types';
 
 export const fr = {
+  "demo.label": "Démo",
+  "demo.start": "Mode démo",
+  "demo.hint": "Découvrez Easel avec des cours fictifs.",
+  "demo.reset": "Réinitialiser la démo",
+  "demo.exit": "Quitter le mode démo",
+  "demo.resetBody": "Effacer les modifications de la démo et recommencer ?",
+  "demo.exitBody": "Revenir à votre compte précédent ? Vos données réelles restent inchangées.",
+  "demo.failed": "Impossible de démarrer la démo. Réessayez.",
+  "demo.unavailable": "Indisponible en mode démo.",
+
   "updates.developmentCurrent": "Bundle de développement",
   "updates.title": "Mises à jour de l’application",
   "updates.development": "Version de développement : les mises à jour automatiques sont désactivées. Utilisez Metro ou le lanceur de développement pour les prévisualiser.",

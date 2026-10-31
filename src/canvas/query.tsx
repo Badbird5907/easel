@@ -212,6 +212,7 @@ export function useCanvasQuery<T>(
   const synced = syncedQueryData<T>(queryKey);
   const query = useQuery({
     queryKey,
+    ...(account.authMethod === 'demo' && { networkMode: 'always' as const }),
     ...(synced && { initialData: synced.data, initialDataUpdatedAt: synced.updatedAt }),
     queryFn: async ({ signal }) => {
       try {
@@ -241,7 +242,7 @@ export function useCanvasMutation<TData, TVariables>(
   const { account, client } = useCanvas();
   const mutation = useMutation({
     mutationFn: async (variables: TVariables) => {
-      if (!isOnline()) throw new OfflineError();
+      if (account.authMethod !== 'demo' && !isOnline()) throw new OfflineError();
       try {
         const data = await mutate(client, variables);
         reportReachable();

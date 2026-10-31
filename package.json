@@ -95,6 +95,7 @@
     "release:android": "pnpm dlx eas-cli@latest build --platform android --profile play-internal --auto-submit",
     "update:production": "pnpm dlx eas-cli@latest update --channel production --environment production --message",
     "check-contrast": "tsx scripts/check-contrast.ts",
+    "demo:build": "node scripts/build-demo-data.mjs",
     "fake-canvas": "node devtools/fake-canvas/server.mjs"
   },
   "private": true

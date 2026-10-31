@@ -281,6 +281,17 @@ export async function downloadFile(
     keep?: boolean;
   } = {},
 ): Promise<File> {
+  if (accountId === 'easel_demo') {
+    if (!file.contentType.startsWith('image/') && file.contentType !== 'application/pdf') {
+      const { t } = await import('@/i18n/runtime');
+      throw new Error(t('demo.unavailable'));
+    }
+    const { demoImage, demoPdf } = await import('@/features/demo/assets');
+    const destination = target(accountId, file, options.keep ? 'kept' : 'cache');
+    destination.parentDirectory.create({ intermediates: true, idempotent: true });
+    destination.write(file.contentType.startsWith('image/') ? demoImage.split(',')[1] : demoPdf, { encoding: 'base64' });
+    return destination;
+  }
   const where: CopyLocation = options.keep ? 'kept' : 'cache';
   const existing = cachedCopy(accountId, file);
   if (existing && (!options.keep || isKept(accountId, file))) return existing;

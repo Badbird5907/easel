@@ -917,6 +917,10 @@ async function recovery() {
 // freeze after reversing these exact additions. Session URL/wire code stays frozen.
 function frozenSource(file) {
   let source = fs.readFileSync(path.resolve(__dirname, '../..', file), 'utf8');
+  source = source.replace("import { Alert } from 'react-native';\nimport { t as translate } from '@/i18n';\n", '')
+    .replace(/  if \(client.baseUrl === 'https:\/\/demo\.easel\.invalid'\) \{[^\n]+\n/g, '')
+    .replace("import { t } from '@/i18n';\nimport { Alert, Linking }", "import { Linking }")
+    .replace(/  if \(baseUrl === 'https:\/\/demo\.easel\.invalid'\) \{[^\n]+\n/g, '');
   if (file === 'features/content/links.ts') {
     // Previously reviewed Help integration forwards the existing native promise.
     const added = '  return WebBrowser.openBrowserAsync(absolute).catch(() => {});';

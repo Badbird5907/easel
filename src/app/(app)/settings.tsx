@@ -26,7 +26,7 @@ import { type ComponentRef, useMemo, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 
 import { usePairingAvailability, useProfile, useUpdateProfile } from '@/canvas/api/profile';
-import { useSession } from '@/canvas/session';
+import { useSession, startDemoMode, exitDemoMode } from '@/canvas/session';
 import {
   haptics,
   Icon,
@@ -45,6 +45,7 @@ import {
 import { AccountRow } from '@/features/accounts/AccountSwitcher';
 import { useAccountBadges } from '@/features/accounts/badges';
 import { confirmSignOut } from '@/features/auth/signOut';
+import { DemoSettings } from '@/features/demo/Settings';
 import { useDeveloperMode } from '@/features/settings/developer';
 import { landingTabs, useLandingTab } from '@/features/settings/landingTab';
 import { canvasLanguages, languageName, languageOptionCode } from '@/features/settings/languages';
@@ -287,6 +288,7 @@ export default function SettingsScreen() {
 
         {developer.enabled ? (
           <ListGroup header={t('settings.developer')}>
+            <DemoSettings active={active?.authMethod === 'demo'} start={startDemoMode} exit={exitDemoMode} />
             <ListItem
               title={t('nav.design')}
               subtitle={t('settings.designHint')}

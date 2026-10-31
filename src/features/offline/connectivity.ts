@@ -24,6 +24,7 @@ export type Connectivity = {
   host: string | null;
 };
 
+const demoConnectivity: Connectivity = { network: true, reachable: true, host: null };
 let state: Connectivity = { network: true, reachable: true, host: null };
 const listeners = new Set<() => void>();
 
@@ -46,7 +47,7 @@ function setState(patch: Partial<Connectivity>) {
 }
 
 export const connectivity = {
-  get: (): Connectivity => state,
+  get: (): Connectivity => (probeBaseUrl === 'https://demo.easel.invalid' ? demoConnectivity : state),
   subscribe(listener: () => void): () => void {
     listeners.add(listener);
     return () => listeners.delete(listener);
@@ -54,7 +55,7 @@ export const connectivity = {
 };
 
 export function isOnline(): boolean {
-  return state.network && state.reachable;
+  return probeBaseUrl === 'https://demo.easel.invalid' || (state.network && state.reachable);
 }
 
 /** Reads the network state with expo-network. */
@@ -98,6 +99,8 @@ export function startConnectivity() {
 export function setProbeTarget(baseUrl: string | null) {
   if (probeBaseUrl !== baseUrl) resetProbe();
   probeBaseUrl = baseUrl;
+  for (const listener of listeners) listener();
+  onlineManager.setOnline(isOnline());
   if (state.network && !state.reachable) scheduleProbe();
 }
 
@@ -143,7 +146,7 @@ function scheduleProbe(delay = probeDelay) {
  * Sends no token.
  */
 async function probe() {
-  if (probing || !probeBaseUrl || !state.network) return;
+  if (probing || !probeBaseUrl || probeBaseUrl === 'https://demo.easel.invalid' || !state.network) return;
   const target = probeBaseUrl;
   probing = true;
   const controller = new AbortController();

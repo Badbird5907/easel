@@ -32,7 +32,9 @@ export const OAUTH_REDIRECT_URI = 'easel://oauth/callback';
 /** Closes the auth browser after SSO single logout, for identity providers that redirect back. */
 export const OAUTH_LOGOUT_URI = 'easel://oauth/logout';
 
-export type AuthMethod = 'token' | 'oauth';
+export type AuthMethod = 'token' | 'oauth' | 'demo';
+const DEMO_ID = 'easel_demo';
+let previousDemoAccount: string | null = null;
 
 /** A signed-in Canvas account. Secrets never leave secure storage except in memory. */
 export type Account = {
@@ -107,7 +109,7 @@ async function readIndex(): Promise<StoredIndex> {
 
 /** Older builds stored `authMethod: 'token'` only, or nothing. */
 function migrateAccount(raw: Account): Account {
-  return { ...raw, authMethod: raw.authMethod === 'oauth' ? 'oauth' : 'token' };
+  return { ...raw, authMethod: raw.authMethod === 'demo' ? 'demo' : raw.authMethod === 'oauth' ? 'oauth' : 'token' };
 }
 
 type ReadResult = { credentials: Credentials; legacy: boolean } | null;
@@ -222,7 +224,7 @@ function commitIndex(accounts: Account[], activeId: string | null): Promise<void
   accountIndexReadable = true;
   for (const listener of listeners) listener();
   writes = writes
-    .then(() => AsyncStorage.setItem(INDEX_KEY, JSON.stringify({ accounts, activeId })))
+    .then(() => AsyncStorage.setItem(INDEX_KEY, JSON.stringify({ accounts: accounts.filter(a => a.authMethod !== 'demo'), activeId: activeId === DEMO_ID ? previousDemoAccount : activeId })))
     .catch(() => {});
   return writes;
 }
@@ -234,6 +236,7 @@ function ensureLoaded(): Promise<void> {
     let changed = false;
     for (const raw of stored.accounts) {
       const account = migrateAccount(raw);
+      if (account.authMethod === 'demo') { changed = true; continue; }
       if (account.authMethod !== raw.authMethod) changed = true;
       let result: ReadResult;
       try {
@@ -267,7 +270,7 @@ function ensureLoaded(): Promise<void> {
 /** Retries credentials that couldn't be read at load, now that the keychain may be unlocked. */
 async function loadMissingCredentials() {
   for (const account of snapshot.accounts) {
-    if (credentialCache.has(account.id) || saveIntents.has(account.id) || removalReservations.has(account.id)) continue;
+    if (account.authMethod === 'demo' || credentialCache.has(account.id) || saveIntents.has(account.id) || removalReservations.has(account.id)) continue;
     const generation = displayGeneration(account.id);
     const result = await readCredentials(account.id).catch(() => undefined);
     // A read started before a save/removal must not adopt old credentials or erase new membership.
@@ -403,6 +406,7 @@ class RefreshingTokens implements TokenSource {
 
 /** One client per account, shared everywhere, so refreshes and their queues are too. */
 function clientFor(account: Account): CanvasClient | null {
+  if (account.authMethod === 'demo') return clients.get(account.id) ?? null;
   const credentials = credentialCache.get(account.id);
   if (!credentials) return null;
   const existing = clients.get(account.id);
@@ -452,7 +456,7 @@ export async function loadStoredClients(): Promise<{ account: Account; client: C
   await loadMissingCredentials();
   const loaded: { account: Account; client: CanvasClient }[] = [];
   for (const account of snapshot.accounts) {
-    if (account.expired) continue;
+    if (account.expired || account.authMethod === 'demo') continue;
     const client = clientFor(account);
     if (client) loaded.push({ account, client });
   }
@@ -463,7 +467,7 @@ export async function loadStoredClients(): Promise<{ account: Account; client: C
 export function isStoredAccountClient(accountId: string, client: CanvasClient): boolean {
   return !replacingCredentials.has(accountId) && !removingAccounts.has(accountId) &&
     snapshot.accounts.some((a) => a.id === accountId && !a.expired) &&
-    credentialCache.has(accountId) && clients.get(accountId) === client &&
+    (credentialCache.has(accountId) || accountId === DEMO_ID) && clients.get(accountId) === client &&
     clientDisplayGenerations.get(client) === displayGeneration(accountId);
 }
 
@@ -475,7 +479,7 @@ export async function loadStoredAccountLifetimes(): Promise<StoredAccountLifetim
   if (!accountIndexReadable) return null;
   await loadMissingCredentials();
   return snapshot.accounts
-    .filter((account) => !account.expired && !removingAccounts.has(account.id))
+    .filter((account) => account.authMethod !== 'demo' && !account.expired && !removingAccounts.has(account.id))
     .map((account) => ({ accountId: account.id, generation: displayGeneration(account.id) }));
 }
 
@@ -866,7 +870,32 @@ async function addAccount(pending: PendingSignIn, options: AddAccountOptions = {
   }
 }
 
+export async function startDemoMode() {
+  await ensureLoaded();
+  const { DemoClient } = await import('@/features/demo/client');
+  if (snapshot.activeId !== DEMO_ID) previousDemoAccount = snapshot.activeId;
+  await runAccountCleanups(DEMO_ID);
+  const { t } = await import('@/i18n/runtime');
+  const client = new DemoClient(new Date(), () => t('demo.unavailable'));
+  clients.set(DEMO_ID, client);
+  clientDisplayGenerations.set(client, displayGeneration(DEMO_ID));
+  const account: Account = { id: DEMO_ID, authMethod:'demo', host:'Easel Demo', baseUrl:client.baseUrl,
+    user:{id:'1001',name:'Demo Student',shortName:'Demo',avatarUrl:null}, addedAt:new Date().toISOString() };
+  await commitIndex([...snapshot.accounts.filter(a => a.id !== DEMO_ID), account], DEMO_ID);
+}
+
+export async function exitDemoMode() {
+  await ensureLoaded();
+  await runAccountCleanups(DEMO_ID);
+  clients.delete(DEMO_ID);
+  removeDisplayPreferences(DEMO_ID);
+  const accounts = snapshot.accounts.filter(a => a.id !== DEMO_ID);
+  await commitIndex(accounts, accounts.some(a => a.id === previousDemoAccount) ? previousDemoAccount : accounts[0]?.id ?? null);
+  previousDemoAccount = null;
+}
+
 function signOutAccount(id: string): Promise<void> {
+  if (id === DEMO_ID) return exitDemoMode();
   const reserved = removalReservations.get(id);
   if (reserved) return reserved.done!;
   const ticket: { done?: Promise<void> } = {};

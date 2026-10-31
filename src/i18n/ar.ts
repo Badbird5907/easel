@@ -1,6 +1,16 @@
 import type { Catalog } from './types';
 
 export const ar = {
+  "demo.label": "تجريبي",
+  "demo.start": "الوضع التجريبي",
+  "demo.hint": "استكشف Easel باستخدام مقررات نموذجية.",
+  "demo.reset": "إعادة ضبط البيانات التجريبية",
+  "demo.exit": "إنهاء الوضع التجريبي",
+  "demo.resetBody": "هل تريد مسح التغييرات التجريبية والبدء من جديد؟",
+  "demo.exitBody": "هل تريد العودة إلى حسابك السابق؟ ستبقى بياناتك الحقيقية كما هي.",
+  "demo.failed": "تعذر بدء الوضع التجريبي. حاول مرة أخرى.",
+  "demo.unavailable": "غير متاح في الوضع التجريبي.",
+
   "updates.developmentCurrent": "حزمة التطوير",
   "updates.title": "تحديثات التطبيق",
   "updates.development": "نسخة تطوير: التحديثات التلقائية معطلة. استخدم Metro أو مشغّل التطوير لمعاينة التحديثات.",

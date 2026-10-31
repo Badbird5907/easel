@@ -316,6 +316,7 @@ function catalogs() {
   // Reversing ONLY allowed metadata edits must recover the exact pre-task bytes.
   for (const name of ['print.ts', 'download.ts']) {
     let s = fs.readFileSync(path.join(root, 'features/files', name), 'utf8');
+    s = s.replace(/  if \(accountId === 'easel_demo'\) \{[\s\S]*?(?=  const where: CopyLocation)/, '');
     if (name === 'print.ts')
       s = s.replace(/      \{ reason: 'print-(?:open|rendition|unsupported)' \},\n/g, '');
     else

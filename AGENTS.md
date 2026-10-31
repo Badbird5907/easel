@@ -83,3 +83,7 @@ All UI comes from `src/design` (import from `@/design`). Read `README.md` for th
 - **Route layout.** Detail screens live in `src/app/(app)/` beside `(tabs)`, so every tab opens them the same way. Tab stacks hold only their root screen.
 - **Fake Canvas.** `pnpm run fake-canvas` serves `http://localhost:3030`; sign in with school `localhost:3030` and token `dev`. Add endpoints in `devtools/fake-canvas/routes/<feature>.mjs`; they reload while the server runs. Copy response shapes from the canvas-lms serializers (`../canvas-lms/lib/api/v1/`).
 - **Reference implementations.** `../canvas-ios` and `../canvas-android`. The paths are in `docs/PRD.md` section 13.
+
+## Demo fixtures
+
+Run `pnpm run demo:build` after changing fake Canvas GET responses. The build snapshots curated courses into `src/features/demo/data.json`; Node route handlers are never included in the app. Demo dates shift to local today when the lazy-loaded client starts. Demo membership is session-only and is excluded from stored credentials and background jobs.

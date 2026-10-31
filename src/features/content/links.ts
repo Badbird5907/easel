@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import { Linking } from 'react-native';
+import { t } from '@/i18n';
+import { Alert, Linking } from 'react-native';
 
 type RouteTarget = { pathname: string; params?: Record<string, string> };
 
@@ -339,6 +340,7 @@ export function openCanvasLink(url: string, baseUrl: string) {
     router.push(target as never);
     return;
   }
+  if (baseUrl === 'https://demo.easel.invalid') { Alert.alert(t('demo.unavailable')); return; }
   let absolute = url;
   try {
     absolute = new URL(url, baseUrl).toString();

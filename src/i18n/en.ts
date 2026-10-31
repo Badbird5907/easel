@@ -1,4 +1,14 @@
 export const en = {
+  "demo.label": "Demo",
+  "demo.start": "Demo mode",
+  "demo.hint": "Explore Easel with sample courses.",
+  "demo.reset": "Reset demo data",
+  "demo.exit": "Exit demo mode",
+  "demo.resetBody": "Reset all demo changes and start fresh?",
+  "demo.exitBody": "Return to your previous account? Your real data stays as it was.",
+  "demo.failed": "Couldn’t start demo mode. Try again.",
+  "demo.unavailable": "Not available in demo mode.",
+
   "updates.developmentCurrent": "Development bundle",
   "updates.title": "App updates",
   "updates.development": "Development build: automatic updates are disabled. Use Metro or the development launcher to preview updates.",

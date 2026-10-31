@@ -116,6 +116,7 @@ export type SyncRequest = {
 
 /** Syncs courses for one account. Resolves when done, cancelled, or stopped by the network. */
 export function startSync(request: SyncRequest): Promise<void> {
+  if (request.account.authMethod === 'demo') return Promise.resolve();
   if (active) return active.promise;
   let resolve!: () => void;
   let reject!: (error: unknown) => void;

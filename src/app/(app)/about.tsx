@@ -144,6 +144,7 @@ export default function AboutScreen() {
       <Stack.Screen options={{ title: t('settingsAbout.title') }} />
       <Screen contentClassName="gap-6">
         <ListGroup header="Easel">
+          {account.authMethod === 'demo' ? <ListItem title={t('demo.label')} chevron={false} /> : null}
           <ListItem
             title={t('settingsAbout.version')}
             value={build ? t('settingsAbout.versionBuild', { version, build }) : version}

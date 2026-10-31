@@ -34,6 +34,7 @@ function plannerSeen(accountId: string, items: WorkItem[]) {
 
 /** Reminders follow changed due dates, and new work gets the default reminder (SET-5). */
 function followPlanner(accountId: string, items: WorkItem[]) {
+  if (accountId === 'easel_demo') return;
   refreshItems(
     accountId,
     items.map((i) => ({

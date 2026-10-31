@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Production assignment components/helpers; staged commit/discard React hooks and
 // explicit native/query/browser/child boundaries. No HTTP or native UI operations.
@@ -198,13 +199,14 @@ mocks['@/features/offline/requests'] = {
 };
 mocks['@/features/offline/queue'] = { addNotice: (...args) => events.push(['notice', ...args]) };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;
   if (mocks[key]) return mocks[key];
   assert.ok(
     key.startsWith('@/') &&
-      /^(i18n($|\/)|lib\/dates$|features\/grades\/|features\/offline\/presentation$|canvas\/api\/grades$|app\/\(app\)\/(grades|course\/\[courseId\]\/grades)$)/.test(
+      /^(i18n($|\/)|lib\/dates$|features\/grades\/|features\/offline\/presentation$|canvas\/api\/(grades|tabs)$|app\/\(app\)\/(grades|course\/\[courseId\]\/grades)$)/.test(
         key.slice(2),
       ),
     'Unexpected import ' + key,
@@ -215,7 +217,7 @@ function load(name, parent = path.join(root, 'entry.ts')) {
   if (cache.has(file)) return cache.get(file).exports;
   const module = { exports: {} };
   cache.set(file, module);
-  const source = fs.readFileSync(file, 'utf8');
+  const source = fs.readFileSync(file, 'utf8') + (file.endsWith('/course/[courseId]/grades.tsx') ? '\nexport { AvailableCourseGradesScreen };' : '');
   const js = ts.transpileModule(source, {
     fileName: file,
     compilerOptions: {
@@ -308,8 +310,6 @@ const find = (tree, type) => all(tree).filter((n) => n.type === type);
 const hash = (value) => crypto.createHash('sha256').update(value).digest('hex');
 async function run() {
   const baseline = require('./grades.baseline.json');
-  for (const [file, digest] of Object.entries(baseline.sources))
-    assert.equal(hash(fs.readFileSync(path.join(root, '..', file))), digest, file);
   const catalogs = ['en', 'fr', 'ar'].map((l) => load('@/i18n/' + l)[l]);
   equal(Object.keys(catalogs[0]).sort(), Object.keys(catalogs[1]).sort());
   equal(Object.keys(catalogs[0]).sort(), Object.keys(catalogs[2]).sort());
@@ -664,7 +664,14 @@ async function run() {
   // Production routes: locale-only re-renders retain the modal; old modal, row and
   // retry callbacks cannot affect replacement scopes. No router/network effects escape.
   reset();
-  const CourseScreen = load('@/app/(app)/course/[courseId]/grades').default;
+  const route = load('@/app/(app)/course/[courseId]/grades');
+  queries.tabs = { data: [{ id: 'grades', hidden: true }] };
+  const gateMount = mount(route.default);
+  assert.equal(find(gateMount.render(), 'EmptyState').length, 1, 'hidden Grades tab denies entry');
+  queries.tabs = { data: [{ id: 'grades', hidden: false }] };
+  assert.equal(find(gateMount.render(), route.AvailableCourseGradesScreen).length, 1, 'visible Grades tab permits entry');
+  gateMount.unmount();
+  const CourseScreen = route.AvailableCourseGradesScreen;
   const screenMount = mount(CourseScreen);
   let screen = screenMount.render();
   const row = find(screen, components.GradeRow)[0];
@@ -753,6 +760,9 @@ async function run() {
   live = false;
   await skipped;
   assert.equal(entries, 0);
+  console.log('Grade behavior assertions passed; checking source baselines');
+  for (const [file, digest] of Object.entries(baseline.sources))
+    assert.equal(hash(fs.readFileSync(path.join(root, '..', file))), digest, file);
   console.log(
     'grades: historical catalogs/protocols, production formatting/hook/components and committed lifetime checks passed (' +
       process.env.TZ +

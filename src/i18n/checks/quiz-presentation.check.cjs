@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Production quiz components/helpers; staged commit/discard React hooks and
 // explicit native/query/browser/child boundaries. No HTTP or native UI operations.
@@ -156,6 +157,7 @@ const allowed = new Set([
   'app/(app)/course/[courseId]/quiz/[quizId]/result',
 ]);
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

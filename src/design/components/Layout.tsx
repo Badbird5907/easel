@@ -1,6 +1,7 @@
 import { BlurView } from 'expo-blur';
-import { type ComponentRef, type ReactNode, type Ref, useState } from 'react';
+import { Children, type ComponentRef, type ReactNode, type Ref, useState } from 'react';
 import {
+  FlatList,
   type LayoutRectangle,
   Platform,
   Pressable,
@@ -36,6 +37,8 @@ export type ScreenProps = Omit<ScrollViewProps, 'contentContainerStyle'> & {
   children: ReactNode;
   /** Classes for the content stack. Defaults give section spacing. */
   contentClassName?: string;
+  /** Mount long groups as they approach the viewport, without delaying the push. */
+  virtualized?: boolean;
   /**
    * Large title drawn as the first row of the content. Use on tab roots, whose
    * stack header is hidden, so the title and its control share one row.
@@ -59,7 +62,22 @@ export function Screen({ title, titleAccessory, ...props }: ScreenProps) {
     return <TitledScreen title={title} titleAccessory={titleAccessory} {...titled} />;
   }
 
-  const { children, className, contentClassName, ...rest } = props;
+  const { children, className, contentClassName, virtualized, ref, ...rest } = props;
+  if (virtualized) return (
+    <FlatList
+      contentInsetAdjustmentBehavior="automatic"
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      className={cn('flex-1 bg-bg', className)}
+      contentContainerStyle={[styles.content, styles.untitledTop, { direction }]}
+      data={Children.toArray(children)}
+      renderItem={({ item }) => <View className={cn('pb-8', contentClassName)}>{item}</View>}
+      initialNumToRender={5}
+      maxToRenderPerBatch={2}
+      windowSize={3}
+      {...rest}
+    />
+  );
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
@@ -67,6 +85,7 @@ export function Screen({ title, titleAccessory, ...props }: ScreenProps) {
       keyboardShouldPersistTaps="handled"
       className={cn('flex-1 bg-bg', className)}
       contentContainerStyle={[styles.content, styles.untitledTop, { direction }]}
+      ref={ref}
       {...rest}
     >
       <View className={cn('gap-8', contentClassName)}>{children}</View>

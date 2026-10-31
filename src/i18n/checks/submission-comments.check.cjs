@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Production modules, fail-closed synthetic native/storage/queue/mutation/picker/upload
  * boundaries. Hook effects commit after rendering; no React Compiler/native acceptance.
@@ -330,6 +331,7 @@ const allowed = new Set([
   'i18n/ar',
 ]);
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

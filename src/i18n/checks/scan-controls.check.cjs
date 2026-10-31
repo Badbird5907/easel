@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Executes ScanScreen, scanControlsLifetime and safe production page-store functions.
 // All network, storage, picker, browser, query and account effects are synthetic and fail closed.
@@ -260,6 +261,7 @@ const stubs = {
   ),
 };
 function load(file, from = root) {
+  if (isIntlPolyfills(file)) return intlPolyfills;
   if (Object.hasOwn(stubs, file)) return stubs[file];
   let p = file.startsWith('@/') ? path.join(root, file.slice(2)) : path.resolve(from, file);
   if (!path.extname(p)) p += fs.existsSync(p + '.ts') ? '.ts' : '.tsx';

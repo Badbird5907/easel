@@ -73,13 +73,8 @@ function RootNavigator() {
   const restoring = useIsRestoring();
   const signedIn = !!active && !active.expired;
 
-  // The splash stays up until saved accounts and cached data are read, so
-  // there's no sign-in flash and Home opens with its last data (OFF-1).
-  useEffect(() => {
-    if (status === 'ready' && !restoring) SplashScreen.hideAsync();
-  }, [status, restoring]);
-
-  if (status === 'loading') return null;
+  // Do not mount empty query observers before hydration, or expose an unlaid-out navigator.
+  if (status === 'loading' || restoring) return null;
 
   return (
     <LocaleProvider direction={direction}>
@@ -87,7 +82,7 @@ function RootNavigator() {
         {/* Follows Easel's appearance setting, which can differ from the system's. */}
         <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
         <NotificationsRuntime />
-        <View className="flex-1 bg-bg" style={{ direction }}>
+        <View className="flex-1 bg-bg" style={{ direction }} onLayout={() => SplashScreen.hideAsync()}>
           <OfflineBanner />
           {/* Measures its own insets, so screens under the banner don't pad for the status bar again. */}
           <SafeAreaProvider>

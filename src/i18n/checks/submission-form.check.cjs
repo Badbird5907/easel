@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Production modules, fail-closed synthetic native/storage/query/router/picker/upload
  * boundaries. Hook effects commit after rendering; no React Compiler/native acceptance.
@@ -206,11 +207,11 @@ const mocks = {
   '@/canvas/uploads': {},
   '@/canvas/html': { htmlToText: () => fail('htmlToText') },
   '@/canvas/api/assignments': {
-    assignmentKeys: { detail: (...v) => v, groups: (...v) => v },
+    assignmentKeys: { submission: (courseId, assignmentId) => ['courses', courseId, 'assignments', assignmentId, 'submission'], detail: (...v) => v, groups: (...v) => v },
     toSubmissionDetail: (v) => v,
   },
   '@tanstack/react-query': {
-    useQueryClient: () => ({ invalidateQueries: boundary('invalidate') }),
+    useQueryClient: () => Object.assign(queryClient, { invalidateQueries: boundary('invalidate') }),
   },
   '@/canvas/query': {
     useAccountKey: () => account.id,
@@ -323,6 +324,8 @@ mocks['@/features/submissions/uploadStore'] = {
   },
 };
 const allowed = new Set([
+  'features/submissions/useSubmitAssignment',
+  'features/planner/submissionCache',
   'features/submissions/SubmitForm',
   'features/submissions/toolLaunch',
   'features/submissions/formPresentation',
@@ -339,6 +342,7 @@ const allowed = new Set([
   'i18n/ar',
 ]);
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

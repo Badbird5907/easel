@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Freshly transpiled production classification, presentation, adapter and rows.
  * Stateful hook simulation; native/design/thumbnail nodes are prop records.
@@ -29,6 +30,7 @@ const mock = {
   '@/features/files/open': { openFile: (...args) => calls.push(['openFile', ...args]) },
 };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.') ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name)) : name;
   if (mock[key]) return mock[key];
   if (!key.startsWith('@/')) return require(key);

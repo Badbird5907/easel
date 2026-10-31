@@ -1,9 +1,9 @@
 import { GradesShortcut } from '@/features/grades/GradesShortcut';
 import { LocalizedText as Text } from '@/i18n/LocalizedText';
 import { useTranslation } from '@/i18n';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { Bell, BookOpen, Palette, Settings } from 'lucide-react-native';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, useWindowDimensions, View } from 'react-native';
 
 import {
@@ -59,6 +59,11 @@ function courseRows<T>(items: T[], columns: number): T[][] {
 
 export default function HomeScreen() {
   const { t, direction } = useTranslation();
+  useFocusEffect(useCallback(() => {
+    // Prepare the gear destination after Home paints, including after returning from Settings.
+    const task = requestIdleCallback(() => router.prefetch('/settings'));
+    return () => cancelIdleCallback(task);
+  }, []));
   const { fontScale } = useWindowDimensions();
   const columns = fontScale > 1.3 ? 1 : 2;
   const { account } = useCanvas();

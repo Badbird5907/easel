@@ -63,6 +63,25 @@ function load(file) {
   assert.equal(writes, 2);
   await p.persistClient(client([a, b]));
   assert.equal(writes, 2, 'unchanged data must not be serialized/written');
+  // Concurrent row reads must still hold the restore gate until every row arrives.
+  const originalRead = storage.getItem;
+  let releaseRow;
+  const rowGate = new Promise(resolve => { releaseRow = resolve; });
+  const reads = [];
+  storage.getItem = async key => {
+    reads.push(key);
+    if (key === 'easel.query.v2:account-a') await rowGate;
+    return originalRead(key);
+  };
+  let restoreFinished = false;
+  const pendingRestore = p.restoreClient().then(value => { restoreFinished = true; return value; });
+  await new Promise(setImmediate);
+  assert(reads.includes('easel.query.v2:account-b'), 'independent rows read without waiting for one another');
+  assert.equal(restoreFinished, false, 'restore gate waits for the slowest row');
+  releaseRow();
+  assert.equal((await pendingRestore).clientState.queries.length, 2);
+  storage.getItem = originalRead;
+
   await Promise.all([p.persistClient(client([a, b])), p.persistClient(client([b]))]);
   assert.deepEqual((await p.restoreClient()).clientState.queries.map(q => q.queryHash), ['account-b']);
   assert(!disk.has('easel.query.v2:account-a'), 'sign-out removes account data');

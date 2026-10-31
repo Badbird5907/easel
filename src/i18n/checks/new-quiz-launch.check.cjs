@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Actual owned components/route/LTI engine and unchanged API/session adapters.
 // Synthetic commit/discard/replay hooks, native calls, query, preferences and transport only.
@@ -233,6 +234,8 @@ const mock = {
   '@/features/lti/preferences': { toolOpenMode: (...args) => enter('mode', args, undefined) },
 };
 const allowed = new Set([
+  'canvas/api/cacheSeed',
+  'features/planner/submissionCache',
   'i18n',
   'i18n/en',
   'i18n/fr',
@@ -255,6 +258,7 @@ const allowed = new Set([
   'app/(app)/course/[courseId]/quiz/new/[assignmentId]',
 ]);
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

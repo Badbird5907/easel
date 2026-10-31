@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Executes freshly transpiled production viewer/bar/modal/route/helpers/catalogs and
  * file query hook. Native, previews/player, query/cache/download/action/browser boundaries
@@ -121,6 +122,7 @@ const actions = {
 };
 const options = [];
 const mocks = {
+  '@tanstack/react-query': { useQueryClient: () => ({ getQueryCache: () => ({ findAll: () => [] }) }) },
   react,
   'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'Fragment' },
   'react-native': new Proxy(native, { get: (o, k) => o[k] ?? k }),
@@ -212,6 +214,7 @@ const mocks = {
   },
 };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;
@@ -1032,10 +1035,11 @@ const reset = (f) => {
         checkError(tree, 'signed_out', t, 'ensure', expected);
       }
     }
-  // Production query hook: exact keys, seed placeholder and retry policy independent of locale.
+  // Production query hook: exact keys, seed placeholder and inherited retry policy independent of locale.
   delete mocks['@/canvas/api/files'];
   const specs = [];
   mocks['@/canvas/query'] = {
+    useAccountKey: () => 'accountA',
     useCanvasQuery: (...a) => {
       specs.push(a);
       return {};
@@ -1048,12 +1052,10 @@ const reset = (f) => {
     api.useFile('f', { courseId: 'c', seed });
     const [key, , opts] = specs.at(-1);
     assert.deepEqual(key, ['files', 'file', 'f']);
-    assert.equal(opts.placeholderData, seed);
-    for (const error of [new CanvasAuthError(401), new CanvasError(403), new CanvasError(404)])
-      assert.equal(opts.retry(0, error), false);
-    for (const count of [0, 1, 2, 3])
-      for (const error of [new CanvasError(500), new CanvasError(401), new CanvasNetworkError()])
-        assert.equal(opts.retry(count, error), count < 2);
+    assert.equal(opts.placeholderData(), seed);
+    // Retry policy now belongs to query.tsx; cache.check.cjs executes its
+    // production defaults for auth, permission, network and server errors.
+    assert.equal(opts.retry, undefined, 'file queries inherit the centralized retry policy');
   }
   assert.equal(
     calls.some((c) => ['read', 'navigation', 'player'].includes(c[0])),

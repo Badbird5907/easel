@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /* Actual preview, descriptors, formatters and i18n hook/runtime; synthetic hook
  * subscriptions and inert design/native/thumbnail/icon boundaries. No content
@@ -47,6 +48,7 @@ const allowed = new Set(
   ].map((p) => path.join(root, p)),
 );
 function load(name, dir = root) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   if (Object.hasOwn(stubs, name)) return stubs[name];
   const base = name.startsWith('@/') ? path.join(root, name.slice(2)) : path.resolve(dir, name);
   const file = [base + '.ts', base + '.tsx', path.join(base, 'index.ts')].find((p) => fs.existsSync(p));

@@ -285,6 +285,12 @@ const repeat = (templates, count, points) =>
 
 const quizzes = [
   {
+    id: '9399', course: '201', title: 'QA: One question quiz', type: 'assignment',
+    due: new Date(Date.now() + 3600000).toISOString(), points: 1, questions: 1, attempts: -1,
+    description: '<p>Choose the number two and submit.</p>', taken: [],
+    bank: [mc('<p>What is one plus one?</p>', ['Two', 'Three'], 0)],
+  },
+  {
     id: '9008',
     course: '201',
     assignment: '9608',

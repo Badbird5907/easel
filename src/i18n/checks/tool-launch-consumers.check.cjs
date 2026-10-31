@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Actual owned components/route/LTI engine and unchanged API/session adapters.
 // Synthetic commit/discard/replay hooks, native calls, query, preferences and transport only.
@@ -184,6 +185,7 @@ const mock = {
   'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'Fragment' },
   'react-native': new Proxy(
     {
+      useWindowDimensions: () => ({ width: 390, height: 844, scale: 1, fontScale: 1 }),
       Platform: { OS: 'ios' },
       Alert: {
         alert: (...args) => {
@@ -252,6 +254,7 @@ const allowed = new Set([
   'app/(app)/course/[courseId]/quiz/new/[assignmentId]',
 ]);
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

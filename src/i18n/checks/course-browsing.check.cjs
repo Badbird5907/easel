@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Fresh production TS with simulated hooks/native controls and synthetic Canvas clients.
  * No React reconciliation/Compiler, device, browser, real account, or native focus/layout claims. */
@@ -56,6 +57,7 @@ const mock = {
   '@/canvas/api/discussions': { fetchDiscussions: async () => state.discussions ?? [] },
 };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.') ? '@/' + path.relative(root,path.resolve(path.dirname(parent),name)) : name;
   if (mock[key]) return mock[key];
   assert.ok(key.startsWith('@/'), `Unmocked ${key}`);
@@ -101,7 +103,7 @@ const course = freeze({ id:'42',name:'Other past courses',originalName:'Course',
   let j=join(joinProps);find(j,'TextField').onChangeText('https://school.invalid/enroll/abc123');
   state.queries['courses/42/search/mode']=success('titles');
   const results=freeze([{key:'assignment:9',id:'9',kind:'assignment',title:'Raw élève اسم',snippet:'Canvas source',htmlUrl:'/a',relevance:null}]);
-  state.queries['courses/42/search/index']=success(results);
+  state.queries['courses/42/search/index-v2']=success({ results, unavailable: [] });
   let sv=searchView({courseId:'42'});find(sv,'SearchField').onChangeText('élève');searchView({courseId:'42'});timers.splice(0).forEach(fn=>fn());
   const grouped=harness(search.ResultGroups);
   const choice=harness(() => load('@/features/lti/ToolOpenChoice').useToolOpenChoice('88','Raw tool اسم','browser'));
@@ -169,7 +171,7 @@ const course = freeze({ id:'42',name:'Other past courses',originalName:'Course',
   let at=allView();find(at,'SearchField').onChangeText('Other');
   for(const locale of ['en','fr','ar']) {
     t=setLocale(locale);const changesBefore=state.changes.length, callsBefore=calls.length;
-    const ht=homeView();assert.ok(texts(ht).includes(new Intl.ListFormat(locale,{style:'long',type:'conjunction'}).format(teachers)));assert.equal(ht.props.title,'RAW Course');assert.ok(texts(ht).includes('RAW Assignments'));
+    const ht=homeView();assert.ok(texts(ht).includes(new Intl.ListFormat(locale,{style:'long',type:'conjunction'}).format(teachers)));assert.equal(ht.props.title,'RAW Course');assert.ok(!texts(ht).includes('RAW Assignments'), 'hidden tabs stay out of course navigation');
     ct=customizeView();assert.equal(find(ct,'Sheet').visible,true);assert.equal(find(ct,'Sheet').title,course.name);
     items=nodes(ct).filter(n=>n.type===custom.CourseRow);assert.deepEqual(items.map(n=>n.props.course.id),['42','5']);
     at=allView();assert.equal(find(at,'SearchField').value,'Other');
@@ -202,7 +204,7 @@ const course = freeze({ id:'42',name:'Other past courses',originalName:'Course',
   assert.deepEqual(searchApi.searchTitles(results,'eleve'),results);
   state.assignments=[{id:'1',kind:'quiz',quizId:'q',name:'Quiz',htmlUrl:'/q'},{id:'2',kind:'discussion',discussionTopicId:'d',name:'Graded',htmlUrl:'/d'}];
   state.discussions=[{id:'d',title:'Duplicate'},{id:'e',title:'Other',preview:'Raw preview'}];
-  const index=await searchApi.fetchSearchIndex({},'42');assert.deepEqual(index.map(r=>r.key),['quiz:1','discussion:d','discussion:e']);assert.equal(index[0].quizId,'q');
+  const { results: index, unavailable }=await searchApi.fetchSearchIndex({},'42');assert.deepEqual(unavailable,[]);assert.deepEqual(index.map(r=>r.key),['quiz:1','discussion:d','discussion:e']);assert.equal(index[0].quizId,'q');
   const smart=await searchApi.fetchSmartSearch({get:async()=>({results:[{content_id:'3',content_type:'WikiPage',title:'Raw page',body:'Raw body',html_url:'/courses/42/pages/raw',relevance:99}]})},'42','raw query');assert.equal(smart[0].title,'Raw page');assert.equal(smart[0].pageUrl,'raw');
   // Course list ordering/restrictions/invitations remain production adapter decisions.
   const client={get:async()=>({custom_colors:{}}),getAll:async(_url,q)=>q.enrollment_state==='active'?[{id:'1',name:'B'},{id:'9',access_restricted_by_date:true}]:q.enrollment_state==='invited_or_pending'?[{id:'2',name:'A',enrollments:[{enrollment_state:'invited'}]},{id:'3',name:'C'}]:[{id:'1',name:'duplicate'},{id:'4',name:'D'}]};

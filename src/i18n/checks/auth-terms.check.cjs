@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Actual terms components, lifetime and legal API callers with synthetic
 // hooks/commit/native/browser/query/transport/session boundaries only. No effects
@@ -175,6 +176,7 @@ const mocks = {
 };
 class Clock extends Date { static now() { return now; } }
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.') ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name)) : name;
   if (mocks[key]) return mocks[key];
   assert.ok(key.startsWith('@/') && allowed.has(key.slice(2)), 'Unexpected import ' + key);

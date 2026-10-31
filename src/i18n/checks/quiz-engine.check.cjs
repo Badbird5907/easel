@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Production controls and locale runtime. Synthetic staged hooks/native/animation
 // boundaries only: no React reconciliation, native acceptance, HTTP or storage.
@@ -242,6 +243,8 @@ const mocks = {
   '@/i18n': { useTranslation: () => ({ t: runtime.createTranslator(locale) }) },
 };
 const allowed = new Set([
+  'canvas/api/cacheSeed',
+  'features/planner/submissionCache',
   'canvas/api/quizzes',
   'canvas/client',
   'canvas/html',
@@ -256,6 +259,7 @@ const allowed = new Set([
 ]);
 const cache = new Map();
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

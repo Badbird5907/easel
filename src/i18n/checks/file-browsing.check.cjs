@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Freshly transpiles production browser/card, presentation, five routes, ActionSheet,
  * catalogs, kinds/AttachmentList and date contexts. Stateful hook/memo/effect simulation;
@@ -43,6 +44,7 @@ const mocks={
  '@/features/files/upload':{useUploadToFolder:(id)=>{queries.push(['upload',id]);return state.upload;}},
 };
 function load(name,parent=path.join(root,'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
  const key=name.startsWith('.')?'@/'+path.relative(root,path.resolve(path.dirname(parent),name)):name;
  if(mocks[key])return mocks[key]; if(!key.startsWith('@/'))return require(key);
  const file=['.ts','.tsx','/index.ts'].map(e=>path.join(root,key.slice(2))+e).find(fs.existsSync); assert.ok(file,key);

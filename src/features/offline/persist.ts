@@ -54,6 +54,52 @@ function serial(work: () => Promise<void>): Promise<void> {
   return next;
 }
 
+/** Restoring waits at most this long before opening with the rows read so far. */
+const RESTORE_LIMIT_MS = 3_000;
+
+/** Reads the saved cache into `queries` as rows arrive; resolves once every row is read. */
+async function readSavedClient(queries: SavedQuery[]): Promise<PersistedClient | undefined> {
+  // Until migration finishes, the legacy snapshot is the complete copy. A kill
+  // halfway through writing rows must not restore only that partial migration.
+  const legacy = await cacheStorage.getItem(LEGACY_KEY);
+  if (legacy) {
+    try {
+      const client = deserializeCache(legacy);
+      if (client.buster === cacheBuster && client.timestamp > Date.now() - CACHE_MAX_AGE) return client;
+    } catch {
+      // Recover any independently valid rows below.
+    }
+    await cacheStorage.removeItem(LEGACY_KEY);
+  }
+  const keys = (await cacheStorage.getAllKeys()).filter((key) => key.startsWith(ROW_PREFIX));
+  await Promise.all(
+    keys.map(async (key) => {
+      try {
+        const text = await cacheStorage.getItem(key);
+        if (!text) return;
+        const row = deserializeCache(text);
+        const query = row.clientState.queries[0];
+        if (row.buster !== cacheBuster || !query || query.state.dataUpdatedAt <= Date.now() - CACHE_MAX_AGE) {
+          await cacheStorage.removeItem(key);
+          return;
+        }
+        queries.push(query);
+        saved.set(query.queryHash, query);
+      } catch {
+        // A corrupt row must not discard every other cached screen.
+        await cacheStorage.removeItem(key);
+      }
+    }),
+  );
+  if (queries.length)
+    return {
+      buster: cacheBuster,
+      timestamp: Date.now(),
+      clientState: { mutations: [], queries },
+    };
+  return undefined;
+}
+
 export const cachePersister: Persister = {
   persistClient: (client) => {
     latestClient = client;
@@ -70,10 +116,15 @@ export const cachePersister: Persister = {
       }
       for (const query of client.clientState.queries) {
         const previous = saved.get(query.queryHash);
-        if (previous && previous.state.data === query.state.data &&
-            previous.state.dataUpdatedAt === query.state.dataUpdatedAt) continue;
+        if (
+          previous &&
+          previous.state.data === query.state.data &&
+          previous.state.dataUpdatedAt === query.state.dataUpdatedAt
+        )
+          continue;
         const row: PersistedClient = {
-          buster: client.buster, timestamp: client.timestamp,
+          buster: client.buster,
+          timestamp: client.timestamp,
           clientState: { mutations: [], queries: [query] },
         };
         await cacheStorage.setItem(ROW_PREFIX + query.queryHash, serializeCache(row));
@@ -83,42 +134,19 @@ export const cachePersister: Persister = {
     });
   },
   restoreClient: async () => {
-    // Until migration finishes, the legacy snapshot is the complete copy. A kill
-    // halfway through writing rows must not restore only that partial migration.
-    const legacy = await cacheStorage.getItem(LEGACY_KEY);
-    if (legacy) {
-      try {
-        const client = deserializeCache(legacy);
-        if (client.buster === cacheBuster && client.timestamp > Date.now() - CACHE_MAX_AGE) return client;
-      } catch {
-        // Recover any independently valid rows below.
-      }
-      await cacheStorage.removeItem(LEGACY_KEY);
-    }
+    // A stuck read must never hold the app on the splash screen. Past the limit,
+    // the app opens with whatever rows were already read.
     const queries: SavedQuery[] = [];
-    for (const key of await cacheStorage.getAllKeys()) {
-      if (!key.startsWith(ROW_PREFIX)) continue;
-      try {
-        const text = await cacheStorage.getItem(key);
-        if (!text) continue;
-        const row = deserializeCache(text);
-        const query = row.clientState.queries[0];
-        if (row.buster !== cacheBuster || !query ||
-            query.state.dataUpdatedAt <= Date.now() - CACHE_MAX_AGE) {
-          await cacheStorage.removeItem(key);
-          continue;
-        }
-        queries.push(query);
-        saved.set(query.queryHash, query);
-      } catch {
-        // A corrupt row must not discard every other cached screen.
-        await cacheStorage.removeItem(key);
-      }
-    }
-    if (queries.length) return {
-      buster: cacheBuster, timestamp: Date.now(), clientState: { mutations: [], queries },
-    };
-    return undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const limit = new Promise<'limit'>((resolve) => {
+      timer = setTimeout(() => resolve('limit'), RESTORE_LIMIT_MS);
+    });
+    const result = await Promise.race([readSavedClient(queries), limit]);
+    clearTimeout(timer);
+    if (result !== 'limit') return result;
+    return queries.length
+      ? { buster: cacheBuster, timestamp: Date.now(), clientState: { mutations: [], queries: [...queries] } }
+      : undefined;
   },
   removeClient: () => {
     latestClient = undefined;

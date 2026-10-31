@@ -6629,7 +6629,7 @@
     }
   },
   "sources": {
-    "canvas/api/quizzes.ts": "10abdd7536e0f8baff49284e980114543fbd265f3093cbec7ff4370505be8b31",
+    "canvas/api/quizzes.ts": "f5c7f357cea212f9892a1e01aee74c25a3fac35390c5e14f45f4b96eac22f661",
     "features/quizzes/TakeQuiz.tsx": "0485c52114a295df376778b83b070e2c9e5b829928880637f136cf082361312a",
     "features/quizzes/NewQuizLaunch.tsx": "e659f9a266f1358c323d50ba32e4ed4074c53828d493a1895d15cb6b81ad1908",
     "features/quizzes/AttemptResults.tsx": "1fd92528743ea390ddb92b6f9d651ae2aa5017cdcda28c19a9023a9734174639",

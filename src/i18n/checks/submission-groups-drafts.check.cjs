@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Production UI/hook/fetcher/client/draft-state/queue with synthetic React/native,
  * query, HTTP and in-memory filesystem/kv boundaries. No network or native operations. */
@@ -200,6 +201,7 @@ const allowed = new Set([
   'i18n/ar',
 ]);
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

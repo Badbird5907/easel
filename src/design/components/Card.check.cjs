@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('../../i18n/checks/node-boundaries.cjs');
 /* global __dirname */
 // Actual Card + SharedLink output with synthetic native/theme/pressable boundaries.
 // This checks prop forwarding and consumer opt-in, not a native accessibility tree.
@@ -38,6 +39,7 @@ const allowed = new Set(
   ].map((file) => path.resolve(root, file)),
 );
 function load(name, dir = root) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   if (Object.hasOwn(stubs, name)) return stubs[name];
   if (['class-variance-authority', 'clsx', 'tailwind-merge'].includes(name)) return require(name);
   const base = name.startsWith('@/') ? path.resolve(root, '..', name.slice(2)) : path.resolve(dir, name);

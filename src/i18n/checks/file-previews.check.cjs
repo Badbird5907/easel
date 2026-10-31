@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Production TSX, synthetic hooks/native/player/filesystem/WebView/timers and PDF DOM.
  * No actual media, file, fetch or native operation. Not React Compiler/WebView acceptance. */
@@ -275,6 +276,7 @@ function compile(source, filename, overrides = {}) {
   return m.exports;
 }
 function load(file) {
+  if (isIntlPolyfills(file)) return intlPolyfills;
   if (!file || !allowed.has(path.relative(root, file))) return fail(`production import ${file}`);
   if (!cache.has(file)) cache.set(file, compile(fs.readFileSync(file, 'utf8'), file));
   return cache.get(file);

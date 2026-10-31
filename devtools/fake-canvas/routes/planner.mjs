@@ -96,7 +96,10 @@ const htmlPath = (w) =>
 
 function plannerItem(w) {
   const course = courseById(w.course);
-  const status = w.sub ?? {};
+  const quizAttempts = globalThis.__easelFakeQuizzes?.attempts?.[`${w.course}:${w.id}`] ?? [];
+  const assignmentAttempts = globalThis.__easelFakeSubmissions?.attempts?.[w.id] ?? [];
+  const submitted = quizAttempts.some((a) => ['complete', 'pending_review'].includes(a.workflow)) || assignmentAttempts.length > 0;
+  const status = submitted ? { submitted: true } : (w.sub ?? {});
   return {
     plannable_id: w.id,
     plannable_type: w.type,
@@ -172,14 +175,22 @@ function applyNoteParams(note, body) {
   return null;
 }
 
+const qaQuiz = { id: '9399', course: '201', type: 'quiz', title: 'QA: One question quiz', due: new Date(Date.now() + 3600000).toISOString(), points: 1 };
+let qaDelay = 0;
+
 export const routes = [
+  { path: '/fake/planner-delay', method: 'POST', public: true, handler: ({ body }) => {
+    qaDelay = Math.min(30000, Math.max(0, Number(body?.ms) || 0));
+    return { ms: qaDelay };
+  } },
   {
     path: '/api/v1/planner/items',
-    handler: ({ query, url }) => {
+    handler: async ({ query, url }) => {
+      if (qaDelay) await new Promise((resolve) => setTimeout(resolve, qaDelay));
       const { start, end } = dateRange(query);
       const inRange = (iso) => new Date(iso) >= start && new Date(iso) <= end;
       const items = [
-        ...work.filter((w) => inRange(w.due)).map(plannerItem),
+        ...[qaQuiz, ...work].filter((w) => inRange(w.due)).map(plannerItem),
         ...notes.filter((n) => inRange(n.todo_date)).map(noteItem),
       ].sort((a, b) => a.plannable_date.localeCompare(b.plannable_date));
       return paginate(items, query, url);

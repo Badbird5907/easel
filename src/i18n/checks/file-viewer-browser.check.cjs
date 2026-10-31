@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Production FileViewer -> ErrorState, file browser claim, fileWebUrl and shared
 // openSignedIn/sessionUrl. Synthetic commit/discard hooks, metadata/download state,
@@ -196,6 +197,7 @@ const mocks = {
   'expo-sharing': {},
 };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;

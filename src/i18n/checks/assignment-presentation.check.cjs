@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Production assignment components/helpers; staged commit/discard React hooks and
 // explicit native/query/browser/child boundaries. No HTTP or native UI operations.
@@ -159,6 +160,7 @@ const allowed = new Set([
 const timers = new Map();
 let timerId = 0;
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.')
     ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
     : name;
@@ -888,6 +890,7 @@ async function run() {
   // Detail retry is coalesced, stale retained callbacks cannot refetch, rejections are handled.
   reset();
   a.isError = true;
+  a.data = undefined;
   a.error = Error('RAW');
   let detailProps = { courseId: 'c', assignmentId: 'a' };
   m = mount(() => details.AssignmentDetails(detailProps));

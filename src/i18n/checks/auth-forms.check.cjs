@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Production auth forms, routes, lifetime helper and locale runtime. Synthetic
 // hooks/native/auth/session/school/browser boundaries; no HTTP, storage or accounts.
@@ -195,6 +196,7 @@ const mocks = {
   'expo-router': { router: { back: () => calls.push(['back']) } },
 };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.') ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name)) : name;
   if (mocks[key]) return mocks[key];
   assert.ok(key.startsWith('@/') && allowed.has(key.slice(2)), 'Unexpected import ' + key);

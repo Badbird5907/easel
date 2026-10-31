@@ -101,7 +101,7 @@
     "features/quizzes/useQuizAttempt.ts": "c222dbbf80c85134233a75ca92584052c3e7ec465224879f67de3b67adfabad6",
     "features/quizzes/storage.ts": "ff263bb49abad58f5de44322b68fd7c51551aa816e2fe92ae7bf5d4b06de5845",
     "features/quizzes/upload.ts": "48861f719872e4108b0517180d6989604bf82f8a91b6c15d4a4212b559f053b1",
-    "canvas/api/quizzes.ts": "9ca879ba705a8a2b325d7d75b48ebbf68b3fe4cbc53e413ed01c7c803f7971a8",
+    "canvas/api/quizzes.ts": "a2048826b12e6b0c6083d6ea5cdb00f6f05854d328edf7cd652fba4ffb58fc34",
     "canvas/uploads.ts": "79e93447646e895971dd8f3d6fe40dd172948128866d20e56300da095a194365",
     "features/files/upload.ts": "062f276671fdd4f2d21bc6210eea97554b95195552bcb3264fa3d9112a1adbba",
     "features/quizzes/QuizAttemptScreen.tsx": "a0af435eeac9a1594a7474c0a0e25020f461977bcf23f2445243efb92bd197b4"

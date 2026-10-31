@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Actual production modules with fail-closed in-memory native boundaries. No app I/O. */
 const assert = require('node:assert/strict');
@@ -270,6 +271,7 @@ function environment(seed) {
     'i18n/ar',
   ]);
   function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
     const key = name.startsWith('.')
       ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name))
       : name;

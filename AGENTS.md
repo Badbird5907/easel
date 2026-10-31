@@ -17,6 +17,7 @@ pnpm exec expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add 
 pnpm exec expo start              # start the dev server
 pnpm exec expo lint               # lint
 pnpm exec tsc --noEmit            # typecheck
+pnpm run check                   # all regression checks
 pnpm dlx expo-doctor             # diagnose dependency and config issues
 pnpm exec expo install --fix      # fix incompatible package versions
 pnpm exec expo prebuild --no-install --no-clean # preserve generated native folders (SDK 58)
@@ -24,7 +25,7 @@ pnpm dlx eas-cli@latest update --channel production --environment production --m
 pnpm dlx eas-cli@latest update:rollback # select branch/runtime and known-good or embedded update
 ```
 
-Run lint and typecheck before declaring any task done.
+Run lint, typecheck, and `pnpm run check` before declaring any task done.
 
 OTA uses app-version runtimes. `play-internal` receives `production`; `preview` receives
 `preview`. Native dependency/config changes require a new store build before matching

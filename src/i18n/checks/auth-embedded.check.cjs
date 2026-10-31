@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 // Executes production EmbeddedSignIn/lifetime/i18n with synthetic hooks, native
 // WebView, Alert and timers. No network, storage or native effects. Not React reconciliation.
@@ -157,6 +158,7 @@ const mocks = {
   '@/canvas/client': {}, '@/canvas/session': { OAUTH_REDIRECT_URI: 'easel://oauth/callback', SignInError: Error },
 };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.') ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name)) : name;
   if (mocks[key]) return mocks[key];
   assert.ok(key.startsWith('@/') && allowed.has(key.slice(2)), 'Unexpected import ' + key);

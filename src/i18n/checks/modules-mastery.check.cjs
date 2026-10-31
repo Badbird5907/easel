@@ -1,3 +1,4 @@
+const { isIntlPolyfills, intlPolyfills } = require('./node-boundaries.cjs');
 /* global __dirname */
 /** Fresh production transpilation with synthetic query/client/native boundaries. Hook-slot checks
  * do not establish React reconciliation, Compiler, native focus/RTL/AT, or real Canvas behavior. */
@@ -63,6 +64,8 @@ function mutation(fn, options) {
   return { ...methods.current, isPending: state.pending, variables: state.variables };
 }
 const mock = {
+  '@/features/files/FileViewer': { FileViewer: 'FileViewer' },
+  '@/features/discussions/TopicView': { TopicView: 'TopicView' },
   react, 'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'Fragment' },
   'react-native': new Proxy({ Alert: { alert: (...args) => alerts.push(args) }, AccessibilityInfo: { announceForAccessibility: s => announcements.push(s) } }, { get: (o, k) => o[k] ?? k }),
   'lucide-react-native': new Proxy({}, { get: (_o, k) => k }),
@@ -88,6 +91,7 @@ const mock = {
   '@/lib/cn': { cn: (...parts) => parts.filter(Boolean).join(' ') },
 };
 function load(name, parent = path.join(root, 'entry.ts')) {
+  if (isIntlPolyfills(name)) return intlPolyfills;
   const key = name.startsWith('.') ? '@/' + path.relative(root, path.resolve(path.dirname(parent), name)) : name;
   if (mock[key]) return mock[key];
   assert.ok(key.startsWith('@/'), `Unmocked dependency: ${key}`);
@@ -369,19 +373,25 @@ function data(m = mod, p = pathData) { state.queries[mq] = success([m]); state.q
   await viewed.fn(client, { moduleId: 'm', itemId: 'i' }); await viewed.options.onSuccess();
   assert.deepEqual(requests.at(-1), ['post', '/api/v1/courses/c/modules/m/items/i/mark_read']);
   assert.deepEqual(calls.at(-1), ['invalidate', { queryKey: ['account', 'courses', 'c', 'modules'] }]);
+  const viewedItem = { ...item, requirement: { type: 'must_view', completed: false } };
+  const viewedModule = { ...mod, items: [viewedItem] };
+  const beforeManual = mutations.length;
+  harness(screens.item)();
+  assert.equal(mutations.length, beforeManual, 'manual completion does not mark an item viewed');
+  data(viewedModule);
   const itemScreen = harness(screens.item); const first = itemScreen(); await flush(); const visited = mutations.length;
-  assert.equal(find(first, 'Screen').children.props.children[0].props.item, item);
+  assert.equal(find(first, 'Screen').children.props.children[0].props.item, viewedItem);
   for (const locale of ['fr', 'ar', 'en']) { view(locale, 'Asia/Tokyo'); itemScreen(); }
   assert.equal(mutations.length, visited); // once per item even if hook callback identity changes
-  find(first, ui.SequenceBar).onGo({ ...item, id: 'next' }); assert.deepEqual(calls.pop(), ['setParams', { itemId: 'next' }]);
+  find(first, ui.SequenceBar).onGo({ ...viewedItem, id: 'next' }); assert.deepEqual(calls.pop(), ['setParams', { itemId: 'next' }]);
   find(first, ui.RequirementCard).onSetDone(false); const undo = mutations.at(-1);
   assert.deepEqual(undo.value, { moduleId: 'm', itemId: 'i', done: false });
   view('fr'); undo.callbacks.onError(new Error('Couldn’t undo')); assert.equal(alerts.at(-1)[0], 'Couldn’t undo'); assert.equal(alerts.at(-1)[1], 'Couldn’t undo');
   for (const patch of [{ locked: true }, { type: 'SubHeader' }]) {
-    data({ ...mod, items: [{ ...item, ...patch }] }); const before = mutations.length; harness(screens.item)(); assert.equal(mutations.length, before);
+    data({ ...viewedModule, items: [{ ...viewedItem, ...patch }] }); const before = mutations.length; harness(screens.item)(); assert.equal(mutations.length, before);
   }
   // Offline views wait for reconnection, failed attempts can retry, and successful/pending ones deduplicate.
-  data(); state.online = false;
+  data(viewedModule); state.online = false;
   const retryView = harness(screens.item), beforeOffline = mutations.length;
   retryView(); assert.equal(mutations.length, beforeOffline);
   let rejectRead; state.wait = new Promise((_resolve, reject) => { rejectRead = reject; });
@@ -389,7 +399,7 @@ function data(m = mod, p = pathData) { state.queries[mq] = success([m]); state.q
   view('ar'); retryView(); assert.equal(mutations.length, beforeOffline + 1);
   rejectRead(new Error('offline')); await flush(); state.wait = null;
   // Cache objects can be replaced for localized date rendering; that alone must not retry.
-  data({ ...mod, items: [{ ...item }] }); view('fr'); retryView(); await flush();
+  data({ ...viewedModule, items: [{ ...viewedItem }] }); view('fr'); retryView(); await flush();
   assert.equal(mutations.length, beforeOffline + 1);
   state.online = false; retryView(); state.online = true; retryView(); await flush();
   assert.equal(mutations.length, beforeOffline + 2);
@@ -404,8 +414,8 @@ function data(m = mod, p = pathData) { state.queries[mq] = success([m]); state.q
   await find(refreshTree, 'Screen').refreshControl.props.onRefresh(); refreshedView(); await flush();
   assert.equal(mutations.length, beforeRefresh + 2, 'explicit refresh retries even with the same cached item');
   // Concurrent items settle independently, unlike observer-level mutate callbacks.
-  const multiView = harness(screens.item), otherItem = { ...item, id: 'other' };
-  data({ ...mod, items: [item, otherItem] });
+  const multiView = harness(screens.item), otherItem = { ...viewedItem, id: 'other' };
+  data({ ...viewedModule, items: [viewedItem, otherItem] });
   state.wait = new Promise((_resolve, reject) => { rejectRead = reject; });
   const beforeConcurrent = mutations.length; multiView();
   let finishOther; state.wait = new Promise(resolve => { finishOther = resolve; });
@@ -415,16 +425,16 @@ function data(m = mod, p = pathData) { state.queries[mq] = success([m]); state.q
   assert.equal(mutations.length, beforeConcurrent + 3, 'revisit retries the failed item');
   state.params = { courseId: 'c', itemId: 'other' }; multiView(); await flush();
   assert.equal(mutations.length, beforeConcurrent + 3, 'successful concurrent item stays recorded');
-  state.params = { courseId: 'c', itemId: 'i' }; data();
+  state.params = { courseId: 'c', itemId: 'i' }; data(viewedModule);
   // Progress counts tracked modules only; rounding stays at whole percentages.
   for (const locale of ['en', 'fr', 'ar']) {
     const t = view(locale);
-    state.queries[mq] = success([{ ...mod, state: 'completed' }, { ...mod, id: 'm2' }, { ...mod, id: 'm3' }, { ...mod, id: 'untracked', state: null }]);
+    state.queries[mq] = success([{ ...mod, state: 'completed' }, { ...mod, id: 'm2' }, { ...mod, id: 'm3' }, { ...mod, id: 'untracked', state: null, items: [{ ...item, requirement: null }] }]);
     const progress = harness(screens.modules)();
     assert.equal(find(progress, 'ProgressBar').value, 1 / 3);
     assert.ok(text(progress).includes(t('modules.progressCount', { done: 1, count: 3 })));
     assert.ok(text(progress).includes(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 0 }).format(0.33)));
-    state.queries[mq] = success([{ ...mod, state: null }]); assert.equal(find(harness(screens.modules)(), 'ProgressBar'), undefined);
+    state.queries[mq] = success([{ ...mod, state: null, items: [{ ...item, requirement: null }] }]); assert.equal(find(harness(screens.modules)(), 'ProgressBar'), undefined);
     data();
     const card = harness(ui.MasteryPathCard)({ item, courseId: 'c' });
     find(card, 'Button').onPress(); assert.deepEqual(calls.pop(), ['push', { pathname: '/course/[courseId]/module-item/[itemId]/paths', params: { courseId: 'c', itemId: 'i' } }]);

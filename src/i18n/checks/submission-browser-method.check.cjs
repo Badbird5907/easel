@@ -250,13 +250,14 @@ async function run() {
     assert.equal(hash(JSON.stringify(baseline.catalogKeys.map(key => [key, catalog[key]]))),
       baseline.catalogHashes[locale], locale + ': all historical catalog values');
   }
-  // Reverse only this task's three explicit edits before checking the captured source.
+  // Reverse the browser edits before checking the form snapshot, including the
+  // intentional useSubmitAssignment extraction and planner cache publication.
   const source = fs.readFileSync(path.join(root, 'features/submissions/SubmitForm.tsx'), 'utf8');
   const restored = source
     .replace("import { router, useIsFocused, useNavigation, useRoute } from 'expo-router';", "import { router } from 'expo-router';")
     .replace(/  \/\/ Browser entry has its own committed lifetime\.[\s\S]*?(?=  const edit =)/, '')
     .replace('onPress={() => openBrowserMethod(browserType)}', 'onPress={() => navigate(() => openSignedIn(a.htmlUrl))}');
-  assert.equal(hash(restored), '2690c3d9a1bcbc98ffffa41d218b8986b8fde8d2451fa5e4e53794c8ac459897', 'all original form lifecycle, panels, confirmation, route and submission code unchanged');
+  assert.equal(hash(restored), '93ebec71a69d273205d4c4508cee8f49c3fa484c37f839119e154304bfade0da', 'all original form lifecycle, panels, confirmation, route and submission code unchanged');
   assert.equal(hash(fs.readFileSync(path.join(root, 'features/content/browser.ts'))), '519a926bb98b5fa98961e886630cf3688bb4e05688a1264f986075d10fa962f9', 'shared browser helper byte unchanged');
   console.log('submission-browser-method: original production callback/owner + shared session helper, retirement matrix, duplicates, retry, finalization, locale, drafts and submit isolation passed (' + process.env.TZ + ')');
 }

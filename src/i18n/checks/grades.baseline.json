@@ -7452,9 +7452,9 @@
     }
   },
   "sources": {
-    "src/features/grades/calculate.ts": "46123f6f935e1ee3a2c33be4667239038667e40e05fcbdb8f1fbad10546638fa",
-    "src/features/grades/calculate.check.ts": "165df80967d4692bd98f044d538a5aeb95d9cdab8d30e8c3d4f4a06a9ff948ef",
-    "src/canvas/api/grades.ts": "7c8a1de185ef097d729b79b5af634550f590e8f09332c9db7f36df05a03210bf",
+    "src/features/grades/calculate.ts": "20100b7c1f00c7a0133076671ff76ac07a29658c3c96c7d27103f0d7c84f0ad8",
+    "src/features/grades/calculate.check.ts": "c5492f995e022de9e985a4bc1351a1673e4df031ab894c47670397d8dd18b35a",
+    "src/canvas/api/grades.ts": "14660fc53e352ef392a4fa43d6d7b457c3e4c8476a0a6917d417b3f2d62267e7",
     "src/features/grades/whatIfSaving.ts": "4e8deb20a284edb7c159a0ca30f2c1692f81b8c8c14ecb54b43a09a9489c0896"
   }
 }

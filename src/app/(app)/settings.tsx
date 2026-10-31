@@ -83,6 +83,12 @@ export default function SettingsScreen() {
   const languageTrigger = useRef<ComponentRef<typeof View>>(null);
   const zoneTrigger = useRef<ComponentRef<typeof View>>(null);
   const [sheet, setSheet] = useState<SheetKind>(null);
+  // Keep a sheet mounted after first use so native dismissal can restore focus.
+  const [openedSheets, setOpenedSheets] = useState<Set<SheetKind>>(() => new Set());
+  const openSheet = (kind: SheetKind) => {
+    setOpenedSheets((opened) => new Set(opened).add(kind));
+    setSheet(kind);
+  };
 
   const unavailable = profile.isError && !profile.data ? t('settings.unavailable') : undefined;
   const pendingLocale = update.isPending ? update.variables?.locale : undefined;
@@ -126,7 +132,7 @@ export default function SettingsScreen() {
   return (
     <View className="flex-1 bg-bg" style={{ direction }}>
       <Stack.Screen options={{ title: t('nav.settings') }} />
-      <Screen contentClassName="gap-6">
+      <Screen virtualized contentClassName="pb-6">
         <ListGroup header={t('settings.accounts')} footer={t('settings.accountsHint')}>
           {accounts.map((account) => {
             const current = account.id === active?.id;
@@ -179,7 +185,7 @@ export default function SettingsScreen() {
             title={t('settings.start')}
             value={t(`nav.${landing}`)}
             ref={landingTrigger}
-            onPress={() => setSheet('landing')}
+            onPress={() => openSheet('landing')}
           />
         </ListGroup>
 
@@ -190,7 +196,7 @@ export default function SettingsScreen() {
             value={unavailable ?? (locale ? (languageName(locale) ?? locale) : t('settings.schoolDefault'))}
             disabled={!profile.data}
             ref={languageTrigger}
-            onPress={() => setSheet('language')}
+            onPress={() => openSheet('language')}
           />
           <ListItem
             leading={<IconTile icon={Clock} tone="neutral" />}
@@ -198,7 +204,7 @@ export default function SettingsScreen() {
             value={unavailable ?? localizedZoneName(timeZone) ?? undefined}
             disabled={!profile.data}
             ref={zoneTrigger}
-            onPress={() => setSheet('timeZone')}
+            onPress={() => openSheet('timeZone')}
           />
         </ListGroup>
 
@@ -310,74 +316,83 @@ export default function SettingsScreen() {
         ) : null}
       </Screen>
 
-      <Sheet
-        doneLabel={t('common.done')}
-        returnFocusRef={landingTrigger}
-        visible={sheet === 'landing'}
-        title={t('settings.start')}
-        onClose={close}
-      >
-        {sheet === 'landing' ? (
-          <View style={{ direction }}>
-            <OptionGroup
-              options={landingTabs.map((tab) => ({ value: tab.value, label: t(`nav.${tab.value}`) }))}
-              selected={landing}
-              footer={t('settings.startHint')}
-              onSelect={(value) => {
-                setLanding(value);
-                close();
-              }}
-            />
-          </View>
-        ) : null}
-      </Sheet>
+      {openedSheets.has('landing') ? (
+        <Sheet
+          doneLabel={t('common.done')}
+          returnFocusRef={landingTrigger}
+          visible={sheet === 'landing'}
+          title={t('settings.start')}
+          onClose={close}
+        >
+          {sheet === 'landing' ? (
+            <View style={{ direction }}>
+              <OptionGroup
+                options={landingTabs.map((tab) => ({ value: tab.value, label: t(`nav.${tab.value}`) }))}
+                selected={landing}
+                footer={t('settings.startHint')}
+                onSelect={(value) => {
+                  setLanding(value);
+                  close();
+                }}
+              />
+            </View>
 
-      <Sheet
-        doneLabel={t('common.done')}
-        returnFocusRef={languageTrigger}
-        visible={sheet === 'language'}
-        title={t('settings.language')}
-        onClose={close}
-      >
-        {sheet === 'language' ? (
-          <View style={{ direction }}>
-            <OptionGroup
-              options={languageOptions}
-              selected={locale ?? SCHOOL_DEFAULT}
-              footer={t('settings.languageHint')}
-              onSelect={(value) => {
-                close();
-                if (value === (locale ?? SCHOOL_DEFAULT)) return;
-                save(
-                  { locale: value === SCHOOL_DEFAULT ? '' : value },
-                  t('settings.languageSaved', {
-                    language:
-                      value === SCHOOL_DEFAULT ? t('settings.schoolDefault') : (languageName(value) ?? value),
-                  }),
-                );
-              }}
-            />
-          </View>
-        ) : null}
+      ) : null}
       </Sheet>
+      ) : null}
 
-      <Sheet
-        doneLabel={t('common.done')}
-        returnFocusRef={zoneTrigger}
-        visible={sheet === 'timeZone'}
-        title={t('settings.timeZone')}
-        onClose={close}
-      >
-        {sheet === 'timeZone' ? (
-          <TimeZoneOptions
-            timeZone={timeZone}
-            onClose={close}
-            onSelect={(value) =>
-              save({ time_zone: value }, t('settings.zoneSaved', { zone: localizedZoneName(value) }))
-            }
-          />
-        ) : null}
+      {openedSheets.has('language') ? (
+        <Sheet
+          doneLabel={t('common.done')}
+          returnFocusRef={languageTrigger}
+          visible={sheet === 'language'}
+          title={t('settings.language')}
+          onClose={close}
+        >
+          {sheet === 'language' ? (
+            <View style={{ direction }}>
+              <OptionGroup
+                options={languageOptions}
+                selected={locale ?? SCHOOL_DEFAULT}
+                footer={t('settings.languageHint')}
+                onSelect={(value) => {
+                  close();
+                  if (value === (locale ?? SCHOOL_DEFAULT)) return;
+                  save(
+                    { locale: value === SCHOOL_DEFAULT ? '' : value },
+                    t('settings.languageSaved', {
+                      language:
+                        value === SCHOOL_DEFAULT ? t('settings.schoolDefault') : (languageName(value) ?? value),
+                    }),
+                  );
+                }}
+              />
+            </View>
+
+      ) : null}
       </Sheet>
+      ) : null}
+
+      {openedSheets.has('timeZone') ? (
+        <Sheet
+          doneLabel={t('common.done')}
+          returnFocusRef={zoneTrigger}
+          visible={sheet === 'timeZone'}
+          title={t('settings.timeZone')}
+          onClose={close}
+        >
+          {sheet === 'timeZone' ? (
+            <TimeZoneOptions
+              timeZone={timeZone}
+              onClose={close}
+              onSelect={(value) =>
+                save({ time_zone: value }, t('settings.zoneSaved', { zone: localizedZoneName(value) }))
+              }
+            />
+
+      ) : null}
+      </Sheet>
+      ) : null}
       {toast.element}
     </View>
   );

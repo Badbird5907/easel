@@ -1,10 +1,19 @@
 import { BlurView } from 'expo-blur';
-import { Children, type ComponentRef, type ReactNode, type Ref, useState } from 'react';
+import {
+  Children,
+  cloneElement,
+  type ComponentRef,
+  isValidElement,
+  type ReactNode,
+  type Ref,
+  useState,
+} from 'react';
 import {
   FlatList,
   type LayoutRectangle,
   Platform,
   Pressable,
+  type RefreshControlProps,
   ScrollView,
   type ScrollViewProps,
   StyleSheet,
@@ -95,6 +104,8 @@ export function Screen({ title, titleAccessory, ...props }: ScreenProps) {
 
 /** Height of the compact bar the title settles into. */
 const BAR_HEIGHT = 44;
+/** The large-title row's minimum height (`min-h-14`), before it's measured. */
+const TITLE_ROW_HEIGHT = 56;
 /** Space for iOS's floating tab bar, which can't be measured (expo-router NativeTabs). */
 const TAB_BAR_CLEARANCE = 96;
 /** The title lands at headline size: 17/34. */
@@ -108,6 +119,7 @@ function TitledScreen({
   children,
   className,
   contentClassName,
+  refreshControl,
   ...props
 }: ScreenProps & { title: string }) {
   const { colors } = useTheme();
@@ -132,6 +144,16 @@ function TitledScreen({
   const contentTop = 0;
   const contentLeft = Math.max(0, (windowWidth - layout.maxContentWidth) / 2);
   const rtl = direction === 'rtl';
+
+  // Android draws the pull-to-refresh spinner at the top of the scroll view, which
+  // runs under the status bar here. Start it below the title row, where content begins.
+  const titleBottom = row ? row.y + row.height : insets.top + TITLE_ROW_HEIGHT;
+  const refresh =
+    Platform.OS === 'android' && isValidElement<RefreshControlProps>(refreshControl)
+      ? cloneElement(refreshControl, {
+          progressViewOffset: refreshControl.props.progressViewOffset ?? titleBottom,
+        })
+      : refreshControl;
 
   const measured = row !== null && slot !== null && titleWidth > 0;
   const morphDistance = row?.height ?? 56;
@@ -214,6 +236,7 @@ function TitledScreen({
         keyboardDismissMode="interactive"
         keyboardShouldPersistTaps="handled"
         style={styles.fill}
+        refreshControl={refresh}
         contentContainerStyle={[
           styles.content,
           {

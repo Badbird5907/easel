@@ -81,13 +81,15 @@ export function MonthGrid({ month, selected, today, marks, onSelect, onSwipe, co
                 onPress={() => onSelect(day)}
                 className="min-h-[52px] flex-1 items-center gap-1 pt-1"
               >
-                <View
-                  className={cn(
-                    'h-9 w-9 items-center justify-center rounded-full',
-                    isSelected && 'bg-accent',
-                    !isSelected && isToday && 'bg-accent-soft',
-                  )}
-                >
+                <View className="h-9 w-9 items-center justify-center">
+                  {isSelected || isToday ? (
+                    // A fresh view per state: Android drops the rounding when a mounted
+                    // view gains a background, so selecting a day showed a square.
+                    <View
+                      key={isSelected ? 'selected' : 'today'}
+                      className={cn('absolute inset-0 rounded-full', isSelected ? 'bg-accent' : 'bg-accent-soft')}
+                    />
+                  ) : null}
                   <Text
                     variant="callout"
                     weight={isSelected || isToday ? 'semibold' : 'regular'}

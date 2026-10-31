@@ -239,10 +239,12 @@ function assertOptions(web, req) {
   equal(web.source, { uri: req.url, ...(req.siteAdmin && { headers: { cookie: 'canvas_sa_delegated=1' } }) });
   equal(web.originWhitelist, ['http://*', 'https://*', 'easel://*', 'duotrustedendpoints://*']);
   assert.equal(web.incognito, true); assert.equal(web.setSupportMultipleWindows, false);
-  assert.equal(web.javaScriptCanOpenWindowsAutomatically, true, "Automatic Duo app handoff must not be blocked before navigation interception");
+  assert.equal(web.javaScriptCanOpenWindowsAutomatically, true);
   assert.equal(web.javaScriptEnabled, true); assert.equal(web.domStorageEnabled, true);
   assert.equal(web.applicationNameForUserAgent, 'Easel');
-  assert.equal(web.injectedJavaScriptBeforeContentLoaded, req.siteAdmin ? "document.cookie = 'canvas_sa_delegated=1; path=/'; true;" : undefined);
+  const bridge = mocks['react-native'].Platform.OS === 'android' ? load('@/features/auth/duoLink').DUO_CLIPBOARD_BRIDGE : '';
+  assert.equal(web.injectedJavaScriptBeforeContentLoaded, (req.siteAdmin ? "document.cookie = 'canvas_sa_delegated=1; path=/'; true;" : '') + bridge || undefined);
+  assert.equal(web.injectedJavaScript, bridge || undefined);
 }
 for (const os of ['ios', 'android']) for (const admin of [false, true]) {
   const f = fixture(os, admin), original = f.web;
@@ -416,7 +418,7 @@ for (const os of ['ios', 'android']) {
 console.log('auth-embedded: production presentation/protocol/ownership checks passed (synthetic native/hooks/timers; no external effects)');
 
 async function duoHandoff() {
-  const { isDuoAppLink } = load('@/features/auth/duoLink');
+  const { isDuoAppLink, isDuoPromptPage, DUO_CLIPBOARD_BRIDGE } = load('@/features/auth/duoLink');
   // Synthetic values only: no live authentication links belong in test output or fixtures.
   const link = 'duotrustedendpoints://duo.com/trusted_ep?authkey=synthetic&app_redirect_url=&collect_cert=False';
   assert.equal(isDuoAppLink(link), true);
@@ -449,5 +451,50 @@ async function duoHandoff() {
   assert.equal(f.web.onShouldStartLoadWithRequest({ url: link.replace('duo.com', 'evil.test') }), false);
   f.render(); assert.equal(one(f.tree, 'Callout').children, runtime.t('authEmbedded.duoUnavailable')); f.unmount();
   console.log('PASS Duo native handoff, unchanged URL, duplicate events, absent app, and retired login');
+
+  const promptUrl = 'https://api-0123abcd.duosecurity.com/frame/prompt';
+  const badPages = ['https://campus.invalid', 'http://api-0123abcd.duosecurity.com', promptUrl.replace('.com', '.com.evil.test'), promptUrl.replace('.com', '.com:8443')];
+  assert.equal(isDuoPromptPage(promptUrl), true);
+  for (const page of badPages) assert.equal(isDuoPromptPage(page), false);
+
+  // Reproduce Duo's actual Android WebView action: writeText with no navigation.
+  // Execute the shipped page script and deliver its messages to the real handler.
+  let opened = 0;
+  openApp = async url => { assert.ok(url === link, 'Bridge preserves the complete URL'); opened++; };
+  const bridged = fixture('android'), copied = [], messages = [];
+  const clipboard = { writeText: async value => { copied.push(value); return 'copied'; } };
+  const window = { ReactNativeWebView: { postMessage(data) {
+    messages.push(data);
+    bridged.web.onMessage({ nativeEvent: { url: promptUrl, data } });
+  } } };
+  window.top = window;
+  const context = vm.createContext({ window, navigator: { clipboard }, location: new URL(promptUrl), URL, Promise });
+  vm.runInContext(bridged.web.injectedJavaScriptBeforeContentLoaded, context);
+  const wrapped = clipboard.writeText;
+  vm.runInContext(bridged.web.injectedJavaScript, context);
+  assert.equal(clipboard.writeText, wrapped, 'Load-end fallback must not wrap twice');
+  await clipboard.writeText(link);
+  assert.equal(opened, 1); assert.equal(messages.length, 1); assert.equal(copied.length, 0);
+  assert.equal(bridged.completions.length, 0);
+  assert.equal(await clipboard.writeText('ordinary text'), 'copied');
+  await clipboard.writeText(link.replace('duo.com', 'evil.test'));
+  assert.equal(copied.length, 2); assert.equal(opened, 1);
+  const deliver = (url, data) => bridged.web.onMessage({ nativeEvent: { url, data } });
+  for (const page of badPages) deliver(page, messages[0]);
+  for (const data of ['invalid JSON', 'null', '{}', JSON.stringify({ type: 'easel-duo-open', url: 'https://evil.test' })]) deliver(promptUrl, data);
+  assert.equal(opened, 1, 'Untrusted sources and malformed bridge messages cannot launch apps');
+  const lateMessage = bridged.web.onMessage;
+  bridged.unmount();
+  lateMessage({ nativeEvent: { url: promptUrl, data: messages[0] } });
+  assert.equal(opened, 1, 'Retired login cannot launch Duo');
+
+  for (const page of badPages) {
+    const original = async () => {};
+    const clipboard = { writeText: original };
+    const window = { ReactNativeWebView: { postMessage: forbidden } }; window.top = window;
+    vm.runInNewContext(DUO_CLIPBOARD_BRIDGE, { window, navigator: { clipboard }, location: new URL(page), URL, Promise });
+    assert.equal(clipboard.writeText, original, 'Other sites retain their clipboard API');
+  }
+  console.log('PASS Duo clipboard-only flow, idempotent injection, origin validation, unchanged normal copies, and no credential copy');
 }
 duoHandoff().catch(error => { console.error(error); process.exitCode = 1; });

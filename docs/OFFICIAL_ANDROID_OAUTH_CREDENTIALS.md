@@ -59,3 +59,11 @@ Easel follows `QRLogin.kt` in the Android reference: read `domain` and `code_and
 This grant was already issued by Canvas, so the exchange follows Android `OAuthAPI.getToken`: `redirect_uri=urn:ietf:wg:oauth:2.0:oob`, without inventing a PKCE verifier. This differs from starting a new browser authorization, which uses the registered HTTPS callback described above. QR contents stay in memory; the resulting account uses the existing SecureStore, terms, refresh, and identity checks.
 
 The sign-in screen offers camera scanning and a paste-link alternative. In Canvas on another device, choose Account → QR for Mobile Login. Generate a new code if it expires or has already been used. Some schools disable this option. Synthetic protocol and lifetime tests cover the flow; a real Canvas-generated code is still required to verify end-to-end sign-in.
+
+## Duo Mobile on Android
+
+On October 31, 2026, physical-device testing reproduced a stalled “Open Duo Mobile” screen. Duo's current [prompt JavaScript](https://api-832cdf07.duosecurity.com/frame/static/v4/App.js), `TrustedEndpointsCollectionPrompt`, explicitly calls `copyAndroidLinkToClipboard(androidLink)` for Android WebViews instead of navigating. Its `copyAndroidLinkToClipboard` function only calls `navigator.clipboard.writeText`; it does not launch the app. This explains why intercepting navigation and allowing automatic windows did not fix that flow. Duo also documents its clipboard use in [Duo Mobile Privacy Information](https://help.duo.com/s/article/4683?language=en_US).
+
+Easel bridges that specific clipboard write to native `Linking.openURL`. The bridge runs only on Android, in the main frame of HTTPS `api-xxxxxxxx.duosecurity.com` prompts. Both the page script and native receiver validate the Duo link; the native receiver also checks the source page and active sign-in lifetime. Other clipboard writes retain their normal behavior. The handoff URL remains in memory and is neither copied nor logged by Easel. Injection runs before content and after load, idempotently, because Android's early injection is best effort.
+
+`auth-embedded.check.cjs` reproduces the clipboard-only path through the shipped script and native handler, including origin rejection, ordinary copies, duplicate installation, and retired sign-ins. Physical-device verification remains necessary after OTA delivery.

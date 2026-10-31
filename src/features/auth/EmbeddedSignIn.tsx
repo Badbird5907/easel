@@ -8,7 +8,7 @@ import { Button, Callout, Icon, IconButton, ProgressBar, Text, TextField, useThe
 import { useTranslation } from '@/i18n';
 
 import { type AuthEmbeddedChallenge, type AuthEmbeddedOwner, useAuthEmbeddedLifetime } from './authEmbeddedLifetime';
-import { isDuoAppLink, isDuoScheme } from './duoLink';
+import { DUO_CLIPBOARD_BRIDGE, isDuoAppLink, isDuoPromptPage, isDuoScheme } from './duoLink';
 import { type AuthorizationRequest, isCallback } from './oauth';
 
 type Props = {
@@ -88,6 +88,7 @@ function SignInWebView({ request, owner, onFinish }: {
   };
   const page = safeUrl(pageUrl);
   const secure = page?.protocol === 'https:';
+  const duoBridge = Platform.OS === 'android' ? DUO_CLIPBOARD_BRIDGE : '';
 
   const submitCredential = (prompt: AuthEmbeddedChallenge, value: Credential) => {
     if (!owner.answer(prompt)) return;
@@ -203,14 +204,26 @@ function SignInWebView({ request, owner, onFinish }: {
           incognito
           // Popups (target=_blank, window.open) load in this view, as the official apps do.
           setSupportMultipleWindows={false}
-          // Duo launches device verification from JavaScript, without a link tap.
+          // Identity providers may open sign-in windows from JavaScript.
           javaScriptCanOpenWindowsAutomatically
           javaScriptEnabled
           domStorageEnabled
           applicationNameForUserAgent="Easel"
           injectedJavaScriptBeforeContentLoaded={
-            request.siteAdmin ? "document.cookie = 'canvas_sa_delegated=1; path=/'; true;" : undefined
+            (request.siteAdmin ? "document.cookie = 'canvas_sa_delegated=1; path=/'; true;" : '') + duoBridge || undefined
           }
+          injectedJavaScript={duoBridge || undefined}
+          onMessage={({ nativeEvent }) => {
+            if (Platform.OS !== 'android' || !owner.current() || !isDuoPromptPage(nativeEvent.url)) return;
+            try {
+              const message = JSON.parse(nativeEvent.data);
+              if (message?.type === 'easel-duo-open' && typeof message.url === 'string' && isDuoAppLink(message.url)) {
+                openDuo(message.url);
+              }
+            } catch {
+              // Other page messages are unrelated to the Duo handoff.
+            }
+          }}
           basicAuthCredential={credential?.value}
           onLoadStart={() => {
             if (!owner.current()) return;

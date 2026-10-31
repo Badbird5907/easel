@@ -7,6 +7,7 @@ const ts = require('typescript');
 const root = path.resolve(__dirname, '../../../..');
 const disk = new Map();
 let writes = 0;
+let networkReads = 0;
 const appListeners = new Map();
 let placeholderClient;
 let placeholderAccount = 'account-a';
@@ -34,7 +35,7 @@ function load(file) {
       addEventListener: (name, listener) => { appListeners.set(name, listener); return { remove() {} }; },
     } };
     if (id === 'expo-network') return { NetworkStateType: { UNKNOWN: 'unknown', NONE: 'none' },
-      getNetworkStateAsync: async () => ({ type: 'wifi', isConnected: true }), addNetworkStateListener() {} };
+      getNetworkStateAsync: async () => { networkReads++; return { type: 'wifi', isConnected: true }; }, addNetworkStateListener() {} };
     if (id === '@/canvas/client') return load('src/canvas/client.ts');
     if (id === '@/features/offline/connectivity') return {};
     if (id === '@/features/offline/persist') return load('src/features/offline/persist.ts');
@@ -129,6 +130,12 @@ function load(file) {
   }
   appListeners.get('change')('active'); await flush();
   assert([...timers.values()].some(timer => timer.ms === 1000), 'foreground resets backoff');
+  let probes = 0;
+  global.fetch = async () => { probes++; throw new CanvasNetworkError(); };
+  const readsBefore = networkReads;
+  connectivity.retryConnectivity(); connectivity.retryConnectivity(); await flush();
+  assert.equal(networkReads - readsBefore, 1, 'a manual or pull-to-refresh retry re-reads the network');
+  assert.equal(probes, 1, 'retries within a second share one probe');
   connectivity.reportReachable(); assert.equal(timers.size, 0);
   global.setTimeout = oldTimeout; global.clearTimeout = oldClearTimeout; global.fetch = originalFetch;
   placeholderClient = makeQueryClient();
@@ -140,7 +147,7 @@ function load(file) {
   assert.equal(useListPlaceholder(['list'], list => list[0])(), undefined);
   placeholderClient.clear();
   console.log('PASS list placeholder selection and account isolation');
-  console.log('PASS reconnect delays 1/2/4/8/16/30 seconds and foreground reset');
+  console.log('PASS reconnect delays 1/2/4/8/16/30 seconds, foreground reset, and immediate shared retry');
   console.log('PASS retry eligibility, four total attempts, jitter midpoint, cap, Retry-After and unretried mutations');
   console.log('PASS Dates/Maps/Sets, legacy migration, unchanged saves, account removal, corrupt/expired/busted rows, sync exclusion');
 })();

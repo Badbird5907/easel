@@ -107,6 +107,9 @@ function useEndPausedRefreshes(client: QueryClient) {
     () =>
       client.getQueryCache().subscribe((event) => {
         if (event.type !== 'updated' || event.action.type !== 'pause') return;
+        // A refresh while offline (pulling down, returning to a screen) checks the
+        // connection now instead of waiting for the next backoff probe.
+        retryConnectivity();
         const { query } = event;
         if (query.state.data === undefined) return;
         setTimeout(() => {

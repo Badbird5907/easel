@@ -165,10 +165,22 @@ async function probe() {
   }
 }
 
-/** Checks again right away, e.g. from a "Try again" button. */
+let lastRetry = 0;
+
+/**
+ * Checks again right away, e.g. from a "Try again" button or pulling to refresh
+ * while offline. Re-reads the device's network first, in case a change event was
+ * missed, then asks Canvas. Calls within a second share one check.
+ */
 export function retryConnectivity() {
+  const now = Date.now();
+  if (now - lastRetry < 1_000) return;
+  lastRetry = now;
   resetProbe();
-  void probe();
+  Network.getNetworkStateAsync()
+    .then(applyNetwork)
+    .catch(() => {})
+    .finally(() => void probe());
 }
 
 /** What to tell the student when something needs the network. */

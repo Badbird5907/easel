@@ -4,6 +4,7 @@ import { View } from 'react-native';
 
 import { cn } from '@/lib/cn';
 
+import { useReduceMotion } from '../accessibility/useReduceMotion';
 import { deriveAccent } from '../theme/accent';
 import { useTheme } from '../theme/ThemeProvider';
 import { courseColors } from '../tokens/colors';
@@ -25,6 +26,8 @@ export type AvatarProps = {
   uri?: string | null;
   size?: Size;
   className?: string;
+  /** Use when adjacent text already names this person. */
+  decorative?: boolean;
 };
 
 function initials(name: string) {
@@ -41,7 +44,8 @@ function colorFor(name: string) {
   return courseColors[Math.abs(hash) % (courseColors.length - 1)].light;
 }
 
-export function Avatar({ name, uri, size = 'md', className }: AvatarProps) {
+export function Avatar({ name, uri, size = 'md', className, decorative = false }: AvatarProps) {
+  const reduceMotion = useReduceMotion();
   const { scheme } = useTheme();
   const [failed, setFailed] = useState(false);
   const spec = sizes[size];
@@ -50,6 +54,9 @@ export function Avatar({ name, uri, size = 'md', className }: AvatarProps) {
 
   return (
     <View
+      accessible={!decorative}
+      accessibilityElementsHidden={decorative}
+      importantForAccessibility={decorative ? 'no-hide-descendants' : 'yes'}
       accessibilityRole="image"
       accessibilityLabel={name}
       className={cn('items-center justify-center overflow-hidden rounded-full', className)}
@@ -57,17 +64,30 @@ export function Avatar({ name, uri, size = 'md', className }: AvatarProps) {
     >
       {showImage ? (
         <Image
+          accessible={false}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
           source={{ uri }}
           style={{ width: spec.box, height: spec.box }}
           contentFit="cover"
-          transition={150}
+          transition={reduceMotion ? 0 : 150}
           onError={() => setFailed(true)}
+        />
+      ) : null}
+      {showImage ? (
+        <View
+          pointerEvents="none"
+          className="absolute inset-0 rounded-full"
+          style={{ borderWidth: 1, borderColor: scheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}
         />
       ) : (
         <Text
           variant={spec.text}
           weight="semibold"
           tone="inherit"
+          accessible={false}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
           allowFontScaling={false}
           style={{ color: fill.accentFg }}
         >

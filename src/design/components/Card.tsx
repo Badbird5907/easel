@@ -5,13 +5,12 @@ import { type StyleProp, View, type ViewStyle } from 'react-native';
 import { cn } from '@/lib/cn';
 
 import { useTheme } from '../theme/ThemeProvider';
-import { motion } from '../tokens/layout';
 import { PressableScale, type PressableScaleProps } from './PressableScale';
 
 const card = cva('rounded-2xl', {
   variants: {
     variant: {
-      /** Default. Lifted with a soft shadow in light mode, a hairline in dark. */
+      /** Default. Lifted by shadow in light mode and by surface lightness in dark. */
       elevated: 'bg-surface',
       outlined: 'border-hairline border-border bg-surface',
       filled: 'bg-surface-sunken',
@@ -32,6 +31,8 @@ export type CardProps = VariantProps<typeof card> & {
   style?: StyleProp<ViewStyle>;
   /** Makes the whole card a button. */
   onPress?: PressableScaleProps['onPress'];
+  /** Opt into one accessibility element for static content. Omit for cards with child controls. */
+  accessible?: boolean;
   accessibilityLabel?: string;
 };
 
@@ -41,14 +42,14 @@ export function Card({
   className,
   style,
   onPress,
+  accessible,
   accessibilityLabel,
   children,
 }: CardProps) {
-  const { scheme, shadows } = useTheme();
+  const { shadows } = useTheme();
   const elevated = (variant ?? 'elevated') === 'elevated';
   const classes = cn(
     card({ variant, padding }),
-    elevated && scheme === 'dark' && 'border-hairline border-border',
     className,
   );
   const cardStyle: StyleProp<ViewStyle> = [
@@ -61,8 +62,8 @@ export function Card({
     return (
       <PressableScale
         accessibilityRole="button"
+        accessible={accessible}
         accessibilityLabel={accessibilityLabel}
-        scaleTo={motion.pressScale.subtle}
         onPress={onPress}
         className={classes}
         style={cardStyle}
@@ -73,7 +74,12 @@ export function Card({
   }
 
   return (
-    <View className={classes} style={cardStyle}>
+    <View
+      accessible={accessible}
+      accessibilityLabel={accessibilityLabel}
+      className={classes}
+      style={cardStyle}
+    >
       {children}
     </View>
   );

@@ -64,7 +64,7 @@ export type ButtonProps = Omit<PressableScaleProps, 'children'> & {
   size?: ButtonSize;
   leadingIcon?: LucideIcon;
   trailingIcon?: LucideIcon;
-  /** Shows a spinner and blocks presses while keeping the button's width. */
+  /** Shows a spinner alongside the label and blocks presses. */
   loading?: boolean;
 };
 
@@ -78,6 +78,7 @@ export function Button({
   disabled,
   haptic,
   className,
+  accessibilityState,
   ...props
 }: ButtonProps) {
   const { colors } = useTheme();
@@ -90,29 +91,27 @@ export function Button({
   return (
     <PressableScale
       accessibilityRole="button"
-      accessibilityState={{ disabled: !!inactive, busy: loading }}
+      accessibilityState={{ ...accessibilityState, disabled: !!inactive || !!accessibilityState?.disabled, busy: loading || accessibilityState?.busy }}
       disabled={inactive}
       haptic={haptic ?? defaultHaptic}
-      hitSlop={size === 'sm' ? { top: 4, bottom: 4 } : undefined}
       className={cn(container({ variant, size }), disabled && 'opacity-40', className)}
       {...props}
     >
       <View
-        className={cn('flex-row items-center', size === 'sm' ? 'gap-1.5' : 'gap-2', loading && 'opacity-0')}
+        className={cn('max-w-full flex-row items-center justify-center', size === 'sm' ? 'gap-1.5' : 'gap-2')}
       >
-        {leadingIcon ? <Icon icon={leadingIcon} size={spec.icon} color={contentColor} /> : null}
+        {loading ? <ActivityIndicator accessible={false} importantForAccessibility="no" color={contentColor} size="small" /> : null}
+        {leadingIcon ? <Icon icon={leadingIcon} size={spec.icon} color={contentColor} strokeWidth={2} /> : null}
         <Text
           variant={spec.label}
           weight="semibold"
           tone="inherit"
-          className={labelClass[variant]}
-          numberOfLines={1}
+          className={cn('shrink text-center', labelClass[variant])}
         >
           {children}
         </Text>
-        {trailingIcon ? <Icon icon={trailingIcon} size={spec.icon} color={contentColor} /> : null}
+        {trailingIcon ? <Icon icon={trailingIcon} size={spec.icon} color={contentColor} strokeWidth={2} /> : null}
       </View>
-      {loading ? <ActivityIndicator className="absolute" color={contentColor} size="small" /> : null}
     </PressableScale>
   );
 }

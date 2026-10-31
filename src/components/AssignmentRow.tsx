@@ -1,44 +1,101 @@
-import { ClipboardCheck, FileText, FlaskConical, type LucideIcon, MessageSquare } from 'lucide-react-native';
+import { LocalizedText as Text } from '@/i18n/LocalizedText';
+import { useTranslation } from '@/i18n';
+import {
+  CalendarDays,
+  ClipboardCheck,
+  FileText,
+  type LucideIcon,
+  Megaphone,
+  MessageSquare,
+  NotebookText,
+  StickyNote,
+  Users,
+} from 'lucide-react-native';
+import { View } from 'react-native';
 
-import { Badge, type BadgeTone, IconTile, ListItem } from '@/design';
-import { type Assignment, type AssignmentKind, type AssignmentStatus, courseById } from '@/mocks/canvas';
+import type { Course, WorkItem, WorkItemKind } from '@/canvas/models';
+import { Badge, IconTile, ListItem } from '@/design';
+import { dayLabel, formatTime } from '@/lib/dates';
 
-const kindIcon: Record<AssignmentKind, LucideIcon> = {
+export const kindIcon: Record<WorkItemKind, LucideIcon> = {
   assignment: FileText,
   quiz: ClipboardCheck,
   discussion: MessageSquare,
-  lab: FlaskConical,
-};
-
-const statusBadge: Record<AssignmentStatus, { label: string; tone: BadgeTone } | null> = {
-  dueToday: { label: 'Due today', tone: 'warning' },
-  missing: { label: 'Missing', tone: 'danger' },
-  submitted: { label: 'Submitted', tone: 'success' },
-  graded: { label: 'Graded', tone: 'info' },
-  upcoming: null,
+  page: NotebookText,
+  note: StickyNote,
+  event: CalendarDays,
+  peer_review: Users,
+  announcement: Megaphone,
 };
 
 type Props = {
-  assignment: Assignment;
+  item: WorkItem;
+  /** The item's course, for its color and code. Omit when the list is scoped to one course. */
+  course?: Course;
   /** Hide the course code when the list is already scoped to one course. */
   showCourse?: boolean;
+  /** Hide the due day when a group header already names it. */
+  showDay?: boolean;
   onPress?: () => void;
 };
 
-export function AssignmentRow({ assignment, showCourse = true, onPress }: Props) {
-  const course = courseById(assignment.courseId);
-  const badge = statusBadge[assignment.status];
-  const meta = [showCourse ? course?.code : null, assignment.dueLabel].filter(Boolean).join(' · ');
+/** What the trailing column says: when it's due, or what happened to it. */
+function Status({ item, showDay }: { item: WorkItem; showDay: boolean }) {
+  const { t } = useTranslation();
+  if (item.markedComplete && item.status === 'open') {
+    return (
+      <Text variant="footnote" tone="muted">
+        {t('common.done')}
+      </Text>
+    );
+  }
+  switch (item.status) {
+    case 'missing':
+      return <Badge tone="danger">{t('work.missing')}</Badge>;
+    case 'submitted':
+      return (
+        <Text variant="footnote" tone="muted">
+          {t('work.submitted')}
+        </Text>
+      );
+    case 'graded':
+      return (
+        <Text variant="footnote" tone="muted">
+          {t('work.graded')}
+        </Text>
+      );
+    default:
+      return (
+        <View className="items-end">
+          {showDay ? (
+            <Text variant="footnote" weight="medium">
+              {dayLabel(item.dueAt)}
+            </Text>
+          ) : null}
+          <Text variant={showDay ? 'caption' : 'footnote'} tone="muted" weight="regular" tabular>
+            {formatTime(item.dueAt)}
+          </Text>
+        </View>
+      );
+  }
+}
+
+export function AssignmentRow({ item, course, showCourse = true, showDay = true, onPress }: Props) {
+  const { t } = useTranslation();
+  const meta = [
+    showCourse ? (course?.code ?? item.contextName) : null,
+    item.points != null ? t('work.points', { count: item.points }) : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <ListItem
-      title={assignment.title}
-      subtitle={meta}
+      title={item.title}
+      subtitle={meta || undefined}
       subtitleLines={1}
-      leading={<IconTile icon={kindIcon[assignment.kind]} color={course?.color} />}
-      trailing={
-        badge ? <Badge tone={badge.tone}>{badge.label}</Badge> : <Badge>{`${assignment.points} pts`}</Badge>
-      }
+      leading={<IconTile icon={kindIcon[item.kind]} color={course?.color} tone="neutral" />}
+      trailing={<Status item={item} showDay={showDay} />}
       chevron={false}
       onPress={onPress}
     />

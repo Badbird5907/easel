@@ -12,19 +12,25 @@ export * from './components/IconButton';
 export * from './components/IconTile';
 export * from './components/Layout';
 export * from './components/List';
+export * from './components/NavigationChrome';
 export * from './components/PressableScale';
 export * from './components/Progress';
 export * from './components/SegmentedControl';
+export * from './components/Sheet';
 export * from './components/Skeleton';
 export * from './components/Switch';
 export * from './components/Text';
 export * from './components/TextField';
+export * from './components/Toast';
 
 export { haptics } from './haptics';
 export { useNavigationTheme, useStackScreenOptions } from './navigation';
 export { deriveAccent, prefersLightText } from './theme/accent';
 export { contrast, mix, withAlpha } from './theme/color';
-export { AccentScope, type Theme, ThemeProvider, useTheme } from './theme/ThemeProvider';
+export { loadSchemePreference, type SchemePreference } from './theme/preference';
+export { AccentScope, type Theme, ThemeProvider, useSchemePreference, useTheme } from './theme/ThemeProvider';
 export * from './tokens/colors';
 export * from './tokens/layout';
 export * from './tokens/typography';
+
+export { useReduceMotion } from './accessibility/useReduceMotion';

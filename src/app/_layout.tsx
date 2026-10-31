@@ -1,3 +1,5 @@
+// Defines the background refresh task. Must load before anything else (NOTIF-3).
+import '@/background/tasks';
 import '@/global.css';
 
 import {
@@ -7,13 +9,28 @@ import {
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter';
-import { Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
+import { useIsRestoring } from '@tanstack/react-query';
+import { LocaleProvider, Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { ThemeProvider, useNavigationTheme, useStackScreenOptions } from '@/design';
+import { CanvasQueryProvider } from '@/canvas/query';
+import { SessionProvider, useSession } from '@/canvas/session';
+import {
+  loadSchemePreference,
+  type SchemePreference,
+  ThemeProvider,
+  useNavigationTheme,
+  useTheme,
+} from '@/design';
+import { NotificationsRuntime } from '@/features/notifications/runtime';
+import { startConnectivity } from '@/features/offline/connectivity';
+import { OfflineBanner } from '@/features/offline/OfflineBanner';
+import { useTranslation } from '@/i18n';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,18 +41,25 @@ export default function RootLayout() {
     Inter_600SemiBold,
     Inter_700Bold,
   });
-  const ready = fontsLoaded || !!fontError;
+  const [preference, setPreference] = useState<SchemePreference | null>(null);
 
   useEffect(() => {
-    if (ready) SplashScreen.hideAsync();
-  }, [ready]);
+    // Route discovery also imports this module in Node during release builds.
+    // Start device/browser listeners only once the app has mounted.
+    startConnectivity();
+    loadSchemePreference().then(setPreference);
+  }, []);
 
-  if (!ready) return null;
+  if (!(fontsLoaded || fontError) || preference === null) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider>
-        <RootNavigator />
+      <ThemeProvider initialPreference={preference}>
+        <SessionProvider>
+          <CanvasQueryProvider>
+            <RootNavigator />
+          </CanvasQueryProvider>
+        </SessionProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
@@ -43,15 +67,41 @@ export default function RootLayout() {
 
 function RootNavigator() {
   const navigationTheme = useNavigationTheme();
-  const screenOptions = useStackScreenOptions();
+  const { scheme } = useTheme();
+  const { status, active } = useSession();
+  const { direction } = useTranslation();
+  const restoring = useIsRestoring();
+  const signedIn = !!active && !active.expired;
+
+  // The splash stays up until saved accounts and cached data are read, so
+  // there's no sign-in flash and Home opens with its last data (OFF-1).
+  useEffect(() => {
+    if (status === 'ready' && !restoring) SplashScreen.hideAsync();
+  }, [status, restoring]);
+
+  if (status === 'loading') return null;
 
   return (
-    <NavigationThemeProvider value={navigationTheme}>
-      <StatusBar style="auto" />
-      <Stack screenOptions={screenOptions}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="design" options={{ title: 'Design System' }} />
-      </Stack>
-    </NavigationThemeProvider>
+    <LocaleProvider direction={direction}>
+      <NavigationThemeProvider value={navigationTheme}>
+        {/* Follows Easel's appearance setting, which can differ from the system's. */}
+        <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+        <NotificationsRuntime />
+        <View className="flex-1 bg-bg" style={{ direction }}>
+          <OfflineBanner />
+          {/* Measures its own insets, so screens under the banner don't pad for the status bar again. */}
+          <SafeAreaProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Protected guard={signedIn}>
+                <Stack.Screen name="(app)" />
+              </Stack.Protected>
+              <Stack.Protected guard={!signedIn}>
+                <Stack.Screen name="sign-in" />
+              </Stack.Protected>
+            </Stack>
+          </SafeAreaProvider>
+        </View>
+      </NavigationThemeProvider>
+    </LocaleProvider>
   );
 }

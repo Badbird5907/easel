@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B9DFF"/><stop offset="1" stop-color="#2F63E0"/></linearGradient>
+<radialGradient id="blobA" cx="0.18" cy="0.12" r="0.6"><stop offset="0" stop-color="#B4D6FF" stop-opacity="0.85"/><stop offset="1" stop-color="#B4D6FF" stop-opacity="0"/></radialGradient>
+<radialGradient id="blobB" cx="0.92" cy="0.95" r="0.65"><stop offset="0" stop-color="#7A55F2" stop-opacity="0.7"/><stop offset="1" stop-color="#7A55F2" stop-opacity="0"/></radialGradient>
+<radialGradient id="blobC" cx="0.05" cy="0.9" r="0.45"><stop offset="0" stop-color="#3FC2FF" stop-opacity="0.45"/><stop offset="1" stop-color="#3FC2FF" stop-opacity="0"/></radialGradient>
+<clipPath id="sq"><rect width="512" height="512" rx="114"/></clipPath>
+<clipPath id="circ"><circle cx="256" cy="256" r="256"/></clipPath>
+<linearGradient id="rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.45"/><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.05"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0.15"/></linearGradient>
+<linearGradient id="glass" gradientUnits="userSpaceOnUse" x1="0" y1="90" x2="0" y2="420"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D4E3FF"/></linearGradient>
+<linearGradient id="paint" gradientUnits="userSpaceOnUse" x1="186" y1="0" x2="326" y2="0"><stop offset="0" stop-color="#3D86FF"/><stop offset="1" stop-color="#6A4CF0"/></linearGradient>
+<filter id="drop" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#1A1F72" flood-opacity="0.4"/></filter>
+<mask id="paintHole" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><path d="M186 248C216 196 256 270 326 178" fill="none" stroke="#000" stroke-width="17" stroke-linecap="round"/></mask>
+</defs><rect width="512" height="512" fill="url(#bg)"/>
+<rect width="512" height="512" fill="url(#blobC)"/>
+<rect width="512" height="512" fill="url(#blobB)"/>
+<rect width="512" height="512" fill="url(#blobA)"/><g filter="url(#drop)">
+<path d="M256 334V410" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="20" stroke-linecap="round"/>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M234 330L172 414M278 330L340 414" stroke="#3E5FC4" stroke-width="28" transform="translate(0 9)"/><path d="M234 330L172 414M278 330L340 414" stroke="#FFFFFF" stroke-width="28"/><path d="M234 330L172 414M278 330L340 414" stroke="url(#glass)" stroke-width="23"/><path d="M256 92V114" stroke="#3E5FC4" stroke-width="24" transform="translate(0 8)"/><path d="M256 92V114" stroke="#FFFFFF" stroke-width="24"/><path d="M256 92V114" stroke="url(#glass)" stroke-width="19"/><path d="M156 326H356" stroke="#3E5FC4" stroke-width="28" transform="translate(0 9)"/><path d="M156 326H356" stroke="#FFFFFF" stroke-width="28"/><path d="M156 326H356" stroke="url(#glass)" stroke-width="23"/></g>
+<rect x="150" y="121" width="212" height="190" rx="26" fill="#3E5FC4"/>
+<rect x="150" y="112" width="212" height="190" rx="26" fill="#FFFFFF"/>
+<rect x="153" y="115" width="206" height="184" rx="23" fill="url(#glass)"/>
+<path d="M186 248C216 196 256 270 326 178" fill="none" stroke="url(#paint)" stroke-width="17" stroke-linecap="round"/>
+</g></svg>

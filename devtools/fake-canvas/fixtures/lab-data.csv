@@ -1,0 +1,10 @@
+Group,Solution,Start mass (g),End mass (g),Change (%)
+1,Distilled water,2.41,2.61,8.3
+1,0.9% NaCl,2.38,2.39,0.4
+1,5% NaCl,2.44,2.17,-11.1
+2,Distilled water,2.36,2.54,7.6
+2,0.9% NaCl,2.40,2.40,0.0
+2,5% NaCl,2.39,2.14,-10.5
+3,Distilled water,2.45,2.66,8.6
+3,0.9% NaCl,2.42,2.43,0.4
+3,"5% NaCl, repeated",2.37,2.10,-11.4

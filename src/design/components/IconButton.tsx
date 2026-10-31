@@ -31,14 +31,16 @@ const iconToken: Record<Variant, ColorToken> = {
 };
 
 const iconSize: Record<Size, number> = { sm: 18, md: 20, lg: 22 };
-const slop: Record<Size, number> = { sm: 6, md: 2, lg: 0 };
-
 export type IconButtonProps = Omit<PressableScaleProps, 'children'> & {
   icon: LucideIcon;
   /** Required: icon-only controls need a spoken name. */
   accessibilityLabel: string;
   variant?: Variant;
   size?: Size;
+  /** Overrides the variant's icon color, e.g. a header tint. */
+  iconColor?: string;
+  /** Mirror the glyph in right-to-left layouts (back arrows, chevrons). */
+  flipInRTL?: boolean;
 };
 
 export function IconButton({
@@ -47,6 +49,8 @@ export function IconButton({
   size = 'md',
   disabled,
   className,
+  iconColor,
+  flipInRTL,
   ...props
 }: IconButtonProps) {
   const { colors } = useTheme();
@@ -55,12 +59,15 @@ export function IconButton({
       accessibilityRole="button"
       accessibilityState={{ disabled: !!disabled }}
       disabled={disabled}
-      scaleTo={0.92}
-      hitSlop={slop[size]}
       className={cn(container({ variant, size }), disabled && 'opacity-40', className)}
       {...props}
     >
-      <Icon icon={icon} size={iconSize[size]} color={colors[iconToken[variant]]} />
+      <Icon
+        icon={icon}
+        size={iconSize[size]}
+        color={iconColor ?? colors[iconToken[variant]]}
+        flipInRTL={flipInRTL}
+      />
     </PressableScale>
   );
 }

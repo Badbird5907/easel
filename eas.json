@@ -1,0 +1,41 @@
+{
+  "cli": {
+    "version": ">= 27.2.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "preview": {
+      "pnpm": "11.21.0",
+      "distribution": "internal",
+      "environment": "preview",
+      "android": {
+        "buildType": "apk"
+      },
+      "channel": "preview"
+    },
+    "play-internal": {
+      "pnpm": "11.21.0",
+      "distribution": "store",
+      "environment": "production",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "channel": "production"
+    },
+    "qa-ota-test": {
+      "extends": "preview",
+      "channel": "qa-ota-test",
+      "ios": {
+        "simulator": true
+      }
+    }
+  },
+  "submit": {
+    "play-internal": {
+      "android": {
+        "track": "internal"
+      }
+    }
+  }
+}

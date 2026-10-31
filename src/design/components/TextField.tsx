@@ -2,10 +2,13 @@ import { CircleX, Eye, EyeOff, type LucideIcon, Search } from 'lucide-react-nati
 import { type ComponentRef, type Ref, useState } from 'react';
 import { Platform, Pressable, TextInput, type TextInputProps, View } from 'react-native';
 
+import { useTranslation } from '@/i18n';
 import { cn } from '@/lib/cn';
 
 import { useTheme } from '../theme/ThemeProvider';
 import { fontFamilies, interTracking } from '../tokens/typography';
+import { useAnnouncement } from '../accessibility/useAnnouncement';
+import { layout } from '../tokens/layout';
 import { Icon } from './Icon';
 import { Text } from './Text';
 
@@ -44,13 +47,20 @@ export function TextField({
   onBlur,
   className,
   ref,
+  accessibilityHint,
+  accessibilityState,
   ...props
 }: TextFieldProps) {
+  const { t } = useTranslation();
   const { colors } = useTheme();
   const [focused, setFocused] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const hasValue = !!value && value.length > 0;
   const note = error || helperText;
+  const isEditable = props.readOnly === undefined ? editable : !props.readOnly;
+  useAnnouncement(error ? t('field.errorAnnouncement', {
+    field: label ?? props.accessibilityLabel ?? t('field.fallback'), error,
+  }) : null);
 
   return (
     <View className={cn('gap-1.5', className)}>
@@ -65,7 +75,7 @@ export function TextField({
           multiline ? 'min-h-28 items-start py-3' : 'min-h-12',
           focused && 'border-accent bg-surface',
           !!error && 'border-danger',
-          !editable && 'opacity-50',
+          !isEditable && 'opacity-50',
         )}
         style={{ borderCurve: 'continuous' }}
       >
@@ -74,10 +84,12 @@ export function TextField({
           ref={ref}
           value={value}
           onChangeText={onChangeText}
-          editable={editable}
+          editable={isEditable}
           multiline={multiline}
           secureTextEntry={secureTextEntry && !revealed}
           accessibilityLabel={label}
+          accessibilityHint={[error ? t('field.errorHint', { error }) : helperText, accessibilityHint].filter(Boolean).join('. ') || undefined}
+          accessibilityState={{ ...accessibilityState, disabled: !isEditable || accessibilityState?.disabled }}
           placeholderTextColor={colors.fgSubtle}
           selectionColor={colors.accent}
           cursorColor={colors.accent}
@@ -90,15 +102,18 @@ export function TextField({
             setFocused(false);
             onBlur?.(e);
           }}
-          className="flex-1 self-stretch text-fg"
+          className="min-h-12 flex-1 self-stretch py-2 text-fg"
           style={[inputText, multiline && { lineHeight: 24, minHeight: 88 }]}
           {...props}
         />
-        {clearable && hasValue && editable ? (
+        {clearable && hasValue && isEditable ? (
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Clear text"
-            hitSlop={10}
+            accessibilityLabel={label !== undefined || props.accessibilityLabel !== undefined
+              ? t('field.clear', { field: label ?? props.accessibilityLabel ?? '' })
+              : t('field.clearText')}
+            style={{ minWidth: layout.minTouch, minHeight: layout.minTouch }}
+            className="items-center justify-center"
             onPress={() => onChangeText?.('')}
           >
             <Icon icon={CircleX} size={18} tone="subtle" />
@@ -107,8 +122,11 @@ export function TextField({
         {secureTextEntry ? (
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={revealed ? 'Hide password' : 'Show password'}
-            hitSlop={10}
+            disabled={!isEditable}
+            accessibilityState={{ disabled: !isEditable }}
+            accessibilityLabel={t(revealed ? 'field.hidePassword' : 'field.showPassword')}
+            style={{ minWidth: layout.minTouch, minHeight: layout.minTouch }}
+            className="items-center justify-center"
             onPress={() => setRevealed((r) => !r)}
           >
             <Icon icon={revealed ? EyeOff : Eye} size={18} tone="muted" />
@@ -138,12 +156,14 @@ export type SearchFieldProps = Omit<TextInputProps, 'style'> & {
 export function SearchField({
   value,
   onChangeText,
-  placeholder = 'Search',
+  placeholder,
   className,
   ref,
   ...props
 }: SearchFieldProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const searchLabel = placeholder ?? t('field.search');
   return (
     <View
       className={cn('min-h-11 flex-row items-center gap-2 rounded-full bg-surface-sunken px-3.5', className)}
@@ -153,22 +173,23 @@ export function SearchField({
         ref={ref}
         value={value}
         onChangeText={onChangeText}
-        placeholder={placeholder}
-        accessibilityLabel={placeholder}
+        placeholder={searchLabel}
+        accessibilityLabel={searchLabel}
         placeholderTextColor={colors.fgSubtle}
         selectionColor={colors.accent}
         cursorColor={colors.accent}
         returnKeyType="search"
         autoCorrect={false}
-        className="flex-1 self-stretch text-fg"
+        className="min-h-12 flex-1 self-stretch py-2 text-fg"
         style={inputText}
         {...props}
       />
-      {value ? (
+      {value && props.editable !== false && !props.readOnly ? (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Clear search"
-          hitSlop={10}
+          accessibilityLabel={t('common.clearSearch')}
+          style={{ minWidth: layout.minTouch, minHeight: layout.minTouch }}
+          className="items-center justify-center"
           onPress={() => onChangeText?.('')}
         >
           <Icon icon={CircleX} size={18} tone="subtle" />

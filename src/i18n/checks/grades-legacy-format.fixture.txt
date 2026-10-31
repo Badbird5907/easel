@@ -1,0 +1,189 @@
+import { EyeOff, Flag, type LucideIcon } from 'lucide-react-native';
+
+import type { GradeAssignment, GradeGroup } from '@/canvas/api/grades';
+import type { BadgeTone } from '@/design';
+import { formatShortDate } from '@/lib/dates';
+
+import { type GradingSchemeRow, scoreToLetter } from './calculate';
+
+const numberFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+
+/** 45 -> "45", 18.25 -> "18.25". */
+export const formatPoints = (value: number) => numberFormat.format(value);
+
+/** 92.4 (already a percentage) -> "92.4%". */
+export const formatPercent = (percent: number) => `${numberFormat.format(percent)}%`;
+
+/** Canvas shows letter grades with a true minus sign: "A−". */
+export const displayLetter = (grade: string) => grade.replace(/-$/, '−');
+
+/** "A-" -> "A minus", so screen readers don't say "dash". */
+export const spokenLetter = (grade: string) => grade.replace(/-$/, ' minus').replace(/\+$/, ' plus');
+
+const passFail: Record<string, string> = {
+  complete: 'Complete',
+  incomplete: 'Incomplete',
+  pass: 'Complete',
+  fail: 'Incomplete',
+};
+
+/** What the score column shows for one assignment. */
+export type ScoreDisplay = {
+  /** Main value: "45", "A−", "Complete". Null when there's nothing to show (ungraded, hidden, excused). */
+  value: string | null;
+  /** "/ 50" after the value, for point-based assignments. Never shown under restricted data. */
+  outOf: string | null;
+  /** Not graded yet: show a dash where the score will go. */
+  ungraded: boolean;
+  /** What a screen reader says. */
+  spoken: string;
+};
+
+type DisplayOptions = {
+  /** Course or assignment restricts quantitative data: letters only. */
+  restricted: boolean;
+  scheme: GradingSchemeRow[];
+  /** A what-if score replaces the real one. */
+  whatIf?: number;
+};
+
+export function describeScore(assignment: GradeAssignment, options: DisplayOptions): ScoreDisplay {
+  const s = assignment.submission;
+  const restricted = options.restricted || assignment.restricted;
+  const points = assignment.pointsPossible;
+  const pointBased = assignment.gradingType === 'points' || assignment.gradingType === 'percent';
+  const outOf = !restricted && pointBased && points > 0 ? `/ ${formatPoints(points)}` : null;
+
+  if (options.whatIf === undefined) {
+    if (s?.hidden) return { value: null, outOf: null, ungraded: false, spoken: 'Grade not posted yet' };
+    if (s?.excused) return { value: null, outOf: null, ungraded: false, spoken: 'Excused' };
+  }
+
+  // A submission waiting on a grader may carry a partial score (a quiz's auto-graded part).
+  // The web's grade summary doesn't show it, and neither does Easel.
+  const pending = !!s?.pendingReview && options.whatIf === undefined;
+  const score = options.whatIf ?? (pending ? null : (s?.score ?? null));
+  if (score === null) {
+    const outOfPoints = points > 0 && !restricted ? `, out of ${formatPoints(points)} points` : '';
+    return {
+      value: null,
+      outOf,
+      ungraded: true,
+      spoken: `${pending ? 'Waiting for a grade' : 'Not graded yet'}${outOfPoints}`,
+    };
+  }
+
+  const outOfSpoken = points > 0 ? ` out of ${formatPoints(points)} points` : ' points';
+  if (options.whatIf !== undefined) {
+    return {
+      value: formatPoints(score),
+      outOf,
+      ungraded: false,
+      spoken: `What-if score, ${formatPoints(score)}${outOfSpoken}`,
+    };
+  }
+
+  const grade = s?.grade ?? null;
+  if (assignment.gradingType === 'pass_fail') {
+    const label = (grade && passFail[grade.toLowerCase()]) ?? (score > 0 ? 'Complete' : 'Incomplete');
+    return { value: label, outOf: null, ungraded: false, spoken: label };
+  }
+
+  const isLetter = !!grade && /[a-z]/i.test(grade);
+  if (restricted) {
+    // Canvas doesn't strip numbers under restricted data, so convert here.
+    const letter = isLetter
+      ? grade
+      : points > 0
+        ? scoreToLetter((score / points) * 100, options.scheme)
+        : null;
+    return letter
+      ? { value: displayLetter(letter), outOf: null, ungraded: false, spoken: spokenLetter(letter) }
+      : { value: null, outOf: null, ungraded: false, spoken: 'Graded' };
+  }
+
+  if ((assignment.gradingType === 'letter_grade' || assignment.gradingType === 'gpa_scale') && grade) {
+    return { value: displayLetter(grade), outOf: null, ungraded: false, spoken: spokenLetter(grade) };
+  }
+  if (assignment.gradingType === 'percent' && grade) {
+    return { value: grade, outOf: null, ungraded: false, spoken: grade.replace('%', ' percent') };
+  }
+  return {
+    value: formatPoints(score),
+    outOf,
+    ungraded: false,
+    spoken: `${formatPoints(score)}${outOfSpoken}`,
+  };
+}
+
+export type StatusDisplay = {
+  label: string;
+  tone: BadgeTone;
+  icon?: LucideIcon;
+  /** A second state the badge can't show, for the row's subtitle: "Dropped" behind "Missing". */
+  detail?: string;
+};
+
+/**
+ * One badge per row. After what-if, unposted, and excused, the order is the web grade
+ * summary's status pill (custom status, missing, late, extended). The web marks a dropped
+ * row separately, so "Dropped" is the badge only when there's no other status; otherwise
+ * it rides along as `detail`.
+ */
+export function describeStatus(
+  assignment: GradeAssignment,
+  options: { dropped: boolean; whatIf: boolean; customStatuses: Record<string, string> },
+): StatusDisplay | null {
+  const s = assignment.submission;
+  const dropped: StatusDisplay | null = options.dropped ? { label: 'Dropped', tone: 'neutral' } : null;
+  const withDropped = (status: StatusDisplay): StatusDisplay =>
+    dropped ? { ...status, detail: dropped.label } : status;
+
+  if (options.whatIf) return withDropped({ label: 'What-if', tone: 'accent' });
+  if (!s) return dropped;
+  if (s.hidden) return { label: 'Not posted', tone: 'neutral', icon: EyeOff };
+  if (s.excused) return { label: 'Excused', tone: 'neutral' };
+  if (s.customStatusId) {
+    return withDropped({
+      // Names come from GraphQL; if that call fails, say what kind of status it is.
+      label: options.customStatuses[s.customStatusId] ?? 'Instructor status',
+      tone: 'info',
+      icon: Flag,
+    });
+  }
+  if (s.missing) return withDropped({ label: 'Missing', tone: 'danger' });
+  if (s.late) return withDropped({ label: 'Late', tone: 'warning' });
+  if (dropped) return dropped;
+  if (s.extended) return { label: 'Extended', tone: 'info' };
+  return null;
+}
+
+const pointsLabel = (n: number) => `${formatPoints(n)} ${n === 1 ? 'point' : 'points'}`;
+
+/** Row subtitle: due date, then anything a student would want to know at a glance. */
+export function describeMeta(assignment: GradeAssignment, restricted: boolean, now = new Date()): string {
+  const s = assignment.submission;
+  const parts = [assignment.dueAt ? `Due ${formatShortDate(assignment.dueAt, now)}` : 'No due date'];
+  const waiting = s && !s.hidden && !s.excused && (s.score === null || s.pendingReview);
+  if (waiting && (s.submitted || s.pendingReview)) parts.push('Submitted');
+  // Canvas sends the deduction even when the grade is hidden; the mapping drops it then.
+  if (!restricted && s && !s.excused && s.pointsDeducted && s.pointsDeducted > 0) {
+    parts.push(`Late penalty: ${pointsLabel(s.pointsDeducted)}`);
+  }
+  if (!assignment.counts) parts.push('Doesn’t count toward your total');
+  return parts.join(' · ');
+}
+
+/** "30% of grade · Lowest score dropped" for a group header. */
+export function describeGroup(
+  group: GradeGroup,
+  options: { weighted: boolean; restricted: boolean },
+): string | null {
+  const parts: string[] = [];
+  if (options.weighted && !options.restricted) parts.push(`${formatPoints(group.weight)}% of grade`);
+  const drop = (n: number, which: 'Lowest' | 'Highest') =>
+    n === 1 ? `${which} score dropped` : `${which} ${n} scores dropped`;
+  if (group.dropLowest > 0) parts.push(drop(group.dropLowest, 'Lowest'));
+  if (group.dropHighest > 0) parts.push(drop(group.dropHighest, 'Highest'));
+  return parts.length ? parts.join(' · ') : null;
+}

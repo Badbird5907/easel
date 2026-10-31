@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+.pnpm-store/
 
 # Expo
 .expo/
@@ -17,12 +18,14 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+credentials.json
 
 # Metro
 .metro-health-check*
 
 # debug
 npm-debug.*
+pnpm-debug.*
 yarn-debug.*
 yarn-error.*
 
@@ -41,3 +44,6 @@ example
 # generated native folders
 /ios
 /android
+
+# Impeccable downloads its own binary on first run
+.claude/skills/impeccable/scripts/bin/

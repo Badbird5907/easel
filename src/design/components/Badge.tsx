@@ -65,15 +65,14 @@ export function Badge({
     >
       {dot ? <View className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: colors[s.icon] }} /> : null}
       {icon ? (
-        <Icon icon={icon} size={size === 'sm' ? 12 : 14} color={colors[s.icon]} strokeWidth={2.25} />
+        <Icon icon={icon} size={size === 'sm' ? 12 : 14} color={colors[s.icon]} strokeWidth={2} />
       ) : null}
       <Text
         variant="caption"
         weight="semibold"
         tone="inherit"
         tabular
-        numberOfLines={1}
-        className={cn(s.text, size === 'sm' && 'text-[11px]')}
+        className={cn('shrink', s.text, size === 'sm' && 'text-[11px]')}
       >
         {String(children)}
       </Text>

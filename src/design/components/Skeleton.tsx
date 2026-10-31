@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import {
   Easing,
   useAnimatedStyle,
-  useReducedMotion,
+  cancelAnimation,
   useSharedValue,
   withRepeat,
   withTiming,
@@ -10,6 +10,7 @@ import {
 
 import { cn } from '@/lib/cn';
 
+import { useReduceMotion } from '../accessibility/useReduceMotion';
 import { AnimatedView } from '../interop';
 
 export type SkeletonProps = {
@@ -19,12 +20,15 @@ export type SkeletonProps = {
 
 /** Placeholder for content that's loading. Pulses gently; static with Reduce Motion. */
 export function Skeleton({ className }: SkeletonProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReduceMotion();
   const opacity = useSharedValue(1);
 
   useEffect(() => {
+    cancelAnimation(opacity);
+    opacity.set(1);
     if (reduceMotion) return;
     opacity.set(withRepeat(withTiming(0.45, { duration: 900, easing: Easing.inOut(Easing.quad) }), -1, true));
+    return () => cancelAnimation(opacity);
   }, [reduceMotion, opacity]);
 
   const style = useAnimatedStyle(() => ({ opacity: opacity.get() }));

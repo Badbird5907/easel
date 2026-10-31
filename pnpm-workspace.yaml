@@ -1,0 +1,20 @@
+# Preserve the flat dependency layout used by the existing Expo/native builds.
+nodeLinker: hoisted
+# Keep local and CI dependency checks consistent with the hoisted layout.
+enableGlobalVirtualStore: false
+
+# Explicit install-script decisions keep local and CI installs non-interactive.
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+  fsevents: false
+
+# Exact versions already present in the imported npm lockfile.
+minimumReleaseAgeExclude:
+  - '@formatjs/intl-getcanonicallocales@3.3.0'
+  - '@formatjs/intl-listformat@8.4.0'
+  - '@formatjs/intl-locale@5.4.1'
+  - '@formatjs/intl-localematcher@0.10.0'
+  - '@formatjs/intl-pluralrules@6.4.0'
+  - '@formatjs/intl-relativetimeformat@12.4.0'
+  - '@formatjs/intl-supportedvaluesof@2.5.0'

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { I18nManager, Pressable, useWindowDimensions, View } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { cn } from '@/lib/cn';
@@ -7,7 +7,8 @@ import { cn } from '@/lib/cn';
 import { haptics } from '../haptics';
 import { AnimatedView } from '../interop';
 import { useTheme } from '../theme/ThemeProvider';
-import { motion } from '../tokens/layout';
+import { useReduceMotion } from '../accessibility/useReduceMotion';
+import { layout, motion } from '../tokens/layout';
 import { Text } from './Text';
 
 export type SegmentOption<T extends string> = { value: T; label: string };
@@ -30,7 +31,10 @@ export function SegmentedControl<T extends string>({
   className,
   accessibilityLabel,
 }: SegmentedControlProps<T>) {
-  const { scheme, shadows } = useTheme();
+  const { shadows } = useTheme();
+  const reduceMotion = useReduceMotion();
+  const { fontScale } = useWindowDimensions();
+  const stacked = fontScale > 1.3;
   const [width, setWidth] = useState(0);
   const index = Math.max(
     0,
@@ -43,9 +47,10 @@ export function SegmentedControl<T extends string>({
   useEffect(() => {
     if (segment === 0) return;
     // Jump into place on first layout, glide afterwards.
-    x.set(placed.current ? withSpring(index * segment, motion.spring.slide) : index * segment);
+    const target = index * segment * (I18nManager.isRTL ? -1 : 1);
+    x.set(!reduceMotion && placed.current ? withSpring(target, motion.spring.slide) : target);
     placed.current = true;
-  }, [index, segment, x]);
+  }, [index, segment, x, reduceMotion]);
   const thumbStyle = useAnimatedStyle(() => ({ transform: [{ translateX: x.get() }] }));
 
   return (
@@ -53,17 +58,17 @@ export function SegmentedControl<T extends string>({
       accessibilityRole="tablist"
       accessibilityLabel={accessibilityLabel}
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      className={cn('flex-row rounded-full bg-surface-sunken', className)}
+      className={cn('rounded-2xl bg-surface-sunken', !stacked && 'flex-row rounded-full', className)}
       style={{ padding: PAD }}
     >
-      {segment > 0 ? (
+      {segment > 0 && !stacked ? (
         <AnimatedView
-          className={cn(
-            'absolute rounded-full bg-surface-raised',
-            scheme === 'dark' && 'border-hairline border-border-strong',
-          )}
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          className="absolute rounded-full bg-surface-raised"
           style={[
-            { top: PAD, bottom: PAD, left: PAD, width: segment },
+            { top: PAD, bottom: PAD, start: PAD, width: segment },
             shadows.card ? { boxShadow: shadows.card } : null,
           ]}
           animatedStyle={thumbStyle}
@@ -81,9 +86,10 @@ export function SegmentedControl<T extends string>({
               haptics.selection();
               onChange(option.value);
             }}
-            className="min-h-9 flex-1 items-center justify-center px-3"
+            style={{ minHeight: layout.minTouch, minWidth: layout.minTouch }}
+            className={cn('items-center justify-center rounded-full px-3 py-1.5', !stacked && 'flex-1', stacked && selected && 'bg-surface-raised')}
           >
-            <Text variant="subhead" weight="semibold" tone={selected ? 'default' : 'muted'} numberOfLines={1}>
+            <Text variant="subhead" weight="semibold" tone={selected ? 'default' : 'muted'} align="center">
               {option.label}
             </Text>
           </Pressable>

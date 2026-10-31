@@ -1,5 +1,7 @@
 import type { LucideIcon } from 'lucide-react-native';
 
+import { useTranslation } from '@/i18n';
+
 import { useTheme } from '../theme/ThemeProvider';
 import type { ColorToken } from '../tokens/colors';
 
@@ -27,19 +29,28 @@ export type IconProps = {
   /** Raw color; wins over `token` and `tone`. Prefer tokens. */
   color?: string;
   strokeWidth?: number;
+  /** Mirror in right-to-left layouts. For directional glyphs: chevrons, arrows. */
+  flipInRTL?: boolean;
 };
 
 /**
  * Lucide icon colored from theme tokens. Strokes thin out slightly as icons grow
  * so small and large icons carry the same visual weight.
  */
-export function Icon({ icon: Glyph, size = 20, tone = 'default', token, color, strokeWidth }: IconProps) {
+export function Icon({ icon: Glyph, size = 20, tone = 'default', token, color, strokeWidth, flipInRTL }: IconProps) {
   const { colors } = useTheme();
+  const { direction } = useTranslation();
   return (
     <Glyph
+      accessible={false}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
       size={size}
       color={color ?? colors[token ?? toneToken[tone]]}
-      strokeWidth={strokeWidth ?? (size <= 16 ? 2.1 : size >= 28 ? 1.6 : 1.85)}
+      strokeWidth={strokeWidth ?? 1.75}
+      style={flipInRTL && direction === 'rtl' ? mirrored : undefined}
     />
   );
 }
+
+const mirrored = { transform: [{ scaleX: -1 }] };

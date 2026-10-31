@@ -1,12 +1,13 @@
 import * as SystemUI from 'expo-system-ui';
 import { vars } from 'nativewind';
-import { createContext, type ReactNode, use, useEffect, useMemo } from 'react';
+import { createContext, type ReactNode, use, useEffect, useMemo, useState } from 'react';
 import { type StyleProp, StyleSheet, useColorScheme, View, type ViewStyle } from 'react-native';
 
 import { type ColorScheme, type ColorTokens, palettes, tokenToKebab } from '../tokens/colors';
 import { shadows } from '../tokens/layout';
 import { deriveAccent } from './accent';
 import { toRgbChannels } from './color';
+import { saveSchemePreference, type SchemePreference } from './preference';
 
 export type Theme = {
   scheme: ColorScheme;
@@ -15,6 +16,13 @@ export type Theme = {
 };
 
 const ThemeContext = createContext<Theme | null>(null);
+
+type PreferenceState = {
+  preference: SchemePreference;
+  setPreference: (preference: SchemePreference) => void;
+};
+
+const PreferenceContext = createContext<PreferenceState | null>(null);
 
 function toCssVars(colors: Partial<ColorTokens>) {
   const out: Record<string, string> = {};
@@ -29,13 +37,31 @@ const schemeVars = {
   dark: toCssVars(palettes.dark),
 };
 
+type ThemeProviderProps = {
+  children: ReactNode;
+  /** The saved appearance choice, already applied by `loadSchemePreference()`. */
+  initialPreference?: SchemePreference;
+};
+
 /**
- * Resolves the system color scheme and publishes the matching tokens as CSS
+ * Resolves the active color scheme and publishes the matching tokens as CSS
  * variables (for className styling) and through context (for `useTheme`).
- * Follows the OS setting live, with no app restart.
+ * Follows the OS setting live unless the user picked Light or Dark in Settings.
  */
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function ThemeProvider({ children, initialPreference = 'system' }: ThemeProviderProps) {
   const scheme: ColorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const [preference, setPreferenceState] = useState(initialPreference);
+
+  const preferenceState = useMemo<PreferenceState>(
+    () => ({
+      preference,
+      setPreference: (next) => {
+        setPreferenceState(next);
+        saveSchemePreference(next);
+      },
+    }),
+    [preference],
+  );
 
   const theme = useMemo<Theme>(
     () => ({ scheme, colors: palettes[scheme], shadows: shadows[scheme] }),
@@ -48,9 +74,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme.colors.bg]);
 
   return (
-    <ThemeContext value={theme}>
-      <View style={[styles.root, { backgroundColor: theme.colors.bg }, schemeVars[scheme]]}>{children}</View>
-    </ThemeContext>
+    <PreferenceContext value={preferenceState}>
+      <ThemeContext value={theme}>
+        <View style={[styles.root, { backgroundColor: theme.colors.bg }, schemeVars[scheme]]}>
+          {children}
+        </View>
+      </ThemeContext>
+    </PreferenceContext>
   );
 }
 
@@ -58,6 +88,13 @@ export function useTheme(): Theme {
   const theme = use(ThemeContext);
   if (!theme) throw new Error('useTheme() must be used inside <ThemeProvider>.');
   return theme;
+}
+
+/** The user's appearance choice (System, Light, Dark) and a setter that persists it. */
+export function useSchemePreference(): PreferenceState {
+  const state = use(PreferenceContext);
+  if (!state) throw new Error('useSchemePreference() must be used inside <ThemeProvider>.');
+  return state;
 }
 
 type AccentScopeProps = {

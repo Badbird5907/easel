@@ -1,0 +1,6014 @@
+[
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/about.tsx",
+    "line": 145,
+    "text": "Easel"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/activity.tsx",
+    "line": 26,
+    "text": "activityPresentation.all"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/activity.tsx",
+    "line": 31,
+    "text": "activityPresentation.announcements"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/activity.tsx",
+    "line": 36,
+    "text": "activityPresentation.discussions"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/activity.tsx",
+    "line": 41,
+    "text": "activityPresentation.grades"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/activity.tsx",
+    "line": 46,
+    "text": "activityPresentation.inbox"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/activity.tsx",
+    "line": 51,
+    "text": "activityPresentation.conferences"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/activity.tsx",
+    "line": 56,
+    "text": "activityPresentation.notifications"
+  },
+  {
+    "workstream": "routes/(app)/conversation",
+    "path": "src/app/(app)/conversation/[conversationId].tsx",
+    "line": 115,
+    "text": "`delete:${m.id}`"
+  },
+  {
+    "workstream": "routes/(app)/course/[courseId]/assignment/[assignmentId]",
+    "path": "src/app/(app)/course/[courseId]/assignment/[assignmentId]/annotate.tsx",
+    "line": 200,
+    "text": "DocViewer"
+  },
+  {
+    "workstream": "routes/(app)/course/[courseId]/assignment/[assignmentId]",
+    "path": "src/app/(app)/course/[courseId]/assignment/[assignmentId]/submission.tsx",
+    "line": 80,
+    "text": "`user-${peer}`"
+  },
+  {
+    "workstream": "routes/(app)/course/[courseId]/assignment/[assignmentId]",
+    "path": "src/app/(app)/course/[courseId]/assignment/[assignmentId]/submit.tsx",
+    "line": 26,
+    "text": "Couldn’t load this assignment"
+  },
+  {
+    "workstream": "routes/(app)/course/[courseId]/assignment/[assignmentId]",
+    "path": "src/app/(app)/course/[courseId]/assignment/[assignmentId]/submit.tsx",
+    "line": 30,
+    "text": "Submit"
+  },
+  {
+    "workstream": "routes/(app)/course/[courseId]",
+    "path": "src/app/(app)/course/[courseId]/quizzes.tsx",
+    "line": 107,
+    "text": "`new-${quiz.assignmentId}`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/courses.tsx",
+    "line": 137,
+    "text": "ABC123"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/customize-courses.tsx",
+    "line": 244,
+    "text": "#3A7D44"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 66,
+    "text": "Surfaces"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 67,
+    "text": "Text"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 68,
+    "text": "Lines"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 146,
+    "text": "Theme"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 149,
+    "text": "`Appearance: System (${showing})`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 149,
+    "text": "`Appearance: ${showing}`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 151,
+    "text": "Change it in Settings. Every token switches immediately, no restart."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 153,
+    "text": "`Accent: ${accentName}`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 180,
+    "text": "Course screens wrap content in"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 180,
+    "text": ". Pick a color to re-tint this\n          page."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 212,
+    "text": "Color"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 222,
+    "text": "Tones: fill, soft, foreground"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 235,
+    "text": "Aa"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 247,
+    "text": "Typography"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 248,
+    "text": "Inter · iOS text styles"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 252,
+    "text": "Overline label"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 260,
+    "text": "Tones"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 262,
+    "text": "Default,"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 262,
+    "text": "muted"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 262,
+    "text": "subtle"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 263,
+    "text": "accent"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 263,
+    "text": "success"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 264,
+    "text": "warning"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 264,
+    "text": "danger"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 274,
+    "text": "Buttons"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 275,
+    "text": "Variants"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 282,
+    "text": "Sizes and icons"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 285,
+    "text": "Small"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 288,
+    "text": "Medium"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 292,
+    "text": "Submit assignment"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 295,
+    "text": "States"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 304,
+    "text": "Tap to load"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 307,
+    "text": "Disabled"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 310,
+    "text": "Icon buttons"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 311,
+    "text": "Settings"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 312,
+    "text": "Notifications"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 313,
+    "text": "Favorite"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 314,
+    "text": "Add"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 326,
+    "text": "Inputs"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 329,
+    "text": "School email"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 330,
+    "text": "you@university.edu"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 337,
+    "text": "Use the address your school gave you."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 340,
+    "text": "Password"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 341,
+    "text": "Password"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 346,
+    "text": "At least 8 characters."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 349,
+    "text": "Comment"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 350,
+    "text": "Add a comment for your instructor"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 355,
+    "text": "Search courses"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 367,
+    "text": "Selection"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 368,
+    "text": "Segmented control"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 371,
+    "text": "Week"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 372,
+    "text": "Month"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 373,
+    "text": "Agenda"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 379,
+    "text": "Chips"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 385,
+    "text": "With icon"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 394,
+    "text": "Badges"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 395,
+    "text": "Soft"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 402,
+    "text": "Solid, small, dot"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 409,
+    "text": "Due today"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 412,
+    "text": "Graded"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 423,
+    "text": "Lists"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 424,
+    "text": "Notifications"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 424,
+    "text": "Separators align to the text, not the icon."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 427,
+    "text": "Push notifications"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 428,
+    "text": "Push notifications"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 432,
+    "text": "Weekly digest"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 433,
+    "text": "A Sunday summary of what's due"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 434,
+    "text": "Weekly digest"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 438,
+    "text": "Course activity"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 439,
+    "text": "All courses"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 445,
+    "text": "Amara Osei"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 446,
+    "text": "Amara Osei"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 447,
+    "text": "Instructor · BIO 201"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 451,
+    "text": "Lucas Moreau"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 452,
+    "text": "Lucas Moreau"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 453,
+    "text": "Instructor · HIST 150"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 458,
+    "text": "Remove download"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 463,
+    "text": "Avatars"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 464,
+    "text": "Hannah Kim"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 465,
+    "text": "Daniel Reyes"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 466,
+    "text": "Priya Natarajan"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 467,
+    "text": "Marco Bellini"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 468,
+    "text": "Easel Student"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 476,
+    "text": "Cards"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 480,
+    "text": "Elevated, pressable"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 482,
+    "text": "Shadow in light mode, a lighter surface in dark."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 485,
+    "text": "Open"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 489,
+    "text": "Outlined"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 491,
+    "text": "For dense grids."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 495,
+    "text": "Filled"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 497,
+    "text": "Inside other cards."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 508,
+    "text": "Progress"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 514,
+    "text": "Rings"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 524,
+    "text": "B+"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 533,
+    "text": "Due date"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 534,
+    "text": "Course"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 535,
+    "text": "Title"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 535,
+    "text": "A to Z"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 543,
+    "text": "Feedback"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 544,
+    "text": "Sheet and toast"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 546,
+    "text": "Open sheet"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 551,
+    "text": "Marked “Lab report” done"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 551,
+    "text": "Undo"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 553,
+    "text": "Show toast"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 556,
+    "text": "Sort by"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 566,
+    "text": "Module locked"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 567,
+    "text": "Finish “Unit 2 Quiz” to unlock this module."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 569,
+    "text": "Couldn’t sync grades"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 569,
+    "text": "Try again"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 570,
+    "text": "Check your connection. We’ll keep showing your last saved grades."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 572,
+    "text": "Submission received. Your instructor will be notified."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 573,
+    "text": "Loading"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 585,
+    "text": "You're all caught up"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 586,
+    "text": "New assignments and announcements will appear here."
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/design.tsx",
+    "line": 587,
+    "text": "Browse courses"
+  },
+  {
+    "workstream": "routes/(app)/event/[eventId]",
+    "path": "src/app/(app)/event/[eventId]/index.tsx",
+    "line": 72,
+    "text": "`http://maps.apple.com/?q=${q}`"
+  },
+  {
+    "workstream": "routes/(app)/event/[eventId]",
+    "path": "src/app/(app)/event/[eventId]/index.tsx",
+    "line": 72,
+    "text": "`geo:0,0?q=${q}`"
+  },
+  {
+    "workstream": "routes/(app)/event/[eventId]",
+    "path": "src/app/(app)/event/[eventId]/index.tsx",
+    "line": 272,
+    "text": "`calendar_event_${event.data.id}`"
+  },
+  {
+    "workstream": "routes/(app)/event/[eventId]",
+    "path": "src/app/(app)/event/[eventId]/index.tsx",
+    "line": 276,
+    "text": "`/event/${event.data.id}`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/help.tsx",
+    "line": 253,
+    "text": "`course_${course.id}_teachers`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/help.tsx",
+    "line": 322,
+    "text": "App Version"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/help.tsx",
+    "line": 322,
+    "text": "`Easel ${Application.nativeApplicationVersion ?? Constants.expoConfig?.version ?? ''} (${Application.nativeBuildVersion ?? 'dev'})`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/help.tsx",
+    "line": 324,
+    "text": "OS Version"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/notification-settings.tsx",
+    "line": 285,
+    "text": "`easel-test:${Date.now()}`"
+  },
+  {
+    "workstream": "routes/(app)/planner-note",
+    "path": "src/app/(app)/planner-note/[noteId].tsx",
+    "line": 77,
+    "text": "`planner_note_${note.data.id}`"
+  },
+  {
+    "workstream": "routes/(app)/planner-note",
+    "path": "src/app/(app)/planner-note/[noteId].tsx",
+    "line": 81,
+    "text": "`/planner-note/${note.data.id}`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/profile.tsx",
+    "line": 139,
+    "text": "`value:${p}`"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/profile.tsx",
+    "line": 226,
+    "text": "profileForms.pictureFailed"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/profile.tsx",
+    "line": 259,
+    "text": "profileForms.noCamera"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/profile.tsx",
+    "line": 264,
+    "text": "profileForms.photosFailed"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/profile.tsx",
+    "line": 313,
+    "text": "profileForms.webFailed"
+  },
+  {
+    "workstream": "routes/(app)",
+    "path": "src/app/(app)/profile.tsx",
+    "line": 474,
+    "text": "`value:${pronouns}`"
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+native-intent.tsx",
+    "line": 47,
+    "text": "`/share?link=${encodeURIComponent(url)}`"
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+native-intent.tsx",
+    "line": 51,
+    "text": "`/share?link=${encodeURIComponent(`/${rest}`)}`"
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+not-found.tsx",
+    "line": 16,
+    "text": "Not in Easel yet"
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+not-found.tsx",
+    "line": 20,
+    "text": "This isn’t in Easel yet"
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+not-found.tsx",
+    "line": 22,
+    "text": "You can open it in Canvas on the web instead."
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+not-found.tsx",
+    "line": 22,
+    "text": "This screen doesn’t exist."
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+not-found.tsx",
+    "line": 27,
+    "text": "Open in browser"
+  },
+  {
+    "workstream": "routes/root",
+    "path": "src/app/+not-found.tsx",
+    "line": 33,
+    "text": "Go back"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/activity.ts",
+    "line": 154,
+    "text": "You were mentioned"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/activity.ts",
+    "line": 227,
+    "text": "`grade:${s.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/announcements.ts",
+    "line": 42,
+    "text": "`course_${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/announcements.ts",
+    "line": 70,
+    "text": "`/api/v1/courses/${courseId}/discussion_topics`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/announcements.ts",
+    "line": 75,
+    "text": "`course_${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/announcements.ts",
+    "line": 92,
+    "text": "`/api/v1/groups/${groupId}/discussion_topics`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/announcements.ts",
+    "line": 162,
+    "text": "`/api/v1/accounts/self/account_notifications/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/appointments.ts",
+    "line": 183,
+    "text": "`/api/v1/appointment_groups/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/appointments.ts",
+    "line": 237,
+    "text": "`/api/v1/calendar_events/${slot.id}/reservations`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/appointments.ts",
+    "line": 254,
+    "text": "Canvas couldn’t reserve this time. It may have just filled up, or you may already have a time in this group. Refresh and try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/appointments.ts",
+    "line": 258,
+    "text": "This time has already started, so it can’t be reserved."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/appointments.ts",
+    "line": 270,
+    "text": "`/api/v1/calendar_events/${reservationId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/assignments.ts",
+    "line": 466,
+    "text": "`/api/v1/courses/${courseId}/assignment_groups`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/assignments.ts",
+    "line": 502,
+    "text": "`/api/v1/courses/${courseId}/grading_periods`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/assignments.ts",
+    "line": 533,
+    "text": "`/api/v1/courses/${courseId}/assignments/${assignmentId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/assignments.ts",
+    "line": 556,
+    "text": "`/api/v1/courses/${courseId}/assignments/${assignmentId}/submissions/self`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/assignments.ts",
+    "line": 577,
+    "text": "`/api/v1/courses/${courseId}/assignments`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/brand.ts",
+    "line": 150,
+    "text": "Couldn’t load the school theme."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 208,
+    "text": "`user_${account.user.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 218,
+    "text": "`course_${c.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 225,
+    "text": "`group_${g.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 252,
+    "text": "`course_${item.course_id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 253,
+    "text": "`group_${item.group_id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 254,
+    "text": "`course_${item.plannable.course_id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 255,
+    "text": "`user_${item.user_id ?? userId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 283,
+    "text": "`event:${entry.plannable_id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 353,
+    "text": "`event:${e.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 379,
+    "text": "`assignment:${assignmentId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 498,
+    "text": "`user_${userId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 504,
+    "text": "`user_${userId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 521,
+    "text": "`/api/v1/calendar_events/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 581,
+    "text": "`user_${account.user.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 607,
+    "text": "`/api/v1/calendar_events/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 621,
+    "text": "`/api/v1/calendar_events/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/calendar.ts",
+    "line": 631,
+    "text": "`/api/v1/calendar_events/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conferences.ts",
+    "line": 150,
+    "text": "Adobe Connect"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conferences.ts",
+    "line": 159,
+    "text": "Screen share"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conferences.ts",
+    "line": 183,
+    "text": "`Recording ${index + 1}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conferences.ts",
+    "line": 195,
+    "text": "Untitled conference"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conferences.ts",
+    "line": 215,
+    "text": "Your school hasn’t set up conferences in Canvas. Ask your instructor how to join."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conferences.ts",
+    "line": 237,
+    "text": "`/api/v1/${context.type === 'course' ? 'courses' : 'groups'}/${context.id}/conferences`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 264,
+    "text": "`course_${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 309,
+    "text": "`/api/v1/conversations/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 345,
+    "text": "`/api/v1/conversations/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 368,
+    "text": "`/api/v1/conversations/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 382,
+    "text": "`/api/v1/conversations/${id}/remove_messages`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 418,
+    "text": "`/api/v1/conversations/${id}/add_message`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 457,
+    "text": "`course_${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 602,
+    "text": "`query EaselInboxSettings { myInboxSettings { ${INBOX_SETTINGS_FIELDS} } }`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 622,
+    "text": "`mutation EaselUpdateInboxSettings($useSignature: Boolean!, $signature: String, $useOutOfOffice: Boolean!, $outOfOfficeFirstDate: String, $outOfOfficeLastDate: String, $outOfOfficeSubject: String, $outOfOfficeMessage: String) {\n  updateMyInboxSettings(input: { useSignature: $useSignature, signature: $signature, useOutOfOffice: $useOutOfOffice, outOfOfficeFirstDate: $outOfOfficeFirstDate, outOfOfficeLastDate: $outOfOfficeLastDate, outOfOfficeSubject: $outOfOfficeSubject, outOfOfficeMessage: $outOfOfficeMessage }) {\n    myInboxSettings { ${INBOX_SETTINGS_FIELDS} }\n    errors { attribute message }\n  }\n}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/conversations.ts",
+    "line": 724,
+    "text": "`course_${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 67,
+    "text": "`/api/v1/courses/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 146,
+    "text": "`course_${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 175,
+    "text": "`/api/v1/users/self/favorites/courses/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 176,
+    "text": "`/api/v1/users/self/favorites/courses/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 182,
+    "text": "`/api/v1/users/self/course_nicknames/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 183,
+    "text": "`/api/v1/users/self/course_nicknames/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 188,
+    "text": "`/api/v1/users/self/colors/course_${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 193,
+    "text": "`/api/v1/users/${userId}/dashboard_positions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/courses.ts",
+    "line": 194,
+    "text": "`course_${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 40,
+    "text": "`/api/v1/${c.type === 'course' ? 'courses' : 'groups'}/${c.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 403,
+    "text": "Insufficient Permissions"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 403,
+    "text": "You can’t do that in this discussion."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 404,
+    "text": "Insufficient attach permissions"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 404,
+    "text": "This discussion doesn’t take attachments."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 405,
+    "text": "This post no longer exists. Pull to refresh the discussion."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 412,
+    "text": "Canvas didn’t answer. Try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 535,
+    "text": "`Anonymous ${shortName}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 571,
+    "text": "`anonymous_${n.anonymousAuthor.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 1154,
+    "text": "`/api/v1/courses/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 1159,
+    "text": "`/api/v1/courses/${courseId}/settings`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 1168,
+    "text": "`/api/v1/courses/${courseId}/permissions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 1180,
+    "text": "`/api/v1/groups/${context.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/discussions.ts",
+    "line": 1187,
+    "text": "`/api/v1/courses/${group.course_id}/settings`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 111,
+    "text": "Course designer"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 189,
+    "text": "`/api/v1/courses/${courseId}/enrollments/${enrollmentId}/${outcome === 'accepted' ? 'accept' : 'reject'}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 292,
+    "text": "`course_${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 350,
+    "text": "Couldn’t reach your school’s Canvas. Check your connection and try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 353,
+    "text": "That join code doesn’t match a course. Check it with your instructor and try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 357,
+    "text": "You’re already in this course."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 358,
+    "text": "This course is full. Ask your instructor about a spot."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 360,
+    "text": "Your school’s Canvas didn’t say which course this code is for. Open the join link in a browser to join."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 370,
+    "text": "This course is full. Ask your instructor about a spot."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 371,
+    "text": "This course has ended, so it isn’t taking new students."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 372,
+    "text": "This course isn’t taking new students right now."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 373,
+    "text": "Enter a join code."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 374,
+    "text": "Sign in with your school account to join this course."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 386,
+    "text": "`/api/v1/courses/${courseId}/enrollments`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 396,
+    "text": "Couldn’t reach your school’s Canvas. Check your connection and try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 413,
+    "text": "That join code doesn’t match a course. Check it with your instructor and try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 414,
+    "text": "This course isn’t open for students yet."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 416,
+    "text": "`Canvas couldn’t add you to the course (${response.status}). Try again later.`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/enrollments.ts",
+    "line": 428,
+    "text": "Enter the join code your instructor shared, or paste the join link."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/eportfolios.ts",
+    "line": 33,
+    "text": "Untitled ePortfolio"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/eportfolios.ts",
+    "line": 39,
+    "text": "`/eportfolios/${encodeURIComponent(value.id)}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 201,
+    "text": "You don’t have permission to open this."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 223,
+    "text": "`/api/v1/courses/${options.courseId}/files/${fileId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 227,
+    "text": "`/api/v1/files/${fileId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 230,
+    "text": "`/api/v1/files/${fileId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 237,
+    "text": "`/api/v1/${context.type}/${context.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 251,
+    "text": "`/api/v1/folders/${folderId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 271,
+    "text": "The specified resource does not exist."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/files.ts",
+    "line": 285,
+    "text": "`/api/v1/folders/${folderId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 425,
+    "text": "`course_${course.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 431,
+    "text": "`/api/v1/courses/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 440,
+    "text": "`/api/v1/courses/${courseId}/grading_periods`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 454,
+    "text": "`/api/v1/courses/${courseId}/assignment_groups`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 474,
+    "text": "`/api/v1/courses/${courseId}/enrollments`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 589,
+    "text": "`/api/v1/courses/${courseId}/students/submissions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 621,
+    "text": "`/api/v1/submissions/${submissionId}/what_if_grades`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/grades.ts",
+    "line": 628,
+    "text": "`/api/v1/courses/${courseId}/what_if_grades/reset`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 205,
+    "text": "`/api/v1/courses/${courseId}/groups`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 223,
+    "text": "`/api/v1/groups/${groupId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 250,
+    "text": "`/api/v1/groups/${groupId}/tabs`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 272,
+    "text": "`/api/v1/groups/${groupId}/users`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 299,
+    "text": "`/api/v1/courses/${courseId}/groups`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 339,
+    "text": "This group is full. Choose another group."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 341,
+    "text": "You can only join a group with classmates from your section."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 343,
+    "text": "Your instructor doesn’t let students change groups in this set."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 362,
+    "text": "`/api/v1/groups/${groupId}/memberships`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/groups.ts",
+    "line": 379,
+    "text": "`/api/v1/groups/${groupId}/memberships/self`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/help.ts",
+    "line": 71,
+    "text": "`link-${index}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/lti.ts",
+    "line": 69,
+    "text": "`courses/${request.courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/lti.ts",
+    "line": 69,
+    "text": "`accounts/${request.accountId ?? 'self'}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/lti.ts",
+    "line": 73,
+    "text": "`/api/v1/${contextPath(request)}/external_tools/sessionless_launch`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/lti.ts",
+    "line": 110,
+    "text": "Canvas couldn’t find the settings for this tool."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/modules.ts",
+    "line": 212,
+    "text": "`/api/v1/courses/${courseId}/modules`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/modules.ts",
+    "line": 221,
+    "text": "`/api/v1/courses/${courseId}/modules/${m.id}/items`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/modules.ts",
+    "line": 243,
+    "text": "`/api/v1/courses/${courseId}/module_item_sequence`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/modules.ts",
+    "line": 286,
+    "text": "`/api/v1/courses/${courseId}/modules/${moduleId}/items/${itemId}/done`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/modules.ts",
+    "line": 312,
+    "text": "`/api/v1/courses/${courseId}/modules/${moduleId}/items/${itemId}/mark_read`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/modules.ts",
+    "line": 382,
+    "text": "`/api/v1/courses/${courseId}/modules/${id}/items`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/modules.ts",
+    "line": 418,
+    "text": "`/api/v1/courses/${courseId}/modules/${moduleId}/items/${itemId}/select_mastery_path`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/notifications.ts",
+    "line": 150,
+    "text": "Your instructor"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/notifications.ts",
+    "line": 192,
+    "text": "`assignment_${assignmentId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 37,
+    "text": "Asset download timed out"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 56,
+    "text": "Sync cancelled"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 62,
+    "text": "Unsupported asset URL"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 72,
+    "text": "Asset redirect unavailable"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 80,
+    "text": "Asset unavailable, unsupported, or too large"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 83,
+    "text": "Streaming download unavailable"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 88,
+    "text": "Sync cancelled"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 92,
+    "text": "Asset too large"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 98,
+    "text": "Empty asset"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/offlineAssets.ts",
+    "line": 107,
+    "text": "Too many asset redirects"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 57,
+    "text": "Canvas uses your highest score."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 58,
+    "text": "Canvas uses your most recent score."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 59,
+    "text": "Canvas uses your average score."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 61,
+    "text": "Canvas applies the course’s decaying average policy."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 62,
+    "text": "Canvas applies the course’s decaying average policy."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 63,
+    "text": "Canvas applies the course’s weighted average policy."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 65,
+    "text": "`Canvas requires ${outcome.calculation_int} scores at or above mastery before reporting a rollup.`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 66,
+    "text": "Canvas requires repeated mastery before reporting a rollup."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 68,
+    "text": "Your instructor has hidden points for this outcome."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 69,
+    "text": "No outcome result has been shared with you yet."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 70,
+    "text": "Canvas has not supplied a mastery threshold for this outcome."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 71,
+    "text": "Canvas has not calculated a rollup yet. "
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 71,
+    "text": "This rollup is calculated by Canvas using the course’s outcome policy."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 74,
+    "text": "Untitled outcome"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 95,
+    "text": "`/api/v1/courses/${encodeURIComponent(courseId)}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/outcomes.ts",
+    "line": 106,
+    "text": "This school’s outcome response is not supported. Open Canvas to view your outcomes."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/pages.ts",
+    "line": 10,
+    "text": "`/api/v1/${c.type === 'course' ? 'courses' : 'groups'}/${c.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/peerReviews.ts",
+    "line": 105,
+    "text": "Canvas didn’t answer. Try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/peerReviews.ts",
+    "line": 175,
+    "text": "`Classmate ${index + 1}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/peerReviews.ts",
+    "line": 218,
+    "text": "Canvas couldn’t find this assignment."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/peerReviews.ts",
+    "line": 261,
+    "text": "`/api/v1/courses/${courseId}/assignments/${assignmentId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/peerReviews.ts",
+    "line": 299,
+    "text": "`criterion_${criterionId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/peerReviews.ts",
+    "line": 306,
+    "text": "`/api/v1/courses/${courseId}/rubric_associations/${rubricAssociationId}/rubric_assessments`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/people.ts",
+    "line": 81,
+    "text": "Teaching assistant"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/people.ts",
+    "line": 82,
+    "text": "Course designer"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/people.ts",
+    "line": 146,
+    "text": "`/api/v1/courses/${courseId}/users/${userId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/people.ts",
+    "line": 151,
+    "text": "`/api/v1/courses/${courseId}/sections`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/people.ts",
+    "line": 167,
+    "text": "`/api/v1/courses/${courseId}/users`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/planner.ts",
+    "line": 158,
+    "text": "`/api/v1/planner/overrides/${overrideId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/planner.ts",
+    "line": 231,
+    "text": "`/api/v1/planner_notes/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/planner.ts",
+    "line": 284,
+    "text": "`/api/v1/planner_notes/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/planner.ts",
+    "line": 299,
+    "text": "`/api/v1/planner_notes/${id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 96,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 97,
+    "text": "Due dates"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 98,
+    "text": "When an assignment’s due date changes."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 102,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 103,
+    "text": "Grading policies"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 104,
+    "text": "When a course’s grading policies change."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 108,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 109,
+    "text": "Course content"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 110,
+    "text": "When pages, quizzes, and assignments change."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 112,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 112,
+    "text": "Files"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 112,
+    "text": "When a file is added to a course."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 115,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 116,
+    "text": "Announcements"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 117,
+    "text": "New announcements in your courses."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 121,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 122,
+    "text": "Your announcements"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 123,
+    "text": "Announcements you post, and replies to them."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 127,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 128,
+    "text": "Grading"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 129,
+    "text": "When work is graded or a grade changes."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 133,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 134,
+    "text": "Invitations"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 135,
+    "text": "Invitations to conferences, groups, collaborations, and peer reviews."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 139,
+    "text": "Course activities"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 140,
+    "text": "Submission comments"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 141,
+    "text": "When someone comments on your work."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 146,
+    "text": "New discussions"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 147,
+    "text": "New discussion topics in your courses."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 152,
+    "text": "Discussion replies"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 153,
+    "text": "New replies in discussions you follow."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 158,
+    "text": "Mentions"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 159,
+    "text": "When someone mentions you in a discussion."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 164,
+    "text": "Added to a conversation"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 165,
+    "text": "When someone adds you to a conversation."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 167,
+    "text": "New messages"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 167,
+    "text": "New messages in your Inbox."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 171,
+    "text": "Messages you send"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 172,
+    "text": "Copies of conversations you start."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 177,
+    "text": "Appointment sign-ups"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 178,
+    "text": "New sign-ups on your calendar."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 183,
+    "text": "Appointment cancellations"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 184,
+    "text": "When an appointment is canceled."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 189,
+    "text": "Appointment availability"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 190,
+    "text": "When an appointment slot opens up."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 192,
+    "text": "Calendar"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 192,
+    "text": "New and changed calendar events."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 196,
+    "text": "Group membership"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 197,
+    "text": "When a group membership is accepted or declined."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 202,
+    "text": "Recordings"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 203,
+    "text": "When a conference recording is ready."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 208,
+    "text": "Administrative"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 209,
+    "text": "Account and course administration messages."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 240,
+    "text": "`/api/v1/users/self/communication_channels/${channelId}/notification_preferences`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 298,
+    "text": "`/api/v1/users/self/communication_channels/${channelId}/notification_preferences`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 336,
+    "text": "Right away"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 337,
+    "text": "Daily summary"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/preferences.ts",
+    "line": 338,
+    "text": "Weekly summary"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 76,
+    "text": "`/api/v1/users/${userId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 123,
+    "text": "`/api/v1/users/${userId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 130,
+    "text": "Your school doesn’t offer those pronouns in Canvas. Choose another option, or ask your school to add them."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 167,
+    "text": "This avatar operation is no longer current."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 187,
+    "text": "`/api/v1/users/${userId}/avatars`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 196,
+    "text": "`/api/v1/files/${fileId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 201,
+    "text": "Canvas didn’t accept that picture as a profile picture. Try a different photo."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 230,
+    "text": "`/api/v1/users/${userId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/profile.ts",
+    "line": 312,
+    "text": "`canvas-parent://${host}/pair?code=${encodeURIComponent(code)}&account_id=${encodeURIComponent(accountId)}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 168,
+    "text": "`/api/v1/courses/${courseId}/quizzes`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 188,
+    "text": "`/api/v1/courses/${courseId}/quizzes/${quizId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 207,
+    "text": "`/api/v1/courses/${courseId}/quizzes/${quizId}/submissions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 293,
+    "text": "`/api/v1/courses/${courseId}/quizzes/${quizId}/submissions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 587,
+    "text": "`/api/v1/quiz_submissions/${submissionId}/questions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 605,
+    "text": "`Question ${index + 1}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 747,
+    "text": "`dropdown,${blank},instructure-key`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 772,
+    "text": "`blank${blanks.length + 1}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 783,
+    "text": "`<span class=\"easel-blank\" role=\"img\" aria-label=\"Blank ${number}\">${number}</span>`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 802,
+    "text": "`<span class=\"easel-blank\" role=\"img\" aria-label=\"Blank ${number}\">${number}</span>`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 865,
+    "text": "`Question ${index + 1}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 890,
+    "text": "`/api/v1/quiz_submissions/${submissionId}/questions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 930,
+    "text": "`/api/v1/quiz_submissions/${submissionId}/questions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 956,
+    "text": "`/api/v1/quiz_submissions/${submissionId}/questions/${questionId}/${flagged ? 'flag' : 'unflag'}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/quizzes.ts",
+    "line": 995,
+    "text": "`/api/v1/courses/${courseId}/assignments`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/search.ts",
+    "line": 92,
+    "text": "`/api/v1/courses/${courseId}/features/enabled`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/search.ts",
+    "line": 108,
+    "text": "Smart search is off for this course."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/search.ts",
+    "line": 121,
+    "text": "`/api/v1/courses/${courseId}/smartsearch`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/search.ts",
+    "line": 164,
+    "text": "`page:${p.url}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/search.ts",
+    "line": 175,
+    "text": "`module:${m.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/search.ts",
+    "line": 188,
+    "text": "`discussion:${d.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissionDrafts.ts",
+    "line": 25,
+    "text": "Canvas draft sync is unavailable."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissionDrafts.ts",
+    "line": 30,
+    "text": "`query EaselSubmissionDraft($id: ID!) { submission(id: $id) { _id attempt submissionDraft { ${fields} } } }`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissionDrafts.ts",
+    "line": 31,
+    "text": "Canvas did not return this submission."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissionDrafts.ts",
+    "line": 35,
+    "text": "A draft needs an explicit next attempt."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissionDrafts.ts",
+    "line": 37,
+    "text": "`mutation EaselSaveSubmissionDraft($input: CreateSubmissionDraftInput!) {\n      createSubmissionDraft(input: $input) { submissionDraft { ${fields} } errors { attribute message } }\n    }`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissionDrafts.ts",
+    "line": 42,
+    "text": "Canvas did not save the draft."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 38,
+    "text": "`/api/v1/courses/${courseId}/assignments/${assignmentId}/submissions/self/files`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 42,
+    "text": "`/api/v1/courses/${courseId}/assignments/${assignmentId}/submissions/self/comments/files`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 94,
+    "text": "`/api/v1/courses/${courseId}/assignments/${assignmentId}/submissions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 119,
+    "text": "`/api/v1/courses/${courseId}/assignments/${assignmentId}/submissions/self`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 220,
+    "text": "Canvas didn’t open DocViewer for this document."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 257,
+    "text": "`/api/v1/courses/${courseId}/lti_apps/launch_definitions`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 281,
+    "text": "`/courses/${courseId}/external_tools/${toolId}/resource_selection?launch_type=homework_submission&assignment_id=${assignmentId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/submissions.ts",
+    "line": 325,
+    "text": "`/api/v1/groups/${group.id}/users`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/syllabus.ts",
+    "line": 50,
+    "text": "`/api/v1/courses/${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/syllabus.ts",
+    "line": 59,
+    "text": "`course_${courseId}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/syllabus.ts",
+    "line": 68,
+    "text": "`assignment:${a.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/syllabus.ts",
+    "line": 75,
+    "text": "`event:${e.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/tabs.ts",
+    "line": 43,
+    "text": "`/api/v1/courses/${courseId}/tabs`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/tabs.ts",
+    "line": 138,
+    "text": "Untitled course"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/api/tabs.ts",
+    "line": 140,
+    "text": "`course_${course.id}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/client.ts",
+    "line": 26,
+    "text": "Canvas no longer accepts this sign-in."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/client.ts",
+    "line": 33,
+    "text": "Couldn't reach Canvas. Check your connection."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/client.ts",
+    "line": 156,
+    "text": "`Canvas returned an error (${response.status}).`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/client.ts",
+    "line": 175,
+    "text": "`Bearer ${this.auth.accessToken}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/client.ts",
+    "line": 210,
+    "text": "`Bearer ${token}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/client.ts",
+    "line": 343,
+    "text": "`Canvas returned an error (${response.status}).`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/session.tsx",
+    "line": 71,
+    "text": "`easel.token.${accountId.replace(/[^A-Za-z0-9._-]/g, '_')}`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/session.tsx",
+    "line": 642,
+    "text": "Canvas didn’t accept that token. Check that you copied all of it."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/session.tsx",
+    "line": 643,
+    "text": "Canvas didn’t accept the sign-in. Try again."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/session.tsx",
+    "line": 646,
+    "text": "`Couldn’t reach ${host.host}. Check the address and your connection.`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/session.tsx",
+    "line": 670,
+    "text": "Enter your school’s Canvas address, like school.instructure.com."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/session.tsx",
+    "line": 672,
+    "text": "Paste an access token from your Canvas settings."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/session.tsx",
+    "line": 766,
+    "text": "`You signed in as ${signedInAs.user.name}, but this account belongs to ${expected.user.name}. Sign in as ${expected.user.shortName} to continue, or remove this account and add ${signedInAs.user.shortName}’s instead.`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/uploads.ts",
+    "line": 80,
+    "text": "`Upload failed (${result.status}).`"
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/uploads.ts",
+    "line": 130,
+    "text": "The media service didn’t accept the recording."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/uploads.ts",
+    "line": 163,
+    "text": "The media service isn’t set up."
+  },
+  {
+    "workstream": "canvas",
+    "path": "src/canvas/uploads.ts",
+    "line": 182,
+    "text": "`Upload failed (${upload.status}).`"
+  },
+  {
+    "workstream": "design",
+    "path": "src/design/components/Button.tsx",
+    "line": 56,
+    "text": "subhead"
+  },
+  {
+    "workstream": "design",
+    "path": "src/design/components/Button.tsx",
+    "line": 57,
+    "text": "callout"
+  },
+  {
+    "workstream": "design",
+    "path": "src/design/components/Button.tsx",
+    "line": 58,
+    "text": "headline"
+  },
+  {
+    "workstream": "design",
+    "path": "src/design/components/NavigationChrome.tsx",
+    "line": 67,
+    "text": "`min-h-5 min-w-[18px] items-center justify-center rounded-full border-2 border-surface bg-danger px-1 ${fontScale > 1.3 ? '' : 'absolute -top-1.5'}`"
+  },
+  {
+    "workstream": "design",
+    "path": "src/design/components/NavigationChrome.tsx",
+    "line": 119,
+    "text": "Back"
+  },
+  {
+    "workstream": "design",
+    "path": "src/design/theme/ThemeProvider.tsx",
+    "line": 30,
+    "text": "`--color-${tokenToKebab(token)}`"
+  },
+  {
+    "workstream": "design",
+    "path": "src/design/theme/color.ts",
+    "line": 36,
+    "text": "`rgba(${r}, ${g}, ${b}, ${alpha})`"
+  },
+  {
+    "workstream": "features/activity",
+    "path": "src/features/activity/ActivityRow.tsx",
+    "line": 34,
+    "text": "activityPresentation.notification"
+  },
+  {
+    "workstream": "features/activity",
+    "path": "src/features/activity/activityVisibility.ts",
+    "line": 51,
+    "text": "`Scored ${preview.score} out of ${preview.points}`"
+  },
+  {
+    "workstream": "features/activity",
+    "path": "src/features/activity/activityVisibility.ts",
+    "line": 52,
+    "text": "`Graded: ${preview.grade}`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 72,
+    "text": "authForms.method.browser.label"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 74,
+    "text": "authForms.method.browser.description"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 78,
+    "text": "authForms.method.canvas.label"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 80,
+    "text": "authForms.method.canvas.description"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 84,
+    "text": "authForms.method.site-admin.label"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 86,
+    "text": "authForms.method.site-admin.description"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 90,
+    "text": "authForms.method.embedded.label"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 92,
+    "text": "authForms.method.embedded.description"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 96,
+    "text": "authForms.method.key.label"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 98,
+    "text": "authForms.method.key.description"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 102,
+    "text": "authForms.method.token.label"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 104,
+    "text": "authForms.method.token.description"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 257,
+    "text": "authForms.canceled"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 264,
+    "text": "authForms.failed"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 329,
+    "text": "authForms.tokenTitle"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/SignInFlow.tsx",
+    "line": 403,
+    "text": "authForms.notSignedIn"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/TermsDocument.tsx",
+    "line": 74,
+    "text": "`\n    :root { color-scheme: ${dark ? 'dark' : 'light'}; }\n    html, body { margin: 0; padding: 0; background: transparent; }\n    body { font-family: 'Inter', -apple-system, system-ui, Roboto, sans-serif; font-size: ${(15 * fontScale).toFixed(1)}px;\n      line-height: 1.5; color: ${c.fg}; -webkit-text-size-adjust: none; overflow-wrap: anywhere; }\n    a { color: ${c.accentFg}; text-underline-offset: 2px; }\n    p, ul, ol { margin: 0 0 0.85em; } ul, ol { padding-inline-start: 1.4em; }\n    h1, h2, h3, h4 { line-height: 1.25; font-weight: 600; margin: 1.2em 0 0.45em; }\n    h1 { font-size: 1.4em; } h2 { font-size: 1.25em; } h3 { font-size: 1.1em; } h4 { font-size: 1em; }\n    body > :first-child { margin-top: 0; } body > :last-child { margin-bottom: 0; }\n    img { max-width: 100%; height: auto; }\n    table { border-collapse: collapse; } th, td { border: 1px solid ${c.border}; padding: 4px 6px; }\n  `"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/TermsDocument.tsx",
+    "line": 96,
+    "text": "`<!doctype html><html dir=\"auto\"><head><meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />\n    <style>${css}</style></head><body>${html}<script>${script}</script></body></html>`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 41,
+    "text": "Sign-in canceled."
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 67,
+    "text": "`Easel on ${device}`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 119,
+    "text": "`Couldn’t reach ${host.host}. Check the address and your connection.`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 141,
+    "text": "Couldn’t open the sign-in page. Try again, or choose Sign in inside Easel."
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 162,
+    "text": "`The developer key for ${host} requires scopes, which Easel doesn’t support. Ask your school’s Canvas admin for a key without enforced scopes.`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 165,
+    "text": "`Your account at ${host} isn’t allowed to use this developer key.`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 167,
+    "text": "`Canvas couldn’t sign you in: ${description}`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 167,
+    "text": "Canvas couldn’t sign you in. Try again."
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 183,
+    "text": "The sign-in response didn’t match this request. Try again."
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 185,
+    "text": "Canvas didn’t send a sign-in code. Try again."
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 204,
+    "text": "`Canvas didn’t accept the developer key for ${request.host.host}. Check the client ID and secret, or ask your school’s Canvas admin.`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 206,
+    "text": "Canvas didn’t accept the sign-in. It may have taken too long. Try again."
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/oauth.ts",
+    "line": 209,
+    "text": "`Couldn’t reach ${request.host.host}. Check your connection and try again.`"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 20,
+    "text": "Canvas Free for Teachers"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 21,
+    "text": "Arizona State University"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 22,
+    "text": "Cornell University"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 23,
+    "text": "Harvard University"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 24,
+    "text": "Massachusetts Institute of Technology"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 25,
+    "text": "Northwestern University"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 26,
+    "text": "Penn State"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 27,
+    "text": "Stanford University"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 28,
+    "text": "UC Berkeley"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 29,
+    "text": "UC San Diego"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 31,
+    "text": "University of Colorado Boulder"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 32,
+    "text": "University of Michigan"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 33,
+    "text": "University of Pennsylvania"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 34,
+    "text": "University of Washington"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 35,
+    "text": "University of Wisconsin–Madison"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 36,
+    "text": "Yale University"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 42,
+    "text": "Fake Canvas (development)"
+  },
+  {
+    "workstream": "features/auth",
+    "path": "src/features/auth/schools.ts",
+    "line": 44,
+    "text": "Fake Canvas, single sign-on (development)"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/deviceCalendar.ts",
+    "line": 64,
+    "text": "`calendar:exported:${accountId}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/recurrence.ts",
+    "line": 153,
+    "text": "`UNTIL=${icalUtc(endOfDay(until))}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/recurrence.ts",
+    "line": 159,
+    "text": "`FREQ=DAILY;INTERVAL=1;${end}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/recurrence.ts",
+    "line": 161,
+    "text": "`FREQ=WEEKLY;BYDAY=${WEEKDAYS};INTERVAL=1;${end}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/recurrence.ts",
+    "line": 163,
+    "text": "`FREQ=WEEKLY;BYDAY=${day};INTERVAL=1;${end}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/recurrence.ts",
+    "line": 165,
+    "text": "`FREQ=WEEKLY;BYDAY=${day};INTERVAL=2;${end}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/recurrence.ts",
+    "line": 167,
+    "text": "`FREQ=MONTHLY;BYSETPOS=${monthlyPosition(start)};BYDAY=${day};INTERVAL=1;${end}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/recurrence.ts",
+    "line": 170,
+    "text": "`FREQ=YEARLY;BYMONTH=${pad(dateParts(start).month)};BYMONTHDAY=${pad(dateParts(start).day)};INTERVAL=1;${end}`"
+  },
+  {
+    "workstream": "features/calendar",
+    "path": "src/features/calendar/selection.ts",
+    "line": 10,
+    "text": "`easel.calendar.hidden.${accountId}`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 229,
+    "text": "`\n    :root { color-scheme: ${dark ? 'dark' : 'light'}; }\n    html, body { margin: 0; padding: 0; background: transparent; }\n    body {\n      font-family: 'Inter', -apple-system, system-ui, Roboto, 'Segoe UI', sans-serif;\n      font-size: ${(text.size * fontScale).toFixed(1)}px; line-height: ${text.lineHeight.toFixed(3)}; color: ${text.color};\n      -webkit-text-size-adjust: none; overflow-wrap: anywhere;\n    }\n    ::selection { background: ${c.accentSoft}; }\n    a { color: ${c.accentFg}; text-decoration: underline; text-underline-offset: 2px; }\n    p { margin: 0 0 0.85em; }\n    h1, h2, h3, h4, h5, h6 { line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; margin: 1.25em 0 0.5em; }\n    h1 { font-size: 1.6em; } h2 { font-size: 1.35em; } h3 { font-size: 1.15em; } h4, h5, h6 { font-size: 1em; }\n    body > :first-child { margin-top: 0; } body > :last-child { margin-bottom: 0; }\n    ul, ol { padding-inline-start: 1.4em; margin: 0 0 0.85em; } li { margin: 0.2em 0; }\n    img { max-width: 100%; height: auto; border-radius: 8px; }\n    img.equation_image { border-radius: 0; vertical-align: middle; ${dark ? 'filter: invert(0.92);' : ''} }\n    .easel-table { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 1em; }\n    table { border-collapse: collapse; min-width: 100%; font-size: 0.92em; }\n    th, td { border: 1px solid ${c.border}; padding: 6px 8px; text-align: start; vertical-align: top; }\n    th { background: ${c.surfaceSunken}; font-weight: 600; }\n    blockquote { margin: 0 0 1em; padding: 0.1em 0 0.1em 1em; border-inline-start: 2px solid ${c.borderStrong}; color: ${c.fgMuted}; }\n    code, pre { font-family: ui-monospace, Menlo, monospace; font-size: 0.88em; background: ${c.surfaceSunken}; border-radius: 6px; }\n    code { padding: 0.1em 0.35em; } pre { padding: 12px; overflow-x: auto; } pre code { padding: 0; background: none; }\n    hr { border: 0; border-top: 1px solid ${c.border}; margin: 1.5em 0; }\n    iframe, video { max-width: 100%; border: 0; border-radius: 8px; }\n    iframe { width: 100%; }\n    video, audio { width: 100%; }\n    .easel-embed { margin: 0 0 1em; }\n    .easel-embed iframe { display: block; margin: 0; background: ${c.surfaceSunken}; }\n    .easel-launch {\n      display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 44px;\n      margin-top: 8px; padding: 10px 16px; border: 0; border-radius: 999px; background: ${c.accentSoft};\n      color: ${c.accentFg}; font: inherit; font-size: 0.94em; font-weight: 600; cursor: pointer;\n    }\n    .easel-launch:active { opacity: 0.6; }\n    .easel-blank {\n      display: inline-block; min-width: 1.9em; margin: 0 0.15em; padding: 0 0.45em; border-radius: 6px;\n      background: ${c.accentSoft}; color: ${c.accentFg}; font-weight: 600; text-align: center;\n      font-variant-numeric: tabular-nums; line-height: 1.5;\n    }\n  `"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 273,
+    "text": "`\n    (function () {\n      var dark = ${dark};\n      var page = ${JSON.stringify(hexToRgb(c.bg))};\n      var fg = ${JSON.stringify(c.fg)};\n      var sunken = ${JSON.stringify(c.surfaceSunken)};\n      function parse(value) {\n        var m = value && value.match(/rgba?\\\\((\\\\d+),\\\\s*(\\\\d+),\\\\s*(\\\\d+)(?:,\\\\s*([\\\\d.]+))?/);\n        if (!m || (m[4] !== undefined && Number(m[4]) < 0.3)) return null;\n        return [Number(m[1]), Number(m[2]), Number(m[3])];\n      }\n      function lum(rgb) {\n        var v = rgb.map(function (x) { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });\n        return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];\n      }\n      function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }\n\n      document.querySelectorAll('table').forEach(function (t) {\n        if (t.parentElement && t.parentElement.className === 'easel-table') return;\n        var wrap = document.createElement('div');\n        wrap.className = 'easel-table';\n        t.parentNode.insertBefore(wrap, t);\n        wrap.appendChild(t);\n      });\n      document.querySelectorAll('a[target]').forEach(function (a) { a.removeAttribute('target'); });\n      // Players fill the width and keep their authored shape (560x315 stays 16:9, not letterboxed).\n      document.querySelectorAll('iframe').forEach(function (f) {\n        var wa = f.getAttribute('width') || f.style.width || '';\n        var ha = f.getAttribute('height') || f.style.height || '';\n        var w = parseFloat(wa), h = parseFloat(ha);\n        if (w > 0 && h > 0 && !/%/.test(wa) && !/%/.test(ha)) {\n          f.style.width = '100%'; f.style.height = 'auto'; f.style.aspectRatio = w + ' / ' + h;\n        } else if (!ha) {\n          f.style.aspectRatio = '16 / 9'; f.style.height = 'auto';\n        }\n      });\n\n      // Authors pick colors for a white page. Swap backgrounds that would glare in dark\n      // mode, and text colors that would vanish against the page.\n      document.querySelectorAll('[style], font[color]').forEach(function (el) {\n        var style = getComputedStyle(el);\n        var bg = el.style.backgroundColor ? parse(style.backgroundColor) : null;\n        if (bg && dark && lum(bg) > 0.45) { el.style.backgroundColor = sunken; bg = null; }\n        var color = (el.style.color || el.getAttribute('color')) ? parse(style.color) : null;\n        if (color && contrast(color, bg || page) < 3) el.style.color = fg;\n      });\n\n      // References only to Easel-created controls; Canvas titles/content remain verbatim.\n      var launchLabels = [];\n      var noticeKind = ${scriptJson(offlineNotice)};\n      var notice = null;\n      if (noticeKind) {\n        notice = document.createElement('p');\n        notice.setAttribute('role', 'note');\n        document.body.insertBefore(notice, document.body.firstChild);\n      }\n      window.easelContentPresentation = function (value) {\n        launchLabels.forEach(function (entry) {\n          entry.button.textContent = entry.name\n            ? value.openNamedTool.replace(/\\{name\\}/g, function () { return entry.name; })\n            : value.openTool;\n          entry.button.lang = value.locale;\n          entry.button.dir = value.direction;\n        });\n        if (notice) {\n          notice.textContent = value[noticeKind];\n          notice.lang = value.locale;\n          notice.dir = value.direction;\n        }\n        window.easelPostHeight && window.easelPostHeight();\n      };\n\n      // Tool iframes get a button that opens the tool full screen (LTI-5).\n      document.querySelectorAll('iframe[data-easel-kind=\"lti\"]').forEach(function (f) {\n        var wrap = document.createElement('div');\n        wrap.className = 'easel-embed';\n        f.parentNode.insertBefore(wrap, f);\n        wrap.appendChild(f);\n        var name = f.getAttribute('title');\n        var button = document.createElement('button');\n        button.type = 'button';\n        button.className = 'easel-launch';\n        launchLabels.push({ button: button, name: name });\n        button.addEventListener('click', function () {\n          window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'launch', url: f.getAttribute('data-easel-src') || f.src, title: name || '' }));\n        });\n        wrap.appendChild(button);\n      });\n      document.querySelectorAll('video').forEach(function (v) {\n        v.setAttribute('playsinline', '');\n        v.setAttribute('webkit-playsinline', '');\n        if (!v.hasAttribute('autoplay')) v.setAttribute('controls', '');\n        if (!v.getAttribute('preload')) v.setAttribute('preload', 'metadata');\n      });\n\n      // Canvas-hosted embeds wait for a web session, then load (HTML-6).\n      var deferred = document.querySelectorAll('[data-easel-src]');\n      function activate() {\n        deferred.forEach(function (el) {\n          var src = el.getAttribute('data-easel-src');\n          if (!src) return;\n          el.removeAttribute('data-easel-src');\n          el.setAttribute('src', src);\n          var media = (el.tagName === 'SOURCE' || el.tagName === 'TRACK') ? el.parentElement : null;\n          if (media && media.load) media.load();\n        });\n        window.easelPostHeight && window.easelPostHeight();\n      }\n      function sessionFrame(url, done) {\n        var frame = document.createElement('iframe');\n        frame.setAttribute('aria-hidden', 'true');\n        frame.setAttribute('tabindex', '-1');\n        frame.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;border:0;left:-10px;top:-10px;';\n        var finished = false;\n        function finish() { if (finished) return; finished = true; done && done(); setTimeout(function () { frame.remove(); }, 1000); }\n        frame.addEventListener('load', finish);\n        setTimeout(finish, 6000);\n        frame.src = url;\n        document.body.appendChild(frame);\n      }\n      window.easelSession = function (url) { if (url) sessionFrame(url, activate); else activate(); };\n      window.easelRefreshSession = function (url) { if (url) sessionFrame(url); };\n      if (deferred.length) window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'session' }));\n\n      function postHeight() {\n        var h = Math.ceil(document.body.getBoundingClientRect().height);\n        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'height', value: h }));\n      }\n      window.easelPostHeight = postHeight;\n      document.querySelectorAll('img').forEach(function (img) { img.addEventListener('load', postHeight); });\n      if (window.ResizeObserver) new ResizeObserver(postHeight).observe(document.body);\n      window.addEventListener('load', postHeight);\n      postHeight();\n      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'presentationReady' }));\n    })();\n  `"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 417,
+    "text": "`<!doctype html><html dir=\"auto\"><head>\n    <meta charset=\"utf-8\" />${school ? SCHOOL_THEME_CSP : ''}\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\" />\n    <style>${css}</style>${school ? schoolThemeStyle(school.css, fontScale) : ''}${math}\n  </head><body>${body}<script>${script}</script>${school ? schoolThemeScript(school.js, c, dark) : ''}</body></html>`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 462,
+    "text": "` allow=\"${IFRAME_ALLOW}\"`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 474,
+    "text": "` src=\"${escapeAttr(src)}\"`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 480,
+    "text": "` data-easel-src=\"${escapeAttr(src)}\" data-easel-kind=\"${lti ? 'lti' : 'canvas'}\"`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 546,
+    "text": "`<style>@layer easel-school {\\n${layered}\\n}\\nhtml { font-size: ${(16 * fontScale).toFixed(1)}px; }</style>`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/RichContent.tsx",
+    "line": 552,
+    "text": "`<script>\n    (function () {\n      var dark = ${dark};\n      var page = ${JSON.stringify(hexToRgb(c.bg))}, text = ${JSON.stringify(hexToRgb(c.fg))};\n      var fg = ${JSON.stringify(c.fg)}, bg = ${JSON.stringify(c.bg)};\n      var sunken = ${JSON.stringify(c.surfaceSunken)}, sunkenRgb = ${JSON.stringify(hexToRgb(c.surfaceSunken))};\n      function parse(value) {\n        var m = value && value.match(/rgba?\\\\(([\\\\d.]+),\\\\s*([\\\\d.]+),\\\\s*([\\\\d.]+)(?:,\\\\s*([\\\\d.]+))?/);\n        if (!m || (m[4] !== undefined && Number(m[4]) < 0.3)) return null;\n        return [Number(m[1]), Number(m[2]), Number(m[3])];\n      }\n      function lum(rgb) {\n        var v = rgb.map(function (x) { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });\n        return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];\n      }\n      function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }\n      function ownText(el) {\n        for (var n = el.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && /\\\\S/.test(n.nodeValue)) return true;\n        return false;\n      }\n      function lightGradient(image) {\n        return (image.match(/rgba?\\\\([^)]*\\\\)/g) || []).some(function (stop) { var rgb = parse(stop); return rgb && lum(rgb) > 0.45; });\n      }\n\n      // Easel's bridge stays Easel's.\n      try { Object.freeze(window.ReactNativeWebView); } catch (e) {}\n      ['ReactNativeWebView', 'easelPostHeight', 'easelSession', 'easelRefreshSession', 'easelContentPresentation'].forEach(function (key) {\n        try { Object.defineProperty(window, key, { value: window[key], writable: false, configurable: false }); } catch (e) {}\n      });\n      window.open = function () { return null; };\n      document.write = document.writeln = function () {};\n\n      ${sources}.forEach(function (source) {\n        try { (0, eval)(source); } catch (e) {}\n      });\n\n      // Reads everything first, then writes, so the pass never forces a layout per element.\n      var ours = new WeakSet();\n      function guard() {\n        var under = new Map(), writes = [];\n        document.body.querySelectorAll('*').forEach(function (el) {\n          if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;\n          var style = getComputedStyle(el);\n          if (style.position === 'fixed' || style.position === 'sticky') writes.push([el, 'position', 'static']);\n          var back = parse(style.backgroundColor);\n          if (dark && back && lum(back) > 0.45) { writes.push([el, 'background-color', sunken]); back = sunkenRgb; }\n          if (dark && style.backgroundImage.indexOf('gradient') >= 0 && lightGradient(style.backgroundImage)) {\n            writes.push([el, 'background-image', 'none']);\n            if (!back) { writes.push([el, 'background-color', sunken]); back = sunkenRgb; }\n          }\n          var behind = back || under.get(el.parentElement) || page;\n          under.set(el, behind);\n          if (!ownText(el)) return;\n          var color = parse(style.color);\n          if (!color) return;\n          // Authored colors keep the content pass's bar; the theme's meet AA (3:1 for large text).\n          var authored = (el.style.color && !ours.has(el)) || el.hasAttribute('color');\n          var size = parseFloat(style.fontSize), weight = parseInt(style.fontWeight, 10) || 400;\n          var need = authored || size >= 24 || (size >= 18.66 && weight >= 700) ? 3 : 4.5;\n          if (contrast(color, behind) >= need) return;\n          writes.push([el, 'color', contrast(text, behind) >= contrast(page, behind) ? fg : bg]);\n          ours.add(el);\n        });\n        writes.forEach(function (w) { w[0].style.setProperty(w[1], w[2], 'important'); });\n      }\n      var timer = null;\n      var observer = window.MutationObserver ? new MutationObserver(function () { if (!timer) timer = setTimeout(run, 150); }) : null;\n      function run() {\n        timer = null;\n        if (observer) observer.disconnect();\n        try { guard(); } catch (e) {}\n        if (observer) observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'style'] });\n        window.easelPostHeight && window.easelPostHeight();\n      }\n      run();\n      window.addEventListener('load', run);\n    })();\n  </script>`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/links.ts",
+    "line": 40,
+    "text": "`user-${s[1]}`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/links.ts",
+    "line": 48,
+    "text": "`anon-${decodeURIComponent(s[1])}`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/links.ts",
+    "line": 55,
+    "text": "`anon-${decodeURIComponent(m[3])}`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/links.ts",
+    "line": 203,
+    "text": "Tool"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/presentation.ts",
+    "line": 34,
+    "text": "`<p role=\"note\" lang=\"${escapePresentationHtml(presentation.locale)}\" dir=\"${presentation.direction}\">${escapePresentationHtml(presentation[kind])}</p>`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/presentation.ts",
+    "line": 39,
+    "text": "`window.easelContentPresentation && window.easelContentPresentation(${scriptJson(presentation)}); true;`"
+  },
+  {
+    "workstream": "features/content",
+    "path": "src/features/content/session.ts",
+    "line": 141,
+    "text": "`window.${call} && window.${call}(${JSON.stringify(url)}); true;`"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/AssignmentDetails.tsx",
+    "line": 88,
+    "text": "Submitted late"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/AssignmentDetails.tsx",
+    "line": 408,
+    "text": "`assignment_${a.id}`"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/Pickers.tsx",
+    "line": 34,
+    "text": "Hides the options"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/Pickers.tsx",
+    "line": 34,
+    "text": "Shows the options"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/QuizDetails.tsx",
+    "line": 20,
+    "text": "Graded quiz"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/QuizDetails.tsx",
+    "line": 21,
+    "text": "Practice quiz"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/QuizDetails.tsx",
+    "line": 22,
+    "text": "Graded survey"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 99,
+    "text": "File upload"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 100,
+    "text": "Text entry"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 101,
+    "text": "Website URL"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 102,
+    "text": "Media recording"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 105,
+    "text": "Discussion post"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 106,
+    "text": "External tool"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 107,
+    "text": "External tool"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 108,
+    "text": "On paper"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 109,
+    "text": "No submission"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 110,
+    "text": "Not graded"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 122,
+    "text": "External tools"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 123,
+    "text": "Nothing to turn in online"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 133,
+    "text": "External tool"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 144,
+    "text": "Marked done"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 144,
+    "text": "Mark done"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 160,
+    "text": "Open this item to complete it."
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 162,
+    "text": "Mark this item done when you finish it."
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 164,
+    "text": "Submit this item to complete it."
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 166,
+    "text": "Post in this item to complete it."
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 168,
+    "text": "`Score at least ${req.minScore ?? 0} to complete this item.`"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/format.ts",
+    "line": 170,
+    "text": "`Score at least ${req.minPercentage ?? 0}% to complete this item.`"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/navigation.ts",
+    "line": 45,
+    "text": "Front page"
+  },
+  {
+    "workstream": "features/course",
+    "path": "src/features/course/navigation.ts",
+    "line": 46,
+    "text": "Recent activity"
+  },
+  {
+    "workstream": "features/discussions",
+    "path": "src/features/discussions/Thread.tsx",
+    "line": 507,
+    "text": "Entries need a <ThreadProvider>."
+  },
+  {
+    "workstream": "features/discussions",
+    "path": "src/features/discussions/mentions.ts",
+    "line": 112,
+    "text": "`<span class=\"mceNonEditable mention\" data-mention=\"${escapeHtml(mention.id)}\">${escapeHtml(`@${mention.name}`)}</span>`"
+  },
+  {
+    "workstream": "features/discussions",
+    "path": "src/features/discussions/sortPreference.ts",
+    "line": 20,
+    "text": "`easel.discussions.sort.${accountId.replace(/[^A-Za-z0-9._-]/g, '_')}`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 127,
+    "text": "editor.bold"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 128,
+    "text": "editor.italic"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 133,
+    "text": "editor.underline"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 136,
+    "text": "editor.heading"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 143,
+    "text": "editor.bulleted"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 150,
+    "text": "editor.numbered"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 153,
+    "text": "editor.link"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 156,
+    "text": "editor.undo"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 157,
+    "text": "editor.redo"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 240,
+    "text": "`window.easel.setHTML(${scriptJson(value)})`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 247,
+    "text": "`window.easel.setTheme(${scriptJson(themeVariables({ colors, fontScale }))}, ${scheme === 'dark'})`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 252,
+    "text": "`window.easel.setEditable(${editable})`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 259,
+    "text": "`window.easel.setPresentation(${scriptJson({ label: name, placeholder, locale, direction })})`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 275,
+    "text": "`window.easel.insertImage(${scriptJson(src)}, ${scriptJson(alt ?? '')})`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 358,
+    "text": "`window.easel.exec(${scriptJson(item.command)})`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 369,
+    "text": "`window.easel.applyLink(${scriptJson(href)}, ${scriptJson(text)})`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/RichEditor.tsx",
+    "line": 508,
+    "text": "`https://${trimmed}`"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/editorDocument.ts",
+    "line": 82,
+    "text": "`\n    :root { ${vars} color-scheme: ${options.dark ? 'dark' : 'light'}; }\n    html, body { margin: 0; padding: 0; background: transparent; min-height: 100%; }\n    html { height: 100%; }\n    body {\n      cursor: text;\n      font-family: 'Inter', -apple-system, system-ui, Roboto, 'Segoe UI', sans-serif;\n      font-size: var(--size); line-height: 1.5; color: var(--fg);\n      -webkit-text-size-adjust: none; -webkit-tap-highlight-color: transparent;\n      overflow-wrap: anywhere;\n    }\n    #editor {\n      position: relative; outline: none; min-height: 1.5em;\n      padding: 12px 14px 14px; caret-color: var(--accent);\n    }\n    #editor.empty::before {\n      content: attr(data-placeholder); position: absolute; top: 12px; left: 14px; right: 14px;\n      color: var(--subtle); pointer-events: none;\n      direction: var(--placeholder-direction); text-align: start;\n    }\n    ::selection { background: var(--accent-soft); }\n    a { color: var(--accent-fg); text-decoration: underline; text-underline-offset: 2px; }\n    p { margin: 0 0 0.75em; }\n    h2, h3, h4 { line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; margin: 1em 0 0.4em; }\n    h2 { font-size: 1.35em; } h3 { font-size: 1.2em; } h4 { font-size: 1.05em; }\n    #editor > :first-child { margin-top: 0; } #editor > :last-child { margin-bottom: 0; }\n    ul, ol { padding-inline-start: 1.4em; margin: 0 0 0.75em; } li { margin: 0.15em 0; }\n    blockquote { margin: 0 0 0.75em; padding-inline-start: 0.9em; border-inline-start: 2px solid var(--border-strong); color: var(--muted); }\n    img { max-width: 100%; height: auto; border-radius: 8px; }\n    code, pre { font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; background: var(--sunken); border-radius: 6px; }\n    code { padding: 0.1em 0.3em; } pre { padding: 10px; white-space: pre-wrap; }\n  `"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/editorDocument.ts",
+    "line": 115,
+    "text": "`\n  (function () {\n    var editor = document.getElementById('editor');\n    function post(message) { window.ReactNativeWebView.postMessage(JSON.stringify(message)); }\n\n    // --- Sanitizing: an allowlist of tags and attributes, the shapes Canvas keeps.\n    var ALLOWED = {\n      P: [], BR: [], STRONG: [], EM: [], U: [], S: [], SUB: [], SUP: [],\n      UL: [], OL: [], LI: [], H2: [], H3: [], H4: [], BLOCKQUOTE: [], PRE: [], CODE: [],\n      A: ['href', 'title'], IMG: ['src', 'alt', 'width', 'height']\n    };\n    var RENAME = { B: 'STRONG', I: 'EM', DIV: 'P', H1: 'H2', H5: 'H4', H6: 'H4', STRIKE: 'S', DEL: 'S' };\n    var DROP = { SCRIPT: 1, STYLE: 1, IFRAME: 1, OBJECT: 1, EMBED: 1, FORM: 1, INPUT: 1, BUTTON: 1,\n      SELECT: 1, TEXTAREA: 1, META: 1, LINK: 1, TITLE: 1, HEAD: 1, SVG: 1, CANVAS: 1, VIDEO: 1, AUDIO: 1, NOSCRIPT: 1 };\n\n    function unwrap(el) {\n      var parent = el.parentNode;\n      while (el.firstChild) parent.insertBefore(el.firstChild, el);\n      parent.removeChild(el);\n    }\n    function clean(node) {\n      var children = Array.prototype.slice.call(node.childNodes);\n      for (var i = 0; i < children.length; i++) {\n        var child = children[i];\n        if (child.nodeType === 3) continue;\n        if (child.nodeType !== 1) { node.removeChild(child); continue; }\n        var tag = child.tagName.toUpperCase();\n        if (DROP[tag]) { node.removeChild(child); continue; }\n        var mapped = RENAME[tag] || tag;\n        if (!ALLOWED[mapped]) { clean(child); unwrap(child); continue; }\n        var el = child;\n        if (mapped !== tag) {\n          el = document.createElement(mapped);\n          while (child.firstChild) el.appendChild(child.firstChild);\n          node.replaceChild(el, child);\n        }\n        var attrs = Array.prototype.slice.call(el.attributes);\n        for (var j = 0; j < attrs.length; j++) {\n          if (ALLOWED[mapped].indexOf(attrs[j].name) < 0) el.removeAttribute(attrs[j].name);\n        }\n        if (mapped === 'A') {\n          var href = (el.getAttribute('href') || '').trim();\n          if (!/^(https?:|mailto:|tel:|\\\\/|#)/i.test(href)) el.removeAttribute('href');\n        }\n        if (mapped === 'IMG' && !/^(https?:|data:image\\\\/)/i.test(el.getAttribute('src') || '')) {\n          node.removeChild(el);\n          continue;\n        }\n        clean(el);\n      }\n    }\n    // Parsed in an inert document, so nothing in the input loads or runs.\n    function sanitize(html) {\n      var doc = new DOMParser().parseFromString('<body>' + (html || '') + '</body>', 'text/html');\n      clean(doc.body);\n      return doc.body.innerHTML;\n    }\n    function isEmpty() {\n      return !editor.textContent.trim() && !editor.querySelector('img');\n    }\n    function serialize() {\n      if (isEmpty()) return '';\n      var html = sanitize(editor.innerHTML);\n      // Drop the empty paragraphs Enter leaves at the end.\n      return html.replace(/(<p>(<br>|\\\\s|&nbsp;)*<\\\\/p>)+$/i, '').trim();\n    }\n\n    // --- State reporting\n    var lastHtml = null, lastState = '', lastHeight = 0;\n    function reportHeight() {\n      var h = Math.ceil(editor.getBoundingClientRect().height);\n      if (h !== lastHeight) { lastHeight = h; post({ type: 'height', value: h }); }\n    }\n    function closest(tag) {\n      var sel = window.getSelection();\n      var node = sel && sel.anchorNode;\n      while (node && node !== editor) {\n        if (node.nodeType === 1 && node.tagName === tag) return node;\n        node = node.parentNode;\n      }\n      return null;\n    }\n    function q(name) { try { return document.queryCommandState(name); } catch (e) { return false; } }\n    function enabled(name) { try { return document.queryCommandEnabled(name); } catch (e) { return false; } }\n    function reportState() {\n      var block = '';\n      try { block = String(document.queryCommandValue('formatBlock') || '').toLowerCase(); } catch (e) {}\n      var inHeading = /^h[1-6]$/.test(block) || !!closest('H2') || !!closest('H3') || !!closest('H4');\n      var state = {\n        // Headings are bold by style; only explicit bold counts there.\n        bold: inHeading ? !!(closest('STRONG') || closest('B')) : q('bold'),\n        italic: q('italic'),\n        // Links are underlined by style; only real underlines count.\n        underline: !!closest('U') || (q('underline') && !closest('A')),\n        bulleted: q('insertUnorderedList'), numbered: q('insertOrderedList'),\n        heading: inHeading,\n        link: !!closest('A'),\n        canUndo: enabled('undo'), canRedo: enabled('redo')\n      };\n      var key = JSON.stringify(state);\n      if (key !== lastState) { lastState = key; post({ type: 'state', state: state }); }\n    }\n    function changed() {\n      editor.classList.toggle('empty', isEmpty());\n      var html = serialize();\n      if (html !== lastHtml) { lastHtml = html; post({ type: 'change', html: html }); }\n      reportHeight();\n      reportState();\n    }\n\n    // --- Selection, kept across the link sheet (focus moves to a native field)\n    var saved = null;\n    function saveSelection() {\n      var sel = window.getSelection();\n      if (sel && sel.rangeCount && editor.contains(sel.anchorNode)) saved = sel.getRangeAt(0).cloneRange();\n    }\n    function restoreSelection() {\n      editor.focus();\n      if (!saved) return;\n      var sel = window.getSelection();\n      sel.removeAllRanges();\n      sel.addRange(saved);\n    }\n    function caretToEnd() {\n      var range = document.createRange();\n      range.selectNodeContents(editor);\n      range.collapse(false);\n      var sel = window.getSelection();\n      sel.removeAllRanges();\n      sel.addRange(range);\n    }\n    function ensureFocus() {\n      if (document.activeElement !== editor) {\n        editor.focus();\n        if (!saved) caretToEnd(); else restoreSelection();\n      }\n    }\n\n    function escapeHtml(text) {\n      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\n    }\n\n    window.easel = {\n      exec: function (command) {\n        ensureFocus();\n        if (command === 'heading') {\n          var heading = closest('H2') || closest('H3') || closest('H4');\n          document.execCommand('formatBlock', false, heading ? '<p>' : '<h3>');\n        } else {\n          document.execCommand(command, false, null);\n        }\n        changed();\n      },\n      requestLink: function () {\n        saveSelection();\n        var a = closest('A');\n        var sel = window.getSelection();\n        post({ type: 'link', text: a ? a.textContent : (sel ? sel.toString() : ''), href: a ? a.getAttribute('href') || '' : '' });\n      },\n      applyLink: function (href, text) {\n        restoreSelection();\n        var a = closest('A');\n        if (a) {\n          var range = document.createRange();\n          range.selectNode(a);\n          var sel = window.getSelection();\n          sel.removeAllRanges();\n          sel.addRange(range);\n        }\n        if (!href) {\n          document.execCommand('unlink', false, null);\n        } else {\n          var selected = window.getSelection().toString();\n          var label = text || selected || href;\n          document.execCommand('insertHTML', false, '<a href=\"' + escapeHtml(href) + '\">' + escapeHtml(label) + '</a>');\n        }\n        saved = null;\n        changed();\n      },\n      insertImage: function (src, alt) {\n        ensureFocus();\n        document.execCommand('insertHTML', false, '<img src=\"' + escapeHtml(src) + '\" alt=\"' + escapeHtml(alt || '') + '\">');\n        changed();\n      },\n      setHTML: function (html) {\n        // A value set from outside (an @-mention swap) keeps typing at the end, not the start.\n        var focused = document.activeElement === editor;\n        editor.innerHTML = sanitize(html);\n        if (focused) { saved = null; caretToEnd(); }\n        lastHtml = serialize();\n        editor.classList.toggle('empty', isEmpty());\n        reportHeight();\n      },\n      setTheme: function (vars, dark) {\n        for (var key in vars) document.documentElement.style.setProperty(key, vars[key]);\n        document.documentElement.style.colorScheme = dark ? 'dark' : 'light';\n        reportHeight();\n      },\n      setEditable: function (on) {\n        editor.setAttribute('contenteditable', on ? 'true' : 'false');\n        editor.setAttribute('aria-disabled', on ? 'false' : 'true');\n        if (!on) editor.blur();\n      },\n      // Metadata only: never touch content, selection, focus, undo, or change reporting.\n      setPresentation: function (value) {\n        document.documentElement.lang = value.locale;\n        document.title = value.label;\n        editor.setAttribute('aria-label', value.label);\n        editor.setAttribute('data-placeholder', value.placeholder);\n        editor.style.setProperty('--placeholder-direction', value.direction);\n      },\n      setPlaceholder: function (text) { editor.setAttribute('data-placeholder', text || ''); },\n      focus: function () { ensureFocus(); },\n      blur: function () { editor.blur(); }\n    };\n\n    try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch (e) {}\n    window.easel.setHTML(${initial});\n    window.easel.setPresentation(${scriptJson({ label: options.label, placeholder: options.placeholder, locale: options.locale ?? 'en', direction: options.direction ?? 'ltr' })});\n\n    editor.addEventListener('input', changed);\n    editor.addEventListener('focus', function () { post({ type: 'focus' }); reportState(); });\n    editor.addEventListener('blur', function () { saveSelection(); post({ type: 'blur' }); });\n    editor.addEventListener('keyup', reportState);\n    document.addEventListener('selectionchange', function () {\n      if (document.activeElement === editor) reportState();\n    });\n    // Pasted content keeps its structure but loses outside styles, scripts, and classes.\n    editor.addEventListener('paste', function (event) {\n      var data = event.clipboardData;\n      if (!data) return;\n      event.preventDefault();\n      var html = data.getData('text/html');\n      if (html) document.execCommand('insertHTML', false, sanitize(html));\n      else document.execCommand('insertText', false, data.getData('text/plain'));\n      changed();\n    });\n    editor.addEventListener('drop', function (event) { event.preventDefault(); });\n    // The page is taller than the text: a tap below the last line writes at the end, like a text view.\n    document.addEventListener('click', function (event) {\n      if (editor.getAttribute('contenteditable') !== 'true') return;\n      if (event.target === document.body || event.target === document.documentElement) {\n        editor.focus();\n        caretToEnd();\n        reportState();\n      }\n    });\n    // Links are for reading later, not for following while writing.\n    editor.addEventListener('click', function (event) {\n      if (event.target && event.target.closest && event.target.closest('a')) event.preventDefault();\n    });\n    if (window.ResizeObserver) new ResizeObserver(reportHeight).observe(editor);\n    window.addEventListener('load', reportHeight);\n    reportHeight();\n    post({ type: 'ready' });\n  })();\n  `"
+  },
+  {
+    "workstream": "features/editor",
+    "path": "src/features/editor/editorDocument.ts",
+    "line": 375,
+    "text": "`<!doctype html><html dir=\"auto\" lang=\"${attr(options.locale ?? 'en')}\"><head>\n    <title>${attr(options.label)}</title>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\" />\n    <style>${css}</style>\n  </head><body><div id=\"editor\" dir=\"auto\" role=\"textbox\" aria-multiline=\"true\" aria-label=\"${attr(options.label)}\"\n    contenteditable=\"${options.editable ? 'true' : 'false'}\" spellcheck=\"true\" autocapitalize=\"sentences\"\n    data-placeholder=\"${attr(options.placeholder)}\"></div><script>${script}</script></body></html>`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileActionBar.tsx",
+    "line": 99,
+    "text": "`min-h-[52px] flex-1 items-center justify-center gap-1 rounded-xl py-1.5 ${disabled ? 'opacity-40' : ''}`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileCard.tsx",
+    "line": 48,
+    "text": "`h-20 w-20 items-center justify-center rounded-3xl ${heroBg[tone]}`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 112,
+    "text": "files.viewer.error.not_found.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 117,
+    "text": "files.viewer.error.forbidden.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 120,
+    "text": "files.viewer.error.locked.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 123,
+    "text": "files.viewer.error.signed_out.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 128,
+    "text": "files.viewer.error.offline.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 133,
+    "text": "files.viewer.error.server.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 138,
+    "text": "files.viewer.error.storage.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/FileViewer.tsx",
+    "line": 143,
+    "text": "files.viewer.error.unknown.title"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 43,
+    "text": "Sharing isn’t available on this device."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 118,
+    "text": "Couldn’t open the folder picker."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 124,
+    "text": "`Couldn’t save to ${destination.label}. Pick another folder.`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 147,
+    "text": "On My iPad"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 148,
+    "text": "On My iPhone"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 185,
+    "text": "Couldn’t open the folder picker."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 191,
+    "text": "`Couldn’t save to ${destination.label}. Pick another folder.`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 211,
+    "text": "Easel can’t add to Photos. Allow it in Settings > Easel > Photos."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/actions.ts",
+    "line": 212,
+    "text": "Easel can’t add to your gallery. Allow photo access in Settings."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/browserPresentation.ts",
+    "line": 10,
+    "text": "files.sort.name"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/browserPresentation.ts",
+    "line": 15,
+    "text": "files.sort.updated_at"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/browserPresentation.ts",
+    "line": 20,
+    "text": "files.sort.size"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/browserPresentation.ts",
+    "line": 25,
+    "text": "files.sort.content_type"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/browserPresentation.ts",
+    "line": 45,
+    "text": "`files.count.${kind}`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 38,
+    "text": "This file was deleted or moved. Ask your instructor for a new link."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 39,
+    "text": "You don’t have permission to download this file."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 40,
+    "text": "This file is locked."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 42,
+    "text": "Canvas asked you to sign in again instead of sending the file. Try again, or open it in the browser."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 43,
+    "text": "You’re offline, or Canvas can’t be reached. Connect and try again."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 44,
+    "text": "Canvas had a problem sending this file. Try again in a minute."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 45,
+    "text": "Your device is out of space, or Easel couldn’t save the file."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 266,
+    "text": "Download cancelled"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 326,
+    "text": "`.download-${Date.now()}-${Math.random().toString(36).slice(2)}`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/download.ts",
+    "line": 340,
+    "text": "Download paused"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 55,
+    "text": "PDF"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 63,
+    "text": "Word document"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 70,
+    "text": "Word document"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 77,
+    "text": "Word template"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 83,
+    "text": "OpenDocument text"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 89,
+    "text": "Rich Text document"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 96,
+    "text": "Pages document"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 103,
+    "text": "EPUB book"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 111,
+    "text": "Excel spreadsheet"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 118,
+    "text": "Excel spreadsheet"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 125,
+    "text": "OpenDocument spreadsheet"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 131,
+    "text": "Numbers spreadsheet"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 139,
+    "text": "PowerPoint presentation"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 146,
+    "text": "PowerPoint presentation"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 153,
+    "text": "OpenDocument presentation"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 159,
+    "text": "Keynote presentation"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 167,
+    "text": "Text file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 171,
+    "text": "Log file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 175,
+    "text": "CSV spreadsheet"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 182,
+    "text": "TSV spreadsheet"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 189,
+    "text": "Markdown document"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 196,
+    "text": "Markdown document"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 202,
+    "text": "Web page"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 206,
+    "text": "Web page"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 211,
+    "text": "JSON file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 218,
+    "text": "XML file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 222,
+    "text": "YAML file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 223,
+    "text": "YAML file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 227,
+    "text": "Python file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 234,
+    "text": "Jupyter notebook"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 240,
+    "text": "JavaScript file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 244,
+    "text": "TypeScript file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 248,
+    "text": "Java file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 255,
+    "text": "C file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 262,
+    "text": "C header"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 269,
+    "text": "C++ file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 273,
+    "text": "C++ file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 274,
+    "text": "C++ header"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 275,
+    "text": "C# file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 276,
+    "text": "Go file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 280,
+    "text": "Ruby file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 284,
+    "text": "Rust file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 288,
+    "text": "Swift file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 292,
+    "text": "Kotlin file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 293,
+    "text": "R script"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 294,
+    "text": "MATLAB file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 295,
+    "text": "SQL file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 299,
+    "text": "Shell script"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 306,
+    "text": "CSS file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 310,
+    "text": "LaTeX file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 315,
+    "text": "JPEG image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 322,
+    "text": "JPEG image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 329,
+    "text": "PNG image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 336,
+    "text": "GIF image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 343,
+    "text": "HEIC image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 350,
+    "text": "HEIF image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 357,
+    "text": "WebP image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 364,
+    "text": "SVG image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 371,
+    "text": "BMP image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 378,
+    "text": "TIFF image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 385,
+    "text": "TIFF image"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 393,
+    "text": "MP4 video"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 400,
+    "text": "MP4 video"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 407,
+    "text": "QuickTime video"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 414,
+    "text": "WebM video"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 418,
+    "text": "MKV video"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 422,
+    "text": "AVI video"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 430,
+    "text": "MP3 audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 437,
+    "text": "M4A audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 444,
+    "text": "AAC audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 451,
+    "text": "WAV audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 455,
+    "text": "Ogg audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 456,
+    "text": "Ogg audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 457,
+    "text": "Opus audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 458,
+    "text": "FLAC audio"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 463,
+    "text": "ZIP archive"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 470,
+    "text": "RAR archive"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 476,
+    "text": "7-Zip archive"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 482,
+    "text": "TAR archive"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 489,
+    "text": "Gzip archive"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 493,
+    "text": "Gzip archive"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/kinds.ts",
+    "line": 582,
+    "text": "Text file"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/previews/WebPreviews.tsx",
+    "line": 218,
+    "text": "`window.renderPdf && window.renderPdf(${JSON.stringify(data)}); true;`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/previews/WebPreviews.tsx",
+    "line": 244,
+    "text": "`<!DOCTYPE html><html><head><meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes\">\n<style>\n  html, body { margin: 0; background: ${background}; }\n  #pages { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px 0 32px; }\n  .page { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); position: relative; }\n  .page canvas { display: block; width: 100%; height: 100%; }\n  #status { font: 15px system-ui, sans-serif; color: ${muted}; text-align: center; padding: 48px 24px; }\n</style>\n<script src=\"${PDFJS}/pdf.min.js\"></script>\n</head><body><div id=\"pages\"></div>\n<script>\n(function () {\n  function post(m) { window.ReactNativeWebView.postMessage(JSON.stringify(m)); }\n  if (!window.pdfjsLib) { post({ type: 'error', message: 'pdf.js did not load' }); return; }\n  pdfjsLib.GlobalWorkerOptions.workerSrc = '${PDFJS}/pdf.worker.min.js';\n  // Presentation only: holders, canvases and numeric page protocol stay intact.\n  var labelHolders = [], labelTotal = 0;\n  function labelPage(div) {\n    var labels = window.easelPdfLabels;\n    if (!labels) return;\n    function number(n) { return String(n).replace(/[0-9]/g, function (d) { return labels.digits[Number(d)]; }); }\n    div.setAttribute('aria-label', labels.page.replace(/\\\\{(current|total)\\\\}/g, function (_, key) {\n      return number(key === 'current' ? div.dataset.page : labelTotal);\n    }));\n  }\n  window.easelUpdatePdfLabels = function () { labelHolders.forEach(labelPage); };\n  window.renderPdf = async function (b64) {\n    try {\n      var raw = atob(b64), bytes = new Uint8Array(raw.length);\n      for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);\n      var pdf = await pdfjsLib.getDocument({ data: bytes }).promise;\n      var container = document.getElementById('pages');\n      var width = Math.min(document.documentElement.clientWidth - 24, 900);\n      var ratio = Math.min(window.devicePixelRatio || 1, 3);\n      var first = (await pdf.getPage(1)).getViewport({ scale: 1 });\n      var holders = [];\n      labelHolders = holders;\n      labelTotal = pdf.numPages;\n      for (var n = 1; n <= pdf.numPages; n++) {\n        var div = document.createElement('div');\n        div.className = 'page';\n        div.dataset.page = n;\n        div.setAttribute('role', 'img');\n        labelPage(div);\n        div.style.width = width + 'px';\n        div.style.height = Math.round(width * first.height / first.width) + 'px';\n        container.appendChild(div);\n        holders.push(div);\n      }\n      post({ type: 'loaded', pages: pdf.numPages });\n      async function draw(div) {\n        if (div.dataset.drawn) return;\n        div.dataset.drawn = '1';\n        var page = await pdf.getPage(Number(div.dataset.page));\n        var base = page.getViewport({ scale: 1 });\n        var viewport = page.getViewport({ scale: (width / base.width) * ratio });\n        div.style.height = Math.round(width * base.height / base.width) + 'px';\n        var canvas = document.createElement('canvas');\n        canvas.width = viewport.width; canvas.height = viewport.height;\n        div.appendChild(canvas);\n        await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;\n      }\n      var seen = new IntersectionObserver(function (entries) {\n        entries.forEach(function (e) { if (e.isIntersecting) draw(e.target); });\n      }, { rootMargin: '800px 0px' });\n      holders.forEach(function (d) { seen.observe(d); });\n      var current = 1;\n      window.addEventListener('scroll', function () {\n        var middle = window.scrollY + window.innerHeight / 2, at = 1;\n        holders.forEach(function (d) { if (d.offsetTop <= middle) at = Number(d.dataset.page); });\n        if (at !== current) { current = at; post({ type: 'page', page: at }); }\n      }, { passive: true });\n    } catch (e) { post({ type: 'error', message: String(e && e.message || e) }); }\n  };\n})();\n</script></body></html>`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/previews/presentation.ts",
+    "line": 49,
+    "text": "`window.easelPdfLabels = ${scriptJson(value)}; window.easelUpdatePdfLabels && window.easelUpdatePdfLabels(); true;`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 33,
+    "text": "`<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>${escapeHtml(title)}</title>\n<style>@page{margin:0.6in}body{margin:0;font:11pt -apple-system,Roboto,sans-serif;color:#000}\nimg{display:block;max-width:100%;max-height:9.5in;margin:0 auto;object-fit:contain}\npre{white-space:pre-wrap;word-wrap:break-word;font:10pt ui-monospace,Menlo,monospace}</style></head>\n<body>${body}</body></html>`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 41,
+    "text": "`image/${describeFile(file).label.toLowerCase()}`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 51,
+    "text": "Couldn’t open printing. Try again, or share the file to another app to print it."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 64,
+    "text": "Canvas couldn’t make a printable copy of this document. Open it in another app to print it."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 95,
+    "text": "`print-${file.id}-${Date.now()}.pdf`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 113,
+    "text": "This kind of file can’t be printed from Easel. Open it in another app to print it."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 135,
+    "text": "`<img src=\"data:${mimeOf(file)};base64,${data}\" alt=\"\">`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/print.ts",
+    "line": 138,
+    "text": "`<pre>${escapeHtml(text)}</pre>`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/upload.ts",
+    "line": 108,
+    "text": "Easel can’t use the camera. Turn on camera access for Easel in Settings."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/upload.ts",
+    "line": 117,
+    "text": "This device doesn’t have a camera. Choose a photo or file instead."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/upload.ts",
+    "line": 198,
+    "text": "Couldn’t choose a file. Try again."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/upload.ts",
+    "line": 200,
+    "text": "Your My Files storage is full. Delete something in Canvas and try again."
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/upload.ts",
+    "line": 201,
+    "text": "`Couldn’t upload ${asset.name}. Check your connection and try again.`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/useFileActions.tsx",
+    "line": 92,
+    "text": "`No app on this device opens ${describeFile(f).label} files. Try Share instead.`"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/useFileActions.tsx",
+    "line": 113,
+    "text": "Photos"
+  },
+  {
+    "workstream": "features/files",
+    "path": "src/features/files/useFileActions.tsx",
+    "line": 114,
+    "text": "your gallery"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/format.ts",
+    "line": 282,
+    "text": "`Lowest ${group.dropLowest} scores dropped`"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/format.ts",
+    "line": 290,
+    "text": "`Highest ${group.dropHighest} scores dropped`"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/useCourseGrades.ts",
+    "line": 235,
+    "text": "`What-if score: ${label}`"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/useCourseGrades.ts",
+    "line": 246,
+    "text": "`Couldn’t save the what-if score for “${label}”. Try applying it again.`"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/useCourseGrades.ts",
+    "line": 296,
+    "text": "`score:${assignment.id}`"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/useCourseGrades.ts",
+    "line": 297,
+    "text": "`score:${assignment.id}`"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/useCourseGrades.ts",
+    "line": 309,
+    "text": "Reset what-if scores"
+  },
+  {
+    "workstream": "features/grades",
+    "path": "src/features/grades/useCourseGrades.ts",
+    "line": 328,
+    "text": "Reset what-if scores"
+  },
+  {
+    "workstream": "features/inbox",
+    "path": "src/features/inbox/ConversationRow.tsx",
+    "line": 28,
+    "text": "Only you"
+  },
+  {
+    "workstream": "features/inbox",
+    "path": "src/features/inbox/RecipientPicker.tsx",
+    "line": 87,
+    "text": "`course_${courseId}`"
+  },
+  {
+    "workstream": "features/inbox",
+    "path": "src/features/inbox/actions.ts",
+    "line": 99,
+    "text": "`confirm:${id}`"
+  },
+  {
+    "workstream": "features/inbox",
+    "path": "src/features/inbox/attachmentPresentation.ts",
+    "line": 11,
+    "text": "Your Canvas file storage is full. Delete files in Canvas, then try again."
+  },
+  {
+    "workstream": "features/inbox",
+    "path": "src/features/inbox/attachmentPresentation.ts",
+    "line": 15,
+    "text": "`Couldn’t upload ${name}. Check your connection and try again.`"
+  },
+  {
+    "workstream": "features/inbox",
+    "path": "src/features/inbox/attachments.tsx",
+    "line": 201,
+    "text": "Video message"
+  },
+  {
+    "workstream": "features/inbox",
+    "path": "src/features/inbox/attachments.tsx",
+    "line": 386,
+    "text": "Voice message"
+  },
+  {
+    "workstream": "features/lti",
+    "path": "src/features/lti/launch.ts",
+    "line": 209,
+    "text": "`/api/v1/courses/${courseId}/module_item_sequence`"
+  },
+  {
+    "workstream": "features/lti",
+    "path": "src/features/lti/launch.ts",
+    "line": 218,
+    "text": "`/api/v1/courses/${courseId}/modules/${module}/items/${itemId}/mark_read`"
+  },
+  {
+    "workstream": "features/lti",
+    "path": "src/features/lti/preferences.ts",
+    "line": 13,
+    "text": "`easel.lti.openIn.${accountId.replace(/[^A-Za-z0-9._-]/g, '_')}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 168,
+    "text": "`grades:${g.courseId ?? 'none'}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 169,
+    "text": "`comments:${c.courseId ?? 'none'}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 170,
+    "text": "`announcements:${a.courseId ?? 'none'}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 258,
+    "text": "`Graded: ${number(g.score)} out of ${number(g.pointsPossible)}${letter}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 260,
+    "text": "`Graded: ${g.grade}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 338,
+    "text": "`Comment on ${c.title}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 361,
+    "text": "New announcement"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 381,
+    "text": "New message"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 391,
+    "text": "No subject"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/check.ts",
+    "line": 404,
+    "text": "New assignment"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/paths.ts",
+    "line": 10,
+    "text": "`/course/${seg(courseId)}/assignment/${seg(assignmentId)}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/paths.ts",
+    "line": 12,
+    "text": "`/course/${seg(courseId)}/assignment/${seg(assignmentId)}/submission`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/paths.ts",
+    "line": 13,
+    "text": "`/course/${seg(courseId)}/quiz/${seg(quizId)}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/paths.ts",
+    "line": 14,
+    "text": "`/course/${seg(courseId)}/discussion/${seg(topicId)}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/paths.ts",
+    "line": 15,
+    "text": "`/conversation/${seg(conversationId)}`"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 36,
+    "text": "Due date reminders"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 37,
+    "text": "Reminders you set before work is due"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 42,
+    "text": "New and changed grades"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 46,
+    "text": "Submission comments"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 47,
+    "text": "Feedback on your work"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 52,
+    "text": "New announcements in your courses"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 56,
+    "text": "Inbox messages"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 57,
+    "text": "New messages in your Canvas inbox"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 61,
+    "text": "New assignments"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 62,
+    "text": "Work that just appeared in your courses"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 66,
+    "text": "Developer tests"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 67,
+    "text": "Test notifications from the developer settings"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 71,
+    "text": "Quiet hours"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/platform.ts",
+    "line": 72,
+    "text": "Notifications that arrive during quiet hours, without sound"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 13,
+    "text": "Grades"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 13,
+    "text": "New and changed grades, once they’re posted"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 14,
+    "text": "Submission comments"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 14,
+    "text": "Feedback on your work"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 15,
+    "text": "Announcements"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 15,
+    "text": "New announcements in your courses"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 16,
+    "text": "Inbox messages"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 16,
+    "text": "New messages in your Canvas inbox"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 17,
+    "text": "New assignments"
+  },
+  {
+    "workstream": "features/notifications",
+    "path": "src/features/notifications/settings.ts",
+    "line": 17,
+    "text": "Work that just appeared in your courses"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/connectivity.ts",
+    "line": 157,
+    "text": "You’re offline. Connect to the internet and try again."
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/connectivity.ts",
+    "line": 158,
+    "text": "`Couldn’t reach ${current.host ?? 'Canvas'}. Check your connection and try again.`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/connectivity.ts",
+    "line": 163,
+    "text": "You’re offline. This loads when you reconnect."
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/connectivity.ts",
+    "line": 164,
+    "text": "`Couldn’t reach ${current.host ?? 'Canvas'}. This loads when it’s back.`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 69,
+    "text": "`planner_note:${noteId}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 113,
+    "text": "`/api/v1/planner/overrides/${p.overrideId}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 130,
+    "text": "`/api/v1/planner/overrides/${existing.id}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 147,
+    "text": "`override:${itemId}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 150,
+    "text": "`Dismiss “${item.title}”`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 151,
+    "text": "`Restore “${item.title}”`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 152,
+    "text": "`Mark “${item.title}” done`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 152,
+    "text": "`Mark “${item.title}” not done`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 223,
+    "text": "`note:${id}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 263,
+    "text": "`/api/v1/planner_notes/${p.id}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 279,
+    "text": "`/api/v1/planner_notes/${p.id}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 292,
+    "text": "`/api/v1/planner_notes/${p.id}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 541,
+    "text": "`Add “${input.title}”`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 559,
+    "text": "`Edit “${input.title}”`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/plannerWrites.ts",
+    "line": 575,
+    "text": "`Delete “${note?.title ?? 'to-do'}”`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/queue.ts",
+    "line": 287,
+    "text": "`Couldn’t sync “${current.label}”. ${(error as Error).message || 'Canvas refused the change.'}`"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/queue.ts",
+    "line": 287,
+    "text": "Canvas refused the change."
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/submissionDrafts.ts",
+    "line": 47,
+    "text": "Save submission draft"
+  },
+  {
+    "workstream": "features/offline",
+    "path": "src/features/offline/submissionDrafts.ts",
+    "line": 65,
+    "text": "Discard submission draft"
+  },
+  {
+    "workstream": "features/outcomes",
+    "path": "src/features/outcomes/OutcomeList.tsx",
+    "line": 45,
+    "text": "`/courses/${encodeURIComponent(courseId)}/outcomes`"
+  },
+  {
+    "workstream": "features/planner",
+    "path": "src/features/planner/badge.ts",
+    "line": 20,
+    "text": "`todo:badge:${accountId}`"
+  },
+  {
+    "workstream": "features/planner",
+    "path": "src/features/planner/pickerDates.ts",
+    "line": 15,
+    "text": "Cannot represent picker time in the device zone"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/AttemptResults.tsx",
+    "line": 51,
+    "text": "quizAttemptResults.correct"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/AttemptResults.tsx",
+    "line": 52,
+    "text": "quizAttemptResults.incorrect"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/AttemptResults.tsx",
+    "line": 53,
+    "text": "quizAttemptResults.partial"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/AttemptResults.tsx",
+    "line": 54,
+    "text": "quizAttemptResults.pending"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/FileUploadAnswer.tsx",
+    "line": 88,
+    "text": "`photo-${Date.now()}.${asset.mimeType?.split('/')[1] ?? 'jpg'}`"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/QuizHistory.tsx",
+    "line": 22,
+    "text": "Under a minute"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/QuizTimer.tsx",
+    "line": 30,
+    "text": "Time is up"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/QuizTimer.tsx",
+    "line": 31,
+    "text": "Less than a minute left"
+  },
+  {
+    "workstream": "features/quizzes",
+    "path": "src/features/quizzes/lockdown.ts",
+    "line": 13,
+    "text": "`rldb://${quizUrl.replace(/^https?:\\/\\//, '')}`"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 32,
+    "text": "search.kind.assignment"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 32,
+    "text": "search.label.assignment"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 33,
+    "text": "search.kind.quiz"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 33,
+    "text": "search.label.quiz"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 34,
+    "text": "search.kind.discussion"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 34,
+    "text": "search.label.discussion"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 35,
+    "text": "search.kind.announcement"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 35,
+    "text": "search.label.announcement"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 36,
+    "text": "search.kind.page"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 36,
+    "text": "search.label.page"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 37,
+    "text": "search.kind.module"
+  },
+  {
+    "workstream": "features/search",
+    "path": "src/features/search/CourseSearch.tsx",
+    "line": 37,
+    "text": "search.label.module"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/avatar.ts",
+    "line": 23,
+    "text": "Profile picture"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/avatar.ts",
+    "line": 41,
+    "text": "Easel can’t use the camera. Turn on camera access for Easel in Settings."
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/avatar.ts",
+    "line": 50,
+    "text": "This device doesn’t have a camera. Choose a photo instead."
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/landingTab.ts",
+    "line": 19,
+    "text": "Home"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/landingTab.ts",
+    "line": 20,
+    "text": "Calendar"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/landingTab.ts",
+    "line": 21,
+    "text": "To Do"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/landingTab.ts",
+    "line": 22,
+    "text": "Inbox"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 14,
+    "text": "English (United States)"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 17,
+    "text": "English (United Kingdom)"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 27,
+    "text": "Kreyòl Ayisyen"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 30,
+    "text": "Bahasa Indonesia"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 35,
+    "text": "Te reo Māori"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 36,
+    "text": "Bahasa Melayu"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 37,
+    "text": "Norsk bokmål"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 39,
+    "text": "Norsk nynorsk"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/languages.ts",
+    "line": 49,
+    "text": "Tiếng Việt"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/qr.ts",
+    "line": 121,
+    "text": "Too much data for this QR encoder."
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/settingsPairingLifetime.ts",
+    "line": 6,
+    "text": "Obsolete pairing request"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/settingsPairingLifetime.ts",
+    "line": 74,
+    "text": "Pairing presentation is not committed"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 7,
+    "text": "International Date Line West"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 8,
+    "text": "Midway Island"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 9,
+    "text": "American Samoa"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 12,
+    "text": "Pacific Time (US & Canada)"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 14,
+    "text": "Mountain Time (US & Canada)"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 18,
+    "text": "Central Time (US & Canada)"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 20,
+    "text": "Guadalajara, Mexico City"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 22,
+    "text": "Central America"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 23,
+    "text": "Eastern Time (US & Canada)"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 26,
+    "text": "Lima, Quito"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 27,
+    "text": "Atlantic Time (Canada)"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 29,
+    "text": "La Paz"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 33,
+    "text": "Buenos Aires"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 36,
+    "text": "Puerto Rico"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 40,
+    "text": "Cape Verde Is."
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 42,
+    "text": "Edinburgh, London"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 62,
+    "text": "Bern, Zurich"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 66,
+    "text": "West Central Africa"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 82,
+    "text": "Moscow, St. Petersburg"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 90,
+    "text": "Abu Dhabi, Muscat"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 96,
+    "text": "Islamabad, Karachi"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 98,
+    "text": "Chennai, Kolkata, Mumbai, New Delhi"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 101,
+    "text": "Sri Jayawardenepura"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 102,
+    "text": "Almaty, Astana"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 105,
+    "text": "Bangkok, Hanoi"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 110,
+    "text": "Hong Kong"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 112,
+    "text": "Kuala Lumpur"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 119,
+    "text": "Osaka, Sapporo, Tokyo"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 130,
+    "text": "Port Moresby"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 133,
+    "text": "Solomon Is."
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 134,
+    "text": "New Caledonia"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 137,
+    "text": "Marshall Is."
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 138,
+    "text": "Auckland, Wellington"
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 140,
+    "text": "Tokelau Is."
+  },
+  {
+    "workstream": "features/settings",
+    "path": "src/features/settings/timeZones.ts",
+    "line": 141,
+    "text": "Chatham Is."
+  },
+  {
+    "workstream": "features/share",
+    "path": "src/features/share/content.ts",
+    "line": 70,
+    "text": "Shared file"
+  },
+  {
+    "workstream": "features/share",
+    "path": "src/features/share/links.ts",
+    "line": 38,
+    "text": "`https://${trimmed}`"
+  },
+  {
+    "workstream": "features/share",
+    "path": "src/features/share/submit.ts",
+    "line": 58,
+    "text": "`Only takes ${extensionList(a.allowedExtensions)} files`"
+  },
+  {
+    "workstream": "features/share",
+    "path": "src/features/share/useShareIntake.ts",
+    "line": 21,
+    "text": "Failed to resolve shared payloads"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/AudioRecorderSheet.tsx",
+    "line": 25,
+    "text": "Voice comment"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/MediaSubmission.tsx",
+    "line": 61,
+    "text": "`course_${a.courseId}`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 53,
+    "text": "This assignment is locked."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 57,
+    "text": "You’ve used your only attempt."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 57,
+    "text": "`You’ve used all ${allowed} attempts.`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 59,
+    "text": "`Submissions closed ${formatDateTime(a.lockAt, now)}.`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 60,
+    "text": "Canvas isn’t accepting submissions for this assignment right now."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 71,
+    "text": "`This is your last attempt (${next} of ${allowed}).`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 72,
+    "text": "`This is attempt ${next} of ${allowed}.`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/rules.ts",
+    "line": 108,
+    "text": "`https://${trimmed}`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/scan.ts",
+    "line": 48,
+    "text": "`page-${nextId++}`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/scan.ts",
+    "line": 105,
+    "text": "`data:${type};base64,${base64}`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/scan.ts",
+    "line": 110,
+    "text": "`<!doctype html><html><head><meta charset=\"utf-8\" />\n    <style>\n      @page { size: ${PAGE.width}pt ${PAGE.height}pt; margin: 0; }\n      html, body { margin: 0; padding: 0; background: #fff; }\n      .page { width: 100vw; height: 100vh; box-sizing: border-box; padding: 3vw;\n        display: flex; align-items: center; justify-content: center; overflow: hidden;\n        page-break-after: always; break-after: page; }\n      .page:last-child { page-break-after: auto; break-after: auto; }\n      img { max-width: 100%; max-height: 100%; object-fit: contain; }\n    </style></head><body>\n    ${images.map((src) => `<div class=\"page\"><img src=\"${src}\" /></div>`).join('')}\n  </body></html>`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/scan.ts",
+    "line": 120,
+    "text": "`<div class=\"page\"><img src=\"${src}\" /></div>`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/toolContent.ts",
+    "line": 38,
+    "text": "File from tool"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/toolContent.ts",
+    "line": 40,
+    "text": "File from tool"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 8,
+    "text": "The upload stopped when Easel closed. Retry to send it again."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 9,
+    "text": "Easel no longer has this file. Remove it and add it again."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 53,
+    "text": "Couldn’t reach Canvas. Check your connection, then retry."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 59,
+    "text": "Your Canvas storage is full. Delete files in Canvas, then retry."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 64,
+    "text": "`This assignment doesn’t accept ${name}.`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 69,
+    "text": "Canvas’s media service didn’t take the recording. Retry."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 73,
+    "text": "Canvas didn’t allow this upload."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadErrors.ts",
+    "line": 76,
+    "text": "The upload didn’t finish. Retry, or remove the file."
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadStore.ts",
+    "line": 71,
+    "text": "`upload-${Date.now().toString(36)}-${counter++}`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadStore.ts",
+    "line": 436,
+    "text": "`submission|${accountId}|${courseId}|${assignmentId}`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadStore.ts",
+    "line": 440,
+    "text": "`media|${accountId}|${courseId}|${assignmentId}`"
+  },
+  {
+    "workstream": "features/submissions",
+    "path": "src/features/submissions/uploadStore.ts",
+    "line": 443,
+    "text": "`comment|${accountId}|${courseId}|${assignmentId}`"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assetHtml.ts",
+    "line": 131,
+    "text": "Embedded players and tools need an internet connection."
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assetHtml.ts",
+    "line": 133,
+    "text": "Some images or media aren’t saved on this device. Connect to the internet to load them."
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assetHtml.ts",
+    "line": 135,
+    "text": "`<p role=\"note\">${notice}</p>${result}`"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assets.ts",
+    "line": 26,
+    "text": "`id-${encodeURIComponent(s)}`"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assets.ts",
+    "line": 36,
+    "text": "Sync cancelled"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assets.ts",
+    "line": 125,
+    "text": "File unavailable"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assets.ts",
+    "line": 134,
+    "text": "Unexpected asset type"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assets.ts",
+    "line": 140,
+    "text": "Course asset limit reached"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/assets.ts",
+    "line": 211,
+    "text": "`data:${match.asset.mime};base64,${file.base64Sync()}`"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/components.tsx",
+    "line": 55,
+    "text": "`Synced ${relativeAgeLabel(new Date(at), now)}`"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/components.tsx",
+    "line": 96,
+    "text": "`Syncing ${course?.name ?? 'courses'}${many}`"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/components.tsx",
+    "line": 97,
+    "text": "Getting ready"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/engine.ts",
+    "line": 69,
+    "text": "Embedded images and media"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/engine.ts",
+    "line": 103,
+    "text": "Sync cancelled"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/engine.ts",
+    "line": 457,
+    "text": "Sync stopped because Canvas couldn’t be reached."
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/engine.ts",
+    "line": 459,
+    "text": "Sign in again to sync this course."
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/engine.ts",
+    "line": 460,
+    "text": "Something went wrong while syncing."
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 23,
+    "text": "Pages"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 23,
+    "text": "Every page and the front page"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 24,
+    "text": "Modules"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 24,
+    "text": "Modules and what’s in them"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 25,
+    "text": "Assignments"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 25,
+    "text": "Descriptions, rubrics, and your submissions"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 26,
+    "text": "Grades"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 26,
+    "text": "Scores for every grading period"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 27,
+    "text": "Syllabus"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 27,
+    "text": "The syllabus and its schedule"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 28,
+    "text": "Announcements"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 28,
+    "text": "Announcements and their replies"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 29,
+    "text": "Discussions"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 29,
+    "text": "Topics and their replies"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 30,
+    "text": "Files"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 30,
+    "text": "Documents, slides, and images"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 31,
+    "text": "Audio and video"
+  },
+  {
+    "workstream": "features/sync",
+    "path": "src/features/sync/settings.ts",
+    "line": 31,
+    "text": "Course recordings and direct embedded clips up to 8 MB. Players and tools need internet."
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/PopupSheet.tsx",
+    "line": 80,
+    "text": "`location.href = ${JSON.stringify(url)}; true;`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/PopupSheet.tsx",
+    "line": 177,
+    "text": "`location.href = ${JSON.stringify(e.nativeEvent.targetUrl)}; true;`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/WebScreen.tsx",
+    "line": 236,
+    "text": "Easel"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/downloads.ts",
+    "line": 64,
+    "text": "`web-${(hash >>> 0).toString(36)}`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/open.ts",
+    "line": 32,
+    "text": "Leave this quiz? Your answers are saved, but the timer keeps running."
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/scripts.ts",
+    "line": 35,
+    "text": "`\n(function () {\n  if (window.__easelPageShim) return;\n  window.__easelPageShim = true;\n  ${POST}\n  var popups = {};\n  var seq = 0;\n  var nativeOpen = window.open;\n\n  function absolute(url) {\n    try { return new URL(url, location.href).href; } catch (e) { return String(url); }\n  }\n\n  window.open = function (url, name, features) {\n    if (!url || url === 'about:blank') return nativeOpen ? nativeOpen.apply(window, arguments) : null;\n    var id = 'p' + (++seq) + '_' + Date.now();\n    var href = absolute(url);\n    var proxy = {\n      closed: false,\n      opener: window,\n      name: name || '',\n      focus: function () {},\n      blur: function () {},\n      close: function () {\n        if (proxy.closed) return;\n        proxy.closed = true;\n        __easelPost({ type: 'easel-popup-close', id: id });\n      },\n      postMessage: function (data, origin) {\n        __easelPost({ type: 'easel-popup-post', id: id, data: __easelSerialize(data), origin: origin || '*' });\n      },\n    };\n    proxy.location = {\n      get href() { return href; },\n      set href(value) { href = absolute(value); __easelPost({ type: 'easel-popup-navigate', id: id, url: href }); },\n      assign: function (value) { proxy.location.href = value; },\n      replace: function (value) { proxy.location.href = value; },\n      toString: function () { return href; },\n    };\n    popups[id] = { proxy: proxy, setHref: function (value) { href = value; } };\n    __easelPost({ type: 'easel-popup-open', id: id, url: href, name: name || '' });\n    return proxy;\n  };\n\n  /**\n   * Applies a popup event in this frame. True when this frame opened the popup,\n   * so the event needn't travel further. Messages from popups Easel opened\n   * without a stand-in (links with target=_blank) have no ID and go everywhere.\n   */\n  function apply(id, kind, payload) {\n    var entry = id ? popups[id] : null;\n    if (kind === 'message') {\n      if (id && !entry) return false;\n      var data = null;\n      try { data = JSON.parse(payload.json); } catch (e) {}\n      // MessageEvent only takes a real window as its source; attach the stand-in afterwards.\n      var event = new MessageEvent('message', { data: data, origin: payload.origin || '' });\n      if (entry) { try { Object.defineProperty(event, 'source', { value: entry.proxy }); } catch (e) {} }\n      window.dispatchEvent(event);\n      return !!entry;\n    }\n    if (!entry) return false;\n    if (kind === 'url') entry.setHref(payload);\n    if (kind === 'closed') { entry.proxy.closed = true; delete popups[id]; }\n    return true;\n  }\n\n  function relay(event) {\n    for (var i = 0; i < window.frames.length; i++) {\n      try { window.frames[i].postMessage({ __easelPopup: event }, '*'); } catch (e) {}\n    }\n  }\n\n  // Native calls this in the main frame; it forwards to the child frame that owns the popup.\n  window.__easelPopupEvent = function (id, kind, payload) {\n    if (!apply(id, kind, payload)) relay({ id: id, kind: kind, payload: payload });\n  };\n\n  window.addEventListener('message', function (event) {\n    var forwarded = event.data && event.data.__easelPopup;\n    if (!forwarded) return;\n    event.stopImmediatePropagation();\n    if (!apply(forwarded.id, forwarded.kind, forwarded.payload)) relay(forwarded);\n  }, true);\n})();\ntrue;\n`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/scripts.ts",
+    "line": 129,
+    "text": "`\n(function () {\n  if (window.__easelToolShim) return;\n  window.__easelToolShim = true;\n  ${POST}\n  var KEY = '__easelUnwrapped';\n  var here = location.href.split('#')[0];\n  var revisited = false;\n  try { revisited = sessionStorage.getItem(KEY) === here; } catch (e) {}\n  if (revisited) __easelPost({ type: 'easel-tool-revisited' });\n  window.addEventListener('pageshow', function (event) {\n    if (!event.persisted) return;\n    try { if (sessionStorage.getItem(KEY) === here) __easelPost({ type: 'easel-tool-revisited' }); } catch (e) {}\n  });\n\n  function launchForm(form) {\n    var target = form.getAttribute('target') || '';\n    if (!/^tool_content/.test(target) || !/^tool_form/.test(form.id || '')) return false;\n    var frame = document.getElementsByName(target)[0];\n    return !!frame && frame.tagName === 'IFRAME';\n  }\n  /** False when the form shouldn't go at all: a launch already used. */\n  function retarget(form) {\n    if (!launchForm(form)) return true;\n    if (revisited) return false;\n    form.setAttribute('target', '_self');\n    try { sessionStorage.setItem(KEY, here); } catch (e) {}\n    __easelPost({ type: 'easel-tool-unwrapped' });\n    return true;\n  }\n  var nativeSubmit = HTMLFormElement.prototype.submit;\n  HTMLFormElement.prototype.submit = function () {\n    if (retarget(this)) return nativeSubmit.apply(this, arguments);\n  };\n  if (HTMLFormElement.prototype.requestSubmit) {\n    var nativeRequest = HTMLFormElement.prototype.requestSubmit;\n    HTMLFormElement.prototype.requestSubmit = function () {\n      if (retarget(this)) return nativeRequest.apply(this, arguments);\n    };\n  }\n  document.addEventListener('submit', function (event) {\n    var form = event.target;\n    if (form && form.tagName === 'FORM' && !retarget(form)) event.preventDefault();\n  }, true);\n})();\ntrue;\n`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/scripts.ts",
+    "line": 182,
+    "text": "`\n(function () {\n  if (window.__easelDownloadShim) return;\n  window.__easelDownloadShim = true;\n  ${POST}\n  document.addEventListener('click', function (event) {\n    var el = event.target;\n    var link = el && el.closest ? el.closest('a[download]') : null;\n    if (!link || !link.href || !/^https?:/i.test(link.href)) return;\n    event.preventDefault();\n    __easelPost({ type: 'easel-download', url: link.href, name: link.getAttribute('download') || '' });\n  }, true);\n})();\ntrue;\n`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/scripts.ts",
+    "line": 199,
+    "text": "`\n(function () {\n  if (window.__easelPopupShim) return;\n  window.__easelPopupShim = true;\n  ${POST}\n  var opener = {\n    closed: false,\n    postMessage: function (data, origin) {\n      __easelPost({ type: 'easel-opener-post', data: __easelSerialize(data), origin: location.origin, target: origin || '*' });\n    },\n    focus: function () {},\n    location: { href: '', reload: function () {} },\n  };\n  try { Object.defineProperty(window, 'opener', { configurable: true, get: function () { return opener; } }); }\n  catch (e) { try { window.opener = opener; } catch (e2) {} }\n  window.close = function () { __easelPost({ type: 'easel-popup-self-close' }); };\n})();\ntrue;\n`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/scripts.ts",
+    "line": 221,
+    "text": "`(function () {\n    var data = null;\n    try { data = JSON.parse(${JSON.stringify(payload.json)}); } catch (e) {}\n    window.dispatchEvent(new MessageEvent('message', { data: data, origin: ${JSON.stringify(origin)} }));\n  })(); true;`"
+  },
+  {
+    "workstream": "features/web",
+    "path": "src/features/web/scripts.ts",
+    "line": 230,
+    "text": "`window.__easelPopupEvent && window.__easelPopupEvent(${JSON.stringify(id)}, ${JSON.stringify(kind)}, ${JSON.stringify(payload)}); true;`"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 24,
+    "text": "`easel://${path.replace(/^\\//, '')}`"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 45,
+    "text": "`/planner-note/${encodeURIComponent(item.plannableId)}`"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 71,
+    "text": "Sign in to Easel to see your work here."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 80,
+    "text": "Next due"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 85,
+    "text": "Sign in to Easel"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 87,
+    "text": "Sign in to Easel to see your work here."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 92,
+    "text": "To Do"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 122,
+    "text": "Nothing due"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 123,
+    "text": "You’re caught up for the next four weeks."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 126,
+    "text": "Nothing else due in the next four weeks."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 127,
+    "text": "Nothing due"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 239,
+    "text": "To Do"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 242,
+    "text": "Nothing due today or tomorrow."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 260,
+    "text": "Announcements"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 274,
+    "text": "No announcements in the last two weeks."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 292,
+    "text": "Grades"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 296,
+    "text": "Turn on in Easel to show your grades here."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 304,
+    "text": "Grades"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 319,
+    "text": "Grades"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 326,
+    "text": "No grade"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 327,
+    "text": "No grade"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 337,
+    "text": "`/course/${encodeURIComponent(g.id)}/grades`"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/build.ts",
+    "line": 340,
+    "text": "No active courses."
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.android.tsx",
+    "line": 37,
+    "text": "Next due"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.android.tsx",
+    "line": 155,
+    "text": "Next due"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.android.tsx",
+    "line": 160,
+    "text": "Open Easel"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.android.tsx",
+    "line": 168,
+    "text": "To Do"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.ios.tsx",
+    "line": 76,
+    "text": "Next due"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.ios.tsx",
+    "line": 276,
+    "text": "Missing"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.ios.tsx",
+    "line": 333,
+    "text": "Next due"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.ios.tsx",
+    "line": 338,
+    "text": "Open Easel"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/layouts.ios.tsx",
+    "line": 346,
+    "text": "To Do"
+  },
+  {
+    "workstream": "features/widgets",
+    "path": "src/features/widgets/theme.ts",
+    "line": 26,
+    "text": "Open Easel to see your work here."
+  },
+  {
+    "workstream": "lib",
+    "path": "src/lib/dates.ts",
+    "line": 268,
+    "text": "`GMT${sign}${h}${m ? `:${String(m).padStart(2, '0')}` : ''}`"
+  },
+  {
+    "workstream": "lib",
+    "path": "src/lib/due.ts",
+    "line": 34,
+    "text": "Overdue"
+  },
+  {
+    "workstream": "lib",
+    "path": "src/lib/due.ts",
+    "line": 36,
+    "text": "Done"
+  }
+]

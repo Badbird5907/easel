@@ -1,9 +1,8 @@
 import { type ReactNode, useEffect } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import Animated, {
   useAnimatedProps,
   useAnimatedStyle,
-  useReducedMotion,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
@@ -11,6 +10,7 @@ import Svg, { Circle } from 'react-native-svg';
 
 import { cn } from '@/lib/cn';
 
+import { useReduceMotion } from '../accessibility/useReduceMotion';
 import { AnimatedView } from '../interop';
 import { useTheme } from '../theme/ThemeProvider';
 import type { ColorToken, Tone } from '../tokens/colors';
@@ -24,11 +24,11 @@ const toneFill: Record<Tone, ColorToken> = {
   info: 'info',
 };
 
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const clamp01 = (v: number) => Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : 0;
 
 /** Animates toward `value` (0 to 1), or jumps there with Reduce Motion on. */
 function useProgress(value: number) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReduceMotion();
   const progress = useSharedValue(0);
   useEffect(() => {
     const target = clamp01(value);
@@ -61,6 +61,7 @@ export function ProgressBar({
 
   return (
     <View
+      accessible
       accessibilityRole="progressbar"
       accessibilityLabel={accessibilityLabel}
       accessibilityValue={{ min: 0, max: 100, now: Math.round(clamp01(value) * 100) }}
@@ -106,6 +107,8 @@ export function ProgressRing({
 }: ProgressRingProps) {
   const { colors } = useTheme();
   const progress = useProgress(value);
+  const { fontScale, width } = useWindowDimensions();
+  size = children ? Math.min(size * Math.max(1, fontScale), width - 32) : size;
   const radius = (size - thickness) / 2;
   const circumference = 2 * Math.PI * radius;
 
@@ -115,13 +118,14 @@ export function ProgressRing({
 
   return (
     <View
+      accessible
       accessibilityRole="progressbar"
       accessibilityLabel={accessibilityLabel}
       accessibilityValue={{ min: 0, max: 100, now: Math.round(clamp01(value) * 100) }}
       style={{ width: size, height: size }}
       className="items-center justify-center"
     >
-      <Svg width={size} height={size} style={{ position: 'absolute', transform: [{ rotate: '-90deg' }] }}>
+      <Svg accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" width={size} height={size} style={{ position: 'absolute', transform: [{ rotate: '-90deg' }] }}>
         <Circle
           cx={size / 2}
           cy={size / 2}

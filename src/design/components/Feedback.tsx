@@ -11,6 +11,8 @@ import { Pressable, View } from 'react-native';
 
 import { cn } from '@/lib/cn';
 
+import { useAnnouncement } from '../accessibility/useAnnouncement';
+import { layout } from '../tokens/layout';
 import type { Tone } from '../tokens/colors';
 import { Button, type ButtonProps } from './Button';
 import { Icon } from './Icon';
@@ -29,22 +31,26 @@ export type CalloutProps = {
   title?: string;
   children: ReactNode;
   icon?: LucideIcon;
-  /** Optional trailing action, e.g. "Retry". */
-  action?: { label: string; onPress: () => void };
+  /** Optional trailing action, e.g. "Retry". `accessibilityLabel` disambiguates repeated labels like "Dismiss". */
+  action?: { label: string; onPress: () => void; accessibilityLabel?: string };
   className?: string;
 };
 
 /** Inline message about the content around it: locked modules, late penalties, sync errors. */
 export function Callout({ tone = 'info', title, children, icon, action, className }: CalloutProps) {
   const style = calloutStyle[tone];
+  const announcement = tone === 'danger' || tone === 'warning'
+    ? [title, typeof children === 'string' ? children : null].filter(Boolean).join('. ')
+    : null;
+  useAnnouncement(announcement);
   return (
     <View
-      accessibilityRole={tone === 'danger' || tone === 'warning' ? 'alert' : undefined}
       className={cn('flex-row gap-3 rounded-2xl p-4', style.box, className)}
       style={{ borderCurve: 'continuous' }}
     >
       <Icon icon={icon ?? style.icon} size={20} tone={tone} />
       <View className="flex-1 gap-0.5">
+        <View accessibilityLiveRegion={announcement ? 'polite' : undefined}>
         {title ? (
           <Text variant="callout" weight="semibold">
             {title}
@@ -57,10 +63,12 @@ export function Callout({ tone = 'info', title, children, icon, action, classNam
         ) : (
           children
         )}
+        </View>
         {action ? (
           <Pressable
             accessibilityRole="button"
-            hitSlop={12}
+            accessibilityLabel={action.accessibilityLabel}
+            style={{ minHeight: layout.minTouch, minWidth: layout.minTouch, justifyContent: 'center' }}
             onPress={action.onPress}
             className="mt-1.5 self-start active:opacity-60"
           >
@@ -89,7 +97,7 @@ export function EmptyState({ icon, title, description, action, className }: Empt
       <View className="mb-5 h-16 w-16 items-center justify-center rounded-full bg-accent-soft">
         <Icon icon={icon} size={28} tone="accent" />
       </View>
-      <Text variant="title3" align="center">
+      <Text variant="title3" accessibilityRole="header" align="center">
         {title}
       </Text>
       {description ? (

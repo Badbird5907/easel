@@ -13,7 +13,7 @@
  *   tone-soft      tinted container background (badges, chips, icon tiles)
  *   tone-fg        tone-colored text/icons on surfaces and soft containers
  *
- * Pairs are contrast-checked by `npm run check-contrast`.
+ * Pairs are contrast-checked by `pnpm run check-contrast`.
  */
 
 export type ColorScheme = 'light' | 'dark';
@@ -70,21 +70,23 @@ export type ColorToken = keyof ColorTokens;
 export type Tone = 'accent' | 'success' | 'warning' | 'danger' | 'info';
 
 /**
- * Brand accent is "Ultramarine", a painter's pigment blue. Neutrals are slightly
- * cool so course colors read clearly against them.
+ * Neutrals are one near-neutral ramp (OKLCH hue 95, chroma 0.004) so course
+ * colors and the accent read cleanly against them. The accent is "Ultramarine",
+ * a painter's pigment blue, and marks what's interactive. Inside <AccentScope>
+ * it becomes the course color.
  */
 export const palettes: Record<ColorScheme, ColorTokens> = {
   light: {
-    bg: '#F3F4F6',
+    bg: '#F7F7F4',
     surface: '#FFFFFF',
     surfaceRaised: '#FFFFFF',
-    surfaceSunken: '#EBEDF0',
-    fg: '#0D1017',
-    fgMuted: '#596070',
-    fgSubtle: '#7C828F',
-    border: '#E2E4E8',
-    borderStrong: '#C9CDD4',
-    overlay: '#05070C',
+    surfaceSunken: '#EEEEEB',
+    fg: '#161614',
+    fgMuted: '#5E5E5B',
+    fgSubtle: '#7C7C79',
+    border: '#E2E2DF',
+    borderStrong: '#CECECB',
+    overlay: '#0C0B0A',
 
     accent: '#3D4FE0',
     accentContrast: '#FFFFFF',
@@ -112,20 +114,20 @@ export const palettes: Record<ColorScheme, ColorTokens> = {
     infoFg: '#0A60B5',
   },
   dark: {
-    bg: '#09090B',
-    surface: '#141518',
-    surfaceRaised: '#26282D',
-    surfaceSunken: '#1C1E22',
-    fg: '#F2F3F5',
-    fgMuted: '#A0A6B1',
-    fgSubtle: '#747A87',
-    border: '#25272C',
-    borderStrong: '#3A3D44',
+    bg: '#0C0B0A',
+    surface: '#161614',
+    surfaceRaised: '#302F2D',
+    surfaceSunken: '#1C1C1A',
+    fg: '#F4F3F1',
+    fgMuted: '#AAA9A6',
+    fgSubtle: '#848380',
+    border: '#262624',
+    borderStrong: '#3E3D3B',
     overlay: '#000000',
 
     accent: '#5465F5',
     accentContrast: '#FFFFFF',
-    accentSoft: '#202340',
+    accentSoft: '#21243D',
     accentFg: '#8E9AFF',
 
     success: '#2BBF62',

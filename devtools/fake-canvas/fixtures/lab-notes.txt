@@ -1,0 +1,16 @@
+Osmosis lab notes
+Thursday, Room 214
+
+Setup
+- Three beakers: 0% (distilled), 0.9%, and 5% NaCl.
+- Potato cores, 3 cm long, weighed before soaking.
+
+Observations after 30 minutes
+- Distilled water: cores firm, mass up about 8%.
+- 0.9% saline: almost no change.
+- 5% saline: cores limp, mass down about 11%.
+
+Questions for the report
+1. Which solution was isotonic to the potato cells?
+2. Why did the 5% cores lose mass?
+3. What would happen to a red blood cell in each beaker?

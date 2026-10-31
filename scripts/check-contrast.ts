@@ -2,7 +2,7 @@
  * Verifies every foreground/background pairing the components rely on meets
  * WCAG contrast, in both schemes and for every Canvas course color.
  *
- *   npm run check-contrast
+ *   pnpm run check-contrast
  */
 import { deriveAccent } from '../src/design/theme/accent';
 import { contrast } from '../src/design/theme/color';
@@ -38,6 +38,9 @@ for (const scheme of ['light', 'dark'] as const) {
     check(scheme, `${tone}Contrast on ${tone}`, t('Contrast'), c[tone], TEXT);
     check(scheme, `${tone}Fg on surface`, t('Fg'), c.surface, TEXT);
     check(scheme, `${tone}Fg on ${tone}Soft`, t('Fg'), t('Soft'), TEXT);
+    // Callouts set their title and body on the soft tint.
+    check(scheme, `fg on ${tone}Soft`, c.fg, t('Soft'), TEXT);
+    check(scheme, `fgMuted on ${tone}Soft`, c.fgMuted, t('Soft'), TEXT);
   }
   for (const course of courseColors) {
     const a = deriveAccent(course.light, scheme);

@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Platform, Text as RNText, type TextProps as RNTextProps } from 'react-native';
 
+import { useTranslation } from '@/i18n';
 import { cn } from '@/lib/cn';
 
 import { type FontWeight, type TextVariant, typeScale } from '../tokens/typography';
@@ -49,13 +50,6 @@ const text = cva('', {
   defaultVariants: { variant: 'body', tone: 'default' },
 });
 
-/** Large text scales with Dynamic Type too, but less, so headings don't wrap into towers. */
-const maxScale: Partial<Record<TextVariant, number>> = {
-  display: 1.4,
-  title1: 1.5,
-  title2: 1.6,
-};
-
 export type TextProps = RNTextProps &
   VariantProps<typeof text> & {
     /** Overrides the variant's default weight. */
@@ -68,7 +62,7 @@ export type TextProps = RNTextProps &
 export function Text({
   variant = 'body',
   tone,
-  align,
+  align = 'left',
   weight,
   tabular,
   className,
@@ -76,12 +70,20 @@ export function Text({
   maxFontSizeMultiplier,
   ...props
 }: TextProps) {
+  const { direction } = useTranslation();
   const resolvedWeight = weight ?? typeScale[variant ?? 'body'].weight;
   return (
     <RNText
       className={cn(text({ variant, tone, align }), weightClass[resolvedWeight], className)}
-      maxFontSizeMultiplier={maxFontSizeMultiplier ?? maxScale[variant ?? 'body'] ?? 2}
-      style={[tabular && { fontVariant: ['tabular-nums'] }, androidMetrics, style]}
+      maxFontSizeMultiplier={maxFontSizeMultiplier ?? 0}
+      // Native left alignment resolves to the leading edge in RTL; don't mirror it twice.
+      style={[
+        tabular && { fontVariant: ['tabular-nums'] },
+        androidMetrics,
+        { direction },
+        Platform.OS === 'ios' && { writingDirection: direction },
+        style,
+      ]}
       {...props}
     />
   );

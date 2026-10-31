@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 /**
  * Shape, spacing, and motion tokens.
  *
@@ -10,23 +12,13 @@
  * minus the padding between them (a `rounded-2xl` card with `p-3` holds
  * `rounded-xl` children).
  */
-export const radii = {
-  none: 0,
-  xs: 4,
-  sm: 6,
-  md: 8,
-  lg: 12,
-  xl: 16,
-  '2xl': 20,
-  '3xl': 28,
-  full: 9999,
-} as const;
+export { radii } from './radii';
 
 export const layout = {
   /** Horizontal screen margin. */
   gutter: 16,
   /** Smallest comfortable touch target, per Apple HIG and Material. */
-  minTouch: 44,
+  minTouch: Platform.OS === 'android' ? 48 : 44,
   /** Readable content width on tablets and web. */
   maxContentWidth: 720,
 } as const;
@@ -53,5 +45,6 @@ export const motion = {
     /** Values settling into place (progress, counters). */
     settle: { damping: 20, stiffness: 120, mass: 1 },
   },
-  pressScale: { default: 0.97, subtle: 0.985 },
+  /** Scale under the finger. Below 0.95 reads as exaggerated. */
+  pressScale: 0.96,
 } as const;

@@ -1,12 +1,15 @@
-import type { PressableProps, StyleProp, ViewStyle } from 'react-native';
-import { useAnimatedStyle, useReducedMotion, useSharedValue, withSpring } from 'react-native-reanimated';
+import type { ComponentRef, Ref } from 'react';
+import type { PressableProps, StyleProp, View, ViewStyle } from 'react-native';
+import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { type HapticKind, haptics } from '../haptics';
 import { AnimatedPressable } from '../interop';
-import { motion } from '../tokens/layout';
+import { useReduceMotion } from '../accessibility/useReduceMotion';
+import { layout, motion } from '../tokens/layout';
 
 export type PressableScaleProps = Omit<PressableProps, 'style'> & {
   className?: string;
+  ref?: Ref<ComponentRef<typeof View>>;
   style?: StyleProp<ViewStyle>;
   /** Scale while pressed. 1 disables the effect. */
   scaleTo?: number;
@@ -19,15 +22,17 @@ export type PressableScaleProps = Omit<PressableProps, 'style'> & {
  * finger and springs back. With Reduce Motion on, it dims instead.
  */
 export function PressableScale({
-  scaleTo = motion.pressScale.default,
+  scaleTo = motion.pressScale,
   haptic,
   onPressIn,
   onPressOut,
   onPress,
   style,
+  disabled,
+  accessibilityState,
   ...props
 }: PressableScaleProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReduceMotion();
   const pressed = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -38,19 +43,21 @@ export function PressableScale({
   return (
     <AnimatedPressable
       {...props}
+      disabled={disabled || accessibilityState?.disabled}
+      accessibilityState={{ ...accessibilityState, disabled: !!(disabled || accessibilityState?.disabled) }}
       onPressIn={(e) => {
-        pressed.set(withSpring(1, motion.spring.press));
+        pressed.set(reduceMotion ? 1 : withSpring(1, motion.spring.press));
         onPressIn?.(e);
       }}
       onPressOut={(e) => {
-        pressed.set(withSpring(0, motion.spring.press));
+        pressed.set(reduceMotion ? 0 : withSpring(0, motion.spring.press));
         onPressOut?.(e);
       }}
       onPress={(e) => {
         if (haptic) haptics[haptic]();
         onPress?.(e);
       }}
-      style={style}
+      style={[{ minWidth: layout.minTouch, minHeight: layout.minTouch }, style]}
       animatedStyle={animatedStyle}
     />
   );

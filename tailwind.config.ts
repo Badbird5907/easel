@@ -3,7 +3,7 @@ import { hairlineWidth } from 'nativewind/theme';
 import type { Config } from 'tailwindcss';
 
 import { colorTokenNames, tokenToKebab } from './src/design/tokens/colors';
-import { radii } from './src/design/tokens/layout';
+import { radii } from './src/design/tokens/radii';
 import { fontFamilies, letterSpacingFor, textVariants, typeScale } from './src/design/tokens/typography';
 
 // Semantic colors resolve to CSS variables set by <ThemeProvider />, so one class

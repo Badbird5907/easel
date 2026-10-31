@@ -637,14 +637,14 @@ async function mobileOAuth() {
   const mobileKey = { ...key, mobileVerify: true };
   const r = await h.oauth.createAuthorization(mobileHost, mobileKey, { mode: 'browser' });
   const auth = new URL(r.url);
-  assert.equal(auth.searchParams.get('redirect_uri'), 'urn:ietf:wg:oauth:2.0:oob');
+  assert.equal(auth.searchParams.get('redirect_uri'), 'https://sso.canvaslms.com/canvas/login');
   assert.equal(auth.searchParams.get('mobile'), '1');
   assert.equal(r.embedded, true);
-  const callback = mobileHost.baseUrl + '/login/oauth2/auth?code=synthetic&state=' + encodeURIComponent(r.state);
+  const callback = 'https://sso.canvaslms.com/canvas/login?code=synthetic&state=' + encodeURIComponent(r.state);
   assert.equal(h.oauth.isCallback(callback, r), true);
   assert.equal(h.oauth.isCallback(r.url, r), false);
   assert.equal(h.oauth.codeFromCallback(callback, r), 'synthetic');
-  for (const bad of [callback.replace('canonical.example.test', 'attacker.test'), callback.replace('/auth?', '/auth/other?'), callback.replace('https:', 'http:'), 'easel://oauth/callback?code=synthetic&state=' + r.state]) {
+  for (const bad of [callback.replace('sso.canvaslms.com', 'attacker.test'), callback.replace('sso.canvaslms.com', 'sso.canvaslms.com.attacker.test'), callback.replace('/login?', '/login/other?'), mobileHost.baseUrl + '/login/oauth2/auth?code=synthetic&state=' + r.state, callback.replace('https://', 'https://user:password@'), callback.replace('https:', 'http:'), 'easel://oauth/callback?code=synthetic&state=' + r.state]) {
     assert.equal(h.oauth.isCallback(bad, r), false);
     assert.throws(() => h.oauth.codeFromCallback(bad, r), h.SignInError);
   }
@@ -652,7 +652,7 @@ async function mobileOAuth() {
   h.queue.fetch.push((url, init) => {
     assert.equal(url, mobileHost.baseUrl + '/login/oauth2/token');
     const fields = new URLSearchParams(init.body);
-    assert.equal(fields.get('redirect_uri'), 'urn:ietf:wg:oauth:2.0:oob');
+    assert.equal(fields.get('redirect_uri'), 'https://sso.canvaslms.com/canvas/login');
     assert.equal(fields.get('client_secret'), mobileKey.clientSecret);
     assert.equal(fields.get('code_verifier'), r.verifier);
     return response(tokenResult);
@@ -663,7 +663,7 @@ async function mobileOAuth() {
 
 async function main() {
   for (const [label, run] of [
-    ['mobile OAuth embedded OOB, origin/state and exchange', mobileOAuth],
+    ['mobile OAuth registered callback, origin/state and matching exchange redirect', mobileOAuth],
     ['authorization PKCE, purpose and mode matrix', authorization],
     ['callback decoding and current policy boundaries', callbacks],
     ['code exchange and refresh transport serialization', exchange],

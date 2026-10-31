@@ -62,7 +62,7 @@ export type Credentials = {
   /** The developer key that issued the token, needed to refresh it. */
   clientId: string | null;
   clientSecret: string | null;
-  /** Discovered mobile keys use Canvas’s embedded out-of-band callback. */
+  /** Discovered mobile keys use the registered Instructure HTTPS callback in an embedded view. */
   mobileVerify?: boolean;
 };
 

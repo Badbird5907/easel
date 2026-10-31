@@ -20,7 +20,7 @@ type Props = {
 /**
  * Sign-in inside Easel (AUTH-4), for identity providers that break in the
  * system browser, and for site admin login, whose cookie only a web view can
- * set. Catches Easel callbacks and Canvas out-of-band callbacks for mobile keys.
+ * set. Catches Easel callbacks and the registered Instructure HTTPS callback for mobile keys.
  */
 export function EmbeddedSignIn({ request, onFinish }: Props) {
   const owner = useAuthEmbeddedLifetime(request);

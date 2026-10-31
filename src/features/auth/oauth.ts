@@ -24,7 +24,8 @@ import { type ClientCredentials, OAUTH_REDIRECT_URI, SignInError } from '@/canva
  */
 export type LoginMode = 'browser' | 'canvas' | 'site-admin' | 'embedded';
 
-const MOBILE_REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+// Match the registered callback used by the official Android mobile_verify flow.
+const MOBILE_REDIRECT_URI = 'https://sso.canvaslms.com/canvas/login';
 const redirectUri = (key: ClientCredentials) => key.mobileVerify ? MOBILE_REDIRECT_URI : OAUTH_REDIRECT_URI;
 
 export type AuthorizationRequest = {
@@ -154,8 +155,9 @@ export const isCallback = (url: string, request?: AuthorizationRequest) => {
   if (!request?.key.mobileVerify) return url.startsWith(OAUTH_REDIRECT_URI);
   try {
     const parsed = new URL(url);
-    return !parsed.username && !parsed.password && parsed.origin === new URL(request.host.baseUrl).origin &&
-      parsed.pathname === '/login/oauth2/auth' &&
+    const expected = new URL(MOBILE_REDIRECT_URI);
+    return !parsed.username && !parsed.password && parsed.origin === expected.origin &&
+      parsed.pathname === expected.pathname &&
       (parsed.searchParams.has('code') || parsed.searchParams.has('error'));
   } catch {
     return false;

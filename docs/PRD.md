@@ -61,14 +61,14 @@ The official apps call `sso.canvaslms.com/api/v1/mobile_verify.json`. That endpo
 
 **Decision (2026-10-31, user-directed).** Easel now discovers mobile OAuth credentials through `mobile_verify` when no stored, manually supplied, or registered developer key is available. The request uses the reference Android app selector with explicit Easel identification: `candroid Easel/1.0`, in both the query and HTTP User-Agent. Easel remains an independent app.
 
-Discovered credentials use Canvas's out-of-band redirect (`urn:ietf:wg:oauth:2.0:oob`) and embedded sign-in. The callback must come from the verified Canvas origin at `/login/oauth2/auth`, and its state must match. A canonical HTTPS school address returned by the service is used for authorization and token exchange. Credentials and their mobile-flow marker are stored with the account in SecureStore, never committed or logged.
+Discovered credentials use the official Android flow's registered HTTPS redirect (`https://sso.canvaslms.com/canvas/login`) and embedded sign-in. The callback must come from `https://sso.canvaslms.com` at exactly `/canvas/login`, and its state must match. A canonical HTTPS school address returned by the service is used for authorization and token exchange. Credentials and their mobile-flow marker are stored with the account in SecureStore, never committed or logged.
 
 This private service can reject an app or school, change its contract, or rotate credentials. Failures remain visible and students can choose a developer key or personal access token. Embedded login may be rejected by some identity providers; a school-issued Easel key retains the system-browser flow. No claim of Instructure endorsement or guaranteed school compatibility is made.
 
 | Path | Behavior |
 | --- | --- |
 | Stored / manually supplied / registered developer key | Takes precedence; uses the existing Easel callback and browser flow unless explicitly selecting embedded login. |
-| Mobile verification | Discovers credentials at runtime, uses embedded out-of-band login, and stores credentials securely with the account. |
+| Mobile verification | Discovers credentials at runtime, uses embedded login with the registered HTTPS callback, and stores credentials securely with the account. |
 | Personal access token | Explicit alternative for schools permitting student tokens. |
 | Easel global developer key | Still a future registration option; none is configured in the checkout. |
 
@@ -142,7 +142,7 @@ Requirement IDs are stable so issues and commits can reference them.
 | --- | --- | --- |
 | AUTH-1 | P0 | **School search.** Find a school by name or domain, or type a domain directly. Self-hosted domains work. The search source depends on 4.1. If Instructure's `accounts/search` isn't available to Easel, use a bundled list plus direct domain entry. |
 | AUTH-2 | P0 | **OAuth sign-in.** Authorization-code flow with PKCE (`/login/oauth2/auth`, `/login/oauth2/token`) and an Easel redirect URI (custom scheme or claimed https). Send `purpose` so the token is labeled "Easel on <device>" in the student's Canvas settings. |
-| AUTH-3 | P0 | **Browser session.** Easel-registered developer-key sign-in runs in the system auth browser (ASWebAuthenticationSession on iOS, Auth Tab or Custom Tabs on Android). Mobile-discovered keys require embedded out-of-band login. This lets SAML, CAS, OIDC, Google, Microsoft, Apple, Clever, Duo, passkeys, password managers, and device-certificate SSO work as they do in a browser. |
+| AUTH-3 | P0 | **Browser session.** Easel-registered developer-key sign-in runs in the system auth browser (ASWebAuthenticationSession on iOS, Auth Tab or Custom Tabs on Android). Mobile-discovered keys require embedded login with the registered HTTPS callback. This lets SAML, CAS, OIDC, Google, Microsoft, Apple, Clever, Duo, passkeys, password managers, and device-certificate SSO work as they do in a browser. |
 | AUTH-4 | P0 | **Embedded fallback.** An in-app web view sign-in fallback, for IdPs that break in the system browser. It must handle HTTP Basic and NTLM challenges, popups, and `authentication_provider` hints. |
 | AUTH-5 | P0 | **Other login modes.** Support `canvas_login=1` (skip SSO and use Canvas credentials) and site-admin login (`canvas_sa_delegated`), selectable from an "Other ways to sign in" menu, not a hidden gesture. |
 | AUTH-6 | P0 | **Manual entry.** Enter a client ID and secret, or paste a personal access token (4.1). |

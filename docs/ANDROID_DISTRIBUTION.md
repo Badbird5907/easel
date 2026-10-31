@@ -8,6 +8,20 @@
 
 ## Current internal release
 
+Version **1.1.0 (7)** was built on EAS and auto-submitted to the internal testing
+track on October 31, 2026; the Google Play Developer API reports it **completed**.
+It adds the Canvas Student notification bridge (a native module), so it runs on
+its own OTA runtime, `1.1.0`. 1.0.0 builds keep runtime `1.0.0` and no longer
+receive new updates. Before a public release, the privacy policy and Play Data
+safety answers must describe the on-device reading of Canvas Student's
+notifications.
+
+- [EAS build](https://expo.dev/accounts/badbird5907/projects/easel/builds/cec0606e-d985-46d5-afa3-b8622d87757f)
+  (`play-internal`, channel `production`, runtime `1.1.0`, commit `adf1c45`) and
+  [submission](https://expo.dev/accounts/badbird5907/projects/easel/submissions/5a837ab3-7a3e-4e01-a4b8-e51ea0ebd3ca).
+
+### Version 6
+
 Version **1.0.0 (6)** was built on EAS and auto-submitted to the internal testing
 track on October 31, 2026. The Google Play Developer API reports the internal track
 release `1.0.0` with version code 6 as **completed** (rolled out to internal testers).

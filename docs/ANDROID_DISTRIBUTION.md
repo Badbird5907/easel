@@ -33,6 +33,7 @@ release `1.0.0` with version code 6 as **completed** (rolled out to internal tes
 | 2026-10-31 | [`fa6f3fc2`](https://expo.dev/accounts/badbird5907/projects/easel/updates/fa6f3fc2-1139-4fe3-805f-2bfef0ce64e9) | `a9b82f5` | Enable automatic JavaScript window launches in sign-in; physical testing showed Duo's clipboard-only flow still did not launch the app |
 | 2026-10-31 | [`03fab321`](https://expo.dev/accounts/badbird5907/projects/easel/updates/03fab321-5054-43a5-987d-600ebd2f7fc4) | `2c9cbca` | Bridge Duo's Android WebView clipboard verification directly to Duo Mobile; validate prompt origin and app link without copying credentials |
 | 2026-10-31 | [`a8aa860d`](https://expo.dev/accounts/badbird5907/projects/easel/updates/a8aa860d-5e3d-4b22-b295-fdba007fdcf9) | `029a7fe` | Selected calendar day stays round on Android |
+| 2026-10-31 | [`dc5abecd`](https://expo.dev/accounts/badbird5907/projects/easel/updates/dc5abecd-d71c-4ef7-8f9e-0233f0865a71) | `12d7d50` | Runtime 1.1.0 (build 7+): pull to refresh re-checks the connection when offline |
 
 ### Version 5
 

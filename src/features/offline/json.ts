@@ -20,12 +20,19 @@ export function encodeJson(value: unknown): string {
 }
 
 export function decodeJson<T>(text: string): T {
-  return JSON.parse(text, (_key, value) => {
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      if (DATE in value) return new Date(value[DATE] ?? Number.NaN);
-      if (MAP in value) return new Map(value[MAP]);
-      if (SET in value) return new Set(value[SET]);
+  // Native JSON.parse handles primitives without crossing into a JS reviver for each
+  // field. Only visit objects afterwards, rebuilding the few tagged model values.
+  function restore(value: unknown): unknown {
+    if (!value || typeof value !== 'object') return value;
+    const object = value as Record<string, unknown>;
+    if (DATE in object) return new Date((object[DATE] as number | null) ?? Number.NaN);
+    if (MAP in object) return new Map(restore(object[MAP]) as [unknown, unknown][]);
+    if (SET in object) return new Set(restore(object[SET]) as unknown[]);
+    for (const key of Object.keys(object)) {
+      const child = object[key];
+      if (child && typeof child === 'object') object[key] = restore(child);
     }
     return value;
-  }) as T;
+  }
+  return restore(JSON.parse(text)) as T;
 }

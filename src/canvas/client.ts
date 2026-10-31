@@ -11,6 +11,7 @@ export class CanvasError extends Error {
     message: string,
     readonly status: number,
     readonly path: string,
+    readonly retryAfterMs?: number,
   ) {
     super(message);
     this.name = 'CanvasError';
@@ -233,7 +234,14 @@ export class CanvasClient {
       }
       throw new CanvasError(message, 403, path);
     }
-    if (!response.ok) throw new CanvasError(await errorMessage(response), response.status, path);
+    if (!response.ok) {
+      const retryAfter = response.headers.get('Retry-After');
+      const seconds = retryAfter === null ? NaN : Number(retryAfter);
+      const retryAfterMs = retryAfter === null ? undefined : Math.max(0,
+        Number.isFinite(seconds) ? seconds * 1000 : Date.parse(retryAfter) - Date.now());
+      throw new CanvasError(await errorMessage(response), response.status, path,
+        Number.isFinite(retryAfterMs) ? retryAfterMs : undefined);
+    }
     return response;
   }
 

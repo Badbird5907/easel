@@ -1,3 +1,4 @@
+import { useListPlaceholder } from './cacheSeed';
 import { type QueryClient, type QueryKey, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -315,15 +316,19 @@ export async function fetchConversation(
 
 /** A conversation with its messages, newest first. Opening it marks it read in Canvas and in the lists. */
 export function useConversation(id: string | undefined) {
+  const placeholderData = useListPlaceholder<Conversation[], ConversationDetail>(['conversations'], (list) => {
+    const item = list.find((item) => item.id === id);
+    return item ? { ...item, messages: [] } : undefined;
+  });
   const { account } = useCanvas();
   const queryClient = useQueryClient();
   const accountKey = useAccountKey();
-  const query = useCanvasQuery(
+  const query = useCanvasQuery<ConversationDetail>(
     ['conversation', id ?? 'none'],
     (client, signal) => fetchConversation(client, account.user.id, id!, signal),
-    { enabled: !!id },
+    { enabled: !!id, placeholderData },
   );
-  const loaded = !!query.data;
+  const loaded = !!query.data && !query.isPlaceholderData;
   useEffect(() => {
     if (!loaded || !id) return;
     patchLists(queryClient, accountKey, id, (c) => (c.unread ? { ...c, unread: false } : c));

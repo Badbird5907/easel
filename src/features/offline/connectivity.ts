@@ -32,7 +32,8 @@ let probeBaseUrl: string | null = null;
 let probeTimer: ReturnType<typeof setTimeout> | null = null;
 let probing = false;
 
-const PROBE_INTERVAL_MS = 8_000;
+const PROBE_INITIAL_MS = 1_000;
+let probeDelay = PROBE_INITIAL_MS;
 const PROBE_TIMEOUT_MS = 6_000;
 
 function setState(patch: Partial<Connectivity>) {
@@ -64,9 +65,11 @@ function fromNetworkState(s: Network.NetworkState): boolean {
 }
 
 function applyNetwork(s: Network.NetworkState) {
+  resetProbe();
   const network = fromNetworkState(s);
   // A returning network is worth a fresh try at Canvas.
   setState(network && !state.network ? { network, reachable: true, host: null } : { network });
+  if (network && !state.reachable) scheduleProbe();
 }
 
 let started = false;
@@ -80,7 +83,10 @@ export function startConnectivity() {
     .catch(() => {});
   Network.addNetworkStateListener(applyNetwork);
   AppState.addEventListener('change', (next) => {
-    if (next === 'active' && state.network && !state.reachable) void probe();
+    if (next === 'active') {
+      resetProbe();
+      if (state.network && !state.reachable) void probe();
+    }
   });
   onlineManager.setEventListener((setOnline) => {
     setOnline(isOnline());
@@ -90,7 +96,9 @@ export function startConnectivity() {
 
 /** Which Canvas to probe while it's unreachable: the active account's. */
 export function setProbeTarget(baseUrl: string | null) {
+  if (probeBaseUrl !== baseUrl) resetProbe();
   probeBaseUrl = baseUrl;
+  if (state.network && !state.reachable) scheduleProbe();
 }
 
 /** A request failed before reaching Canvas. */
@@ -106,6 +114,7 @@ export function reportUnreachable(baseUrl: string) {
 
 /** A request reached Canvas. */
 export function reportReachable() {
+  resetProbe();
   if (!state.reachable) setState({ reachable: true, host: null });
 }
 
@@ -114,10 +123,17 @@ export function noteRequestError(error: unknown, baseUrl: string) {
   if (error instanceof CanvasNetworkError && !(error instanceof OfflineError)) reportUnreachable(baseUrl);
 }
 
-function scheduleProbe(delay = PROBE_INTERVAL_MS) {
+function resetProbe() {
+  probeDelay = PROBE_INITIAL_MS;
+  if (probeTimer) clearTimeout(probeTimer);
+  probeTimer = null;
+}
+
+function scheduleProbe(delay = probeDelay) {
   if (probeTimer) return;
   probeTimer = setTimeout(() => {
     probeTimer = null;
+    probeDelay = Math.min(probeDelay * 2, 30_000);
     void probe();
   }, delay);
 }
@@ -127,28 +143,28 @@ function scheduleProbe(delay = PROBE_INTERVAL_MS) {
  * Sends no token.
  */
 async function probe() {
-  if (probing || !probeBaseUrl) return;
+  if (probing || !probeBaseUrl || !state.network) return;
+  const target = probeBaseUrl;
   probing = true;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), PROBE_TIMEOUT_MS);
   try {
-    await fetch(`${probeBaseUrl}/api/v1/users/self`, { method: 'HEAD', signal: controller.signal });
-    reportReachable();
+    await fetch(`${target}/api/v1/users/self`, { method: 'HEAD', signal: controller.signal });
+    if (target === probeBaseUrl) reportReachable();
   } catch {
     // Still unreachable.
   } finally {
     clearTimeout(timeout);
     probing = false;
-    if (state.network && !state.reachable) scheduleProbe();
+    if (state.network && !state.reachable) {
+      scheduleProbe();
+    }
   }
 }
 
 /** Checks again right away, e.g. from a "Try again" button. */
 export function retryConnectivity() {
-  if (probeTimer) {
-    clearTimeout(probeTimer);
-    probeTimer = null;
-  }
+  resetProbe();
   void probe();
 }
 

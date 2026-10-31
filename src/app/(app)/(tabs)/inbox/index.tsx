@@ -160,7 +160,7 @@ export default function InboxScreen() {
           <Skeleton className="h-24 rounded-2xl" />
           <Skeleton className="h-24 rounded-2xl" />
         </View>
-      ) : conversations.isError ? (
+      ) : conversations.isError && !conversations.data ? (
         <Callout
           tone="danger"
           title={t('inboxBrowse.loadMessagesError')}

@@ -1,11 +1,10 @@
 import { useTranslation, type Translate } from '@/i18n';
 import { Check, CloudUpload, EyeOff, type LucideIcon, RotateCcw } from 'lucide-react-native';
-import { useRef } from 'react';
 import { View } from 'react-native';
-import ReanimatedSwipeable, {
-  SwipeDirection,
-  type SwipeableMethods,
-} from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
+import { AnimatedView } from '@/design/interop';
 
 import { isDone, type Course, type WorkItem } from '@/canvas/models';
 import { AccentScope, Badge, Icon, ListItem, Text, useTheme } from '@/design';
@@ -112,7 +111,7 @@ export function PlannerRow({
 }: Props) {
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const swipeable = useRef<SwipeableMethods>(null);
+  const translation = useSharedValue(0);
   const locked = lockedDone(item);
   const done = isDone(item);
   const toggleLabel = item.markedComplete ? t('planner.markNotDone') : t('planner.markDone');
@@ -135,68 +134,91 @@ export function PlannerRow({
     .filter(Boolean)
     .join(', ');
 
+  const finishSwipe = (right: boolean) => {
+    if (right) onToggleDone();
+    else onDismiss();
+  };
+  const pan = Gesture.Pan()
+    .activeOffsetX([-14, 14])
+    .failOffsetY([-10, 10])
+    .onUpdate((event) => {
+      translation.value = locked && event.translationX > 0 ? 0 : event.translationX / 1.4;
+    })
+    .onEnd((event) => {
+      const projected = (event.translationX + event.velocityX * 0.05) / 1.4;
+      if (projected > 88 && !locked) scheduleOnRN(finishSwipe, true);
+      else if (projected < -88) scheduleOnRN(finishSwipe, false);
+    })
+    .onFinalize(() => {
+      translation.value = withSpring(0, { damping: 24, stiffness: 240 });
+    });
+  const rowStyle = useAnimatedStyle(() => ({ transform: [{ translateX: translation.value }] }));
+  const leftStyle = useAnimatedStyle(() => ({ opacity: translation.value > 0 ? 1 : 0 }));
+  const rightStyle = useAnimatedStyle(() => ({ opacity: translation.value < 0 ? 1 : 0 }));
+
   return (
-    <ReanimatedSwipeable
-      ref={swipeable}
-      friction={1.4}
-      leftThreshold={88}
-      rightThreshold={88}
-      overshootFriction={8}
-      childrenContainerStyle={{ backgroundColor: colors.surface }}
-      renderLeftActions={
-        locked
-          ? undefined
-          : () => (
-              <SwipeAction
-                icon={item.markedComplete ? RotateCcw : Check}
-                label={item.markedComplete ? t('planner.notDone') : t('common.done')}
-                tone="success"
-                side="left"
-              />
-            )
-      }
-      renderRightActions={() => (
-        <SwipeAction icon={EyeOff} label={t('common.dismiss')} tone="warning" side="right" />
+    <View style={{ overflow: 'hidden' }}>
+      {!locked && (
+        <AnimatedView
+          className="absolute inset-0"
+          animatedStyle={leftStyle}
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        >
+          <SwipeAction
+            icon={item.markedComplete ? RotateCcw : Check}
+            label={item.markedComplete ? t('planner.notDone') : t('common.done')}
+            tone="success"
+            side="left"
+          />
+        </AnimatedView>
       )}
-      onSwipeableWillOpen={(direction) => {
-        swipeable.current?.close();
-        // Swiping right opens the left panel (done); swiping left opens the right one (dismiss).
-        if (direction === SwipeDirection.RIGHT) onToggleDone();
-        else onDismiss();
-      }}
-    >
-      <ListItem
-        title={item.title}
-        subtitle={meta || undefined}
-        subtitleLines={1}
-        leading={
-          <AccentScope color={course?.color}>
-            <DoneCheckbox checked={done} locked={locked} onToggle={onToggleDone} />
-          </AccentScope>
-        }
-        trailing={
-          pending ? (
-            <View className="flex-row items-center gap-2">
-              <Icon icon={CloudUpload} size={16} tone="muted" />
-              <Trailing item={item} showDay={showDay} />
-            </View>
-          ) : (
-            <Trailing item={item} showDay={showDay} />
-          )
-        }
-        chevron={false}
-        onPress={onPress}
-        accessibilityLabel={spoken}
-        accessibilityHint={onPress ? t('planner.openHint') : undefined}
-        accessibilityActions={[
-          ...(locked ? [] : [{ name: 'toggle', label: toggleLabel }]),
-          { name: 'dismiss', label: t('common.dismiss') },
-        ]}
-        onAccessibilityAction={(event) => {
-          if (event.nativeEvent.actionName === 'toggle') onToggleDone();
-          if (event.nativeEvent.actionName === 'dismiss') onDismiss();
-        }}
-      />
-    </ReanimatedSwipeable>
+      <AnimatedView
+        className="absolute inset-0"
+        animatedStyle={rightStyle}
+        pointerEvents="none"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        <SwipeAction icon={EyeOff} label={t('common.dismiss')} tone="warning" side="right" />
+      </AnimatedView>
+      <GestureDetector gesture={pan}>
+        <AnimatedView animatedStyle={rowStyle} style={{ backgroundColor: colors.surface }}>
+          <ListItem
+            title={item.title}
+            subtitle={meta || undefined}
+            subtitleLines={1}
+            leading={
+              <AccentScope color={course?.color}>
+                <DoneCheckbox checked={done} locked={locked} onToggle={onToggleDone} />
+              </AccentScope>
+            }
+            trailing={
+              pending ? (
+                <View className="flex-row items-center gap-2">
+                  <Icon icon={CloudUpload} size={16} tone="muted" />
+                  <Trailing item={item} showDay={showDay} />
+                </View>
+              ) : (
+                <Trailing item={item} showDay={showDay} />
+              )
+            }
+            chevron={false}
+            onPress={onPress}
+            accessibilityLabel={spoken}
+            accessibilityHint={onPress ? t('planner.openHint') : undefined}
+            accessibilityActions={[
+              ...(locked ? [] : [{ name: 'toggle', label: toggleLabel }]),
+              { name: 'dismiss', label: t('common.dismiss') },
+            ]}
+            onAccessibilityAction={(event) => {
+              if (event.nativeEvent.actionName === 'toggle') onToggleDone();
+              if (event.nativeEvent.actionName === 'dismiss') onDismiss();
+            }}
+          />
+        </AnimatedView>
+      </GestureDetector>
+    </View>
   );
 }

@@ -24,7 +24,7 @@ import {
 import { CACHE_MAX_AGE, cacheBuster, cachePersister, shouldPersistQuery } from '@/features/offline/persist';
 import { syncedQueryData } from '@/features/sync/snapshots';
 
-import { CanvasAuthError, type CanvasClient } from './client';
+import { CanvasAuthError, CanvasError, CanvasNetworkError, type CanvasClient } from './client';
 import { markAccountExpired, registerAccountCleanup, useCanvas, useSession } from './session';
 
 function makeQueryClient() {
@@ -34,7 +34,15 @@ function makeQueryClient() {
         staleTime: 30_000,
         // At least as long as the persisted cache lives, or restored data would be collected right away.
         gcTime: CACHE_MAX_AGE,
-        retry: (count, error) => !(error instanceof CanvasAuthError) && count < 2,
+        // Four total attempts; fast recovery without retrying permission or programming errors.
+        retry: (count, error) => count < 3 && error.name !== 'AbortError' &&
+          !(error instanceof CanvasAuthError) &&
+          (error instanceof CanvasNetworkError || (error instanceof CanvasError &&
+            (error.status === 408 || error.status === 429 || error.status >= 500))),
+        retryDelay: (attempt, error) => Math.max(
+          Math.min(400 * 2 ** attempt * (0.75 + Math.random() * 0.5), 8_000),
+          error instanceof CanvasError ? error.retryAfterMs ?? 0 : 0,
+        ),
       },
       // Mutations never wait for the network: offline, they fail right away (see useCanvasMutation).
       mutations: { retry: false, networkMode: 'always' },

@@ -199,7 +199,7 @@ function AvailableCourseGradesScreen() {
               </ListGroup>
             ) : null}
 
-            {groups.isError ? (
+            {groups.isError && !groups.data ? (
               <Callout
                 tone="danger"
                 title={t('grades.assignmentsError')}

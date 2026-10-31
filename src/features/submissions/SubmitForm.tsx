@@ -1,3 +1,4 @@
+import { useSubmitAssignment } from './useSubmitAssignment';
 import { router, useIsFocused, useNavigation, useRoute } from 'expo-router';
 import { CircleCheck, ExternalLink, FilePen, Plus, Puzzle, X } from 'lucide-react-native';
 import {
@@ -17,7 +18,6 @@ import {
   type SubmitInput,
   useHomeworkTools,
   useSubmissionGroup,
-  useSubmitAssignment,
 } from '@/canvas/api/submissions';
 import { useCanvas } from '@/canvas/session';
 import {

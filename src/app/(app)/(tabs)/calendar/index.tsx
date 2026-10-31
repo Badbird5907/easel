@@ -348,7 +348,7 @@ export default function CalendarScreen() {
     >
       {t('calendar.hiddenHelp')}
     </Callout>
-  ) : items.isError ? (
+  ) : items.isError && !items.data ? (
     <Callout
       tone="danger"
       title={t('calendar.loadError')}
@@ -426,7 +426,7 @@ export default function CalendarScreen() {
   const keyDate = fromDayKey;
 
   const agendaList =
-    loading && !allHidden && !items.isError ? (
+    loading && !allHidden && !items.isError && !items.data ? (
       <View className="gap-3">
         <Skeleton className="ml-4 h-3 w-40" />
         <Skeleton className="h-28 rounded-2xl" />

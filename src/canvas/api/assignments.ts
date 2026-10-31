@@ -1,3 +1,4 @@
+import { useListPlaceholder } from './cacheSeed';
 import { htmlToText } from '../html';
 import type { CanvasClient } from '../client';
 import { useCanvasQuery } from '../query';
@@ -539,10 +540,14 @@ export async function fetchAssignment(
 
 /** One assignment with its description, rubric, and the student's submission (ASSIGN-2). */
 export function useAssignment(courseId: string, assignmentId: string | null | undefined) {
-  return useCanvasQuery(
+  const placeholderData = useListPlaceholder<AssignmentList, Assignment>(
+    ['courses', courseId, 'assignment_groups'],
+    (list) => list.assignments?.find((item) => item.id === assignmentId),
+  );
+  return useCanvasQuery<Assignment>(
     assignmentKeys.detail(courseId, assignmentId ?? ''),
     (client, signal) => fetchAssignment(client, courseId, assignmentId!, signal),
-    { enabled: !!assignmentId },
+    { enabled: !!assignmentId, placeholderData },
   );
 }
 

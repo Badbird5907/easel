@@ -1,3 +1,4 @@
+import { useListPlaceholder } from './cacheSeed';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { htmlToText } from '../html';
@@ -111,10 +112,13 @@ export const fetchPage = (client: CanvasClient, courseId: string, pageUrl: strin
 
 /** One page with its body. Pass `FRONT_PAGE` for the front page. */
 export function useContextPage(context: PageContext, pageUrl: string | null | undefined) {
-  return useCanvasQuery(
+  const placeholderData = useListPlaceholder<Page[], Page>(keyBase(context), (list) =>
+    Array.isArray(list) ? list.find((item) => pageUrl === FRONT_PAGE ? item.isFrontPage : item.url === pageUrl) : undefined,
+  );
+  return useCanvasQuery<Page>(
     [...keyBase(context), pageUrl],
     (client, signal) => fetchContextPage(client, context, pageUrl!, signal),
-    { enabled: !!pageUrl },
+    { enabled: !!pageUrl, placeholderData },
   );
 }
 

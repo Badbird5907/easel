@@ -1,3 +1,4 @@
+import { useListPlaceholder } from './cacheSeed';
 import { CryptoDigestAlgorithm, digestStringAsync } from 'expo-crypto';
 
 import { htmlToText } from '../html';
@@ -190,10 +191,14 @@ export async function fetchQuiz(
 }
 
 export function useQuiz(courseId: string, quizId: string | null | undefined) {
-  return useCanvasQuery(
+  const placeholderData = useListPlaceholder<Quiz[], Quiz>(
+    ['courses', courseId, 'quizzes'],
+    (list) => Array.isArray(list) ? list.find((item) => item.id === quizId) : undefined,
+  );
+  return useCanvasQuery<Quiz>(
     ['courses', courseId, 'quizzes', quizId],
     (client, signal) => fetchQuiz(client, courseId, quizId!, signal),
-    { enabled: !!quizId },
+    { enabled: !!quizId, placeholderData },
   );
 }
 

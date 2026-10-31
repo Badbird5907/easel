@@ -1,3 +1,4 @@
+import { useListPlaceholder } from './cacheSeed';
 import { CanvasAuthError, type CanvasClient, CanvasError } from '../client';
 import { useCanvasQuery } from '../query';
 import type { CanvasAttachment } from '../types';
@@ -347,16 +348,13 @@ export const fileKey = (fileId: string) => ['files', 'file', fileId] as const;
  * immediately while the full record loads.
  */
 export function useFile(fileId: string, options: { courseId?: string; seed?: FileItem } = {}) {
-  return useCanvasQuery(
+  const fromList = useListPlaceholder<FolderContents, FileItem>(['files'],
+    (list) => list.files?.find((item) => item.id === fileId));
+  return useCanvasQuery<FileItem>(
     fileKey(fileId),
     (client, signal) => fetchFile(client, fileId, { courseId: options.courseId, signal }),
     {
-      placeholderData: options.seed,
-      // A 404 or 403 won't fix itself on retry.
-      retry: (count, error) =>
-        !(error instanceof CanvasAuthError) &&
-        !(error instanceof CanvasError && [403, 404].includes(error.status)) &&
-        count < 2,
+      placeholderData: () => options.seed ?? fromList(),
     },
   );
 }

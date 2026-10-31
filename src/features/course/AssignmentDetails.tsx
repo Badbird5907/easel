@@ -430,7 +430,7 @@ export function AssignmentDetails({ courseId, assignmentId }: { courseId: string
   const action = useAssignmentAction(JSON.stringify([courseId, assignmentId]));
   const query = useAssignment(courseId, assignmentId);
   if (query.isPending) return <DetailSkeleton />;
-  if (query.isError)
+  if (query.isError && !query.data)
     return (
       <LoadError
         title={t('assignmentPresentation.loadAssignment')}
@@ -438,5 +438,8 @@ export function AssignmentDetails({ courseId, assignmentId }: { courseId: string
         onRetry={() => action.run(() => query.refetch())}
       />
     );
-  return <AssignmentBody a={query.data} />;
+  return <>
+    <AssignmentBody a={query.data} />
+    {query.isPlaceholderData && !query.data.html ? <DetailSkeleton /> : null}
+  </>;
 }

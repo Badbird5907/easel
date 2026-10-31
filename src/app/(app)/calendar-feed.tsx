@@ -139,7 +139,7 @@ export default function CalendarFeedScreen() {
     }
   };
 
-  const eventOptions: Option<string>[] = upcoming.map((item) => ({
+  const eventOptions: Option<string>[] = choosing === 'events' ? upcoming.map((item) => ({
     value: item.id,
     label: item.kind === 'event' || item.kind === 'note' ? item.title : t('calendarFeed.dueTitle', { title: item.title }),
     subtitle: [
@@ -149,7 +149,7 @@ export default function CalendarFeedScreen() {
     ]
       .filter(Boolean)
       .join(' · '),
-  }));
+  })) : [];
 
   const toggle = (id: string) => {
     const next = new Set(selected);

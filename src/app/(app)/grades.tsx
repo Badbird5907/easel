@@ -95,7 +95,7 @@ export default function GradesScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={colors.fgMuted} />
         }
       >
-        {overview.isPending || overview.isFetching || (!overview.isError && !!overview.failureReason) ? (
+        {overview.isPending && !overview.data ? (
           <Card padding="none" className="overflow-hidden">
             {[0, 1, 2, 3].map((i) => (
               <View key={i} className="min-h-[60px] flex-row items-center gap-3 px-4 py-3">
@@ -108,7 +108,7 @@ export default function GradesScreen() {
               </View>
             ))}
           </Card>
-        ) : overview.isError ? (
+        ) : overview.isError && !overview.data ? (
           <Callout
             tone="danger"
             title={t('grades.loadError')}

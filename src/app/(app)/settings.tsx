@@ -48,9 +48,9 @@ import { confirmSignOut } from '@/features/auth/signOut';
 import { useDeveloperMode } from '@/features/settings/developer';
 import { landingTabs, useLandingTab } from '@/features/settings/landingTab';
 import { canvasLanguages, languageName, languageOptionCode } from '@/features/settings/languages';
-import { applyTimeZone, timeZoneName, useCanvasTimeZoneSync } from '@/features/settings/timeZone';
-import { canvasTimeZones } from '@/features/settings/timeZones';
-import { deviceTimeZone } from '@/lib/dates';
+import { applyTimeZone } from '@/features/settings/timeZone';
+import { useDisplayTimeZone } from '@/lib/dates';
+import { useTimeZoneOptions } from '@/features/settings/useTimeZoneOptions';
 
 const appearanceOptions: {
   value: SchemePreference;
@@ -76,15 +76,13 @@ export default function SettingsScreen() {
   const profile = useProfile();
   const pairing = usePairingAvailability();
   const update = useUpdateProfile();
-  const zone = useCanvasTimeZoneSync();
+  const zone = useDisplayTimeZone();
   const toast = useToast();
   const queryClient = useQueryClient();
-  const { height: windowHeight } = useWindowDimensions();
   const landingTrigger = useRef<ComponentRef<typeof View>>(null);
   const languageTrigger = useRef<ComponentRef<typeof View>>(null);
   const zoneTrigger = useRef<ComponentRef<typeof View>>(null);
   const [sheet, setSheet] = useState<SheetKind>(null);
-  const [search, setSearch] = useState('');
 
   const unavailable = profile.isError && !profile.data ? t('settings.unavailable') : undefined;
   const pendingLocale = update.isPending ? update.variables?.locale : undefined;
@@ -95,37 +93,17 @@ export default function SettingsScreen() {
   const timeZone = pendingZone ?? profile.data?.timeZone ?? zone;
 
   const effectiveLocale = profile.data?.effectiveLocale;
-  const languageOptions: Option<string>[] = [
-    {
-      value: SCHOOL_DEFAULT,
-      label: t('settings.schoolDefault'),
-      subtitle: effectiveLocale ? (languageName(effectiveLocale) ?? undefined) : undefined,
-    },
-    ...canvasLanguages.map(([value, label]) => ({ value, label })),
-  ];
-
-  const zoneOptions = useMemo<Option<string>[]>(() => {
-    const device = deviceTimeZone();
-    const term = search.trim().toLowerCase();
-    // The student's zone and the device's lead the list when Canvas's named zones don't include them.
-    const extras = [...new Set([timeZone, device])]
-      .filter((iana) => !canvasTimeZones.some(([zone]) => zone === iana))
-      .map((iana) => [iana, timeZoneName(iana) ?? iana] as const);
-    const all = [...extras, ...canvasTimeZones];
-    return all
-      .filter(
-        ([iana, label]) =>
-          !term ||
-          label.toLowerCase().includes(term) ||
-          localizedZoneName(iana).toLowerCase().includes(term) ||
-          iana.toLowerCase().includes(term),
-      )
-      .map(([iana]) => ({
-        value: iana,
-        label: `${localizedZoneName(iana)} (${iana})`,
-        subtitle: iana === device ? t('settings.deviceZone') : undefined,
-      }));
-  }, [search, timeZone, t]);
+  const languageOptions = useMemo<Option<string>[]>(
+    () => [
+      {
+        value: SCHOOL_DEFAULT,
+        label: t('settings.schoolDefault'),
+        subtitle: effectiveLocale ? (languageName(effectiveLocale) ?? undefined) : undefined,
+      },
+      ...canvasLanguages.map(([value, label]) => ({ value, label })),
+    ],
+    [effectiveLocale, t],
+  );
 
   const save = (patch: { locale?: string; time_zone?: string }, done: string) => {
     update.mutate(patch, {
@@ -143,7 +121,6 @@ export default function SettingsScreen() {
 
   const close = () => {
     setSheet(null);
-    setSearch('');
   };
 
   return (
@@ -340,17 +317,19 @@ export default function SettingsScreen() {
         title={t('settings.start')}
         onClose={close}
       >
-        <View style={{ direction }}>
-          <OptionGroup
-            options={landingTabs.map((tab) => ({ value: tab.value, label: t(`nav.${tab.value}`) }))}
-            selected={landing}
-            footer={t('settings.startHint')}
-            onSelect={(value) => {
-              setLanding(value);
-              close();
-            }}
-          />
-        </View>
+        {sheet === 'landing' ? (
+          <View style={{ direction }}>
+            <OptionGroup
+              options={landingTabs.map((tab) => ({ value: tab.value, label: t(`nav.${tab.value}`) }))}
+              selected={landing}
+              footer={t('settings.startHint')}
+              onSelect={(value) => {
+                setLanding(value);
+                close();
+              }}
+            />
+          </View>
+        ) : null}
       </Sheet>
 
       <Sheet
@@ -360,24 +339,26 @@ export default function SettingsScreen() {
         title={t('settings.language')}
         onClose={close}
       >
-        <View style={{ direction }}>
-          <OptionGroup
-            options={languageOptions}
-            selected={locale ?? SCHOOL_DEFAULT}
-            footer={t('settings.languageHint')}
-            onSelect={(value) => {
-              close();
-              if (value === (locale ?? SCHOOL_DEFAULT)) return;
-              save(
-                { locale: value === SCHOOL_DEFAULT ? '' : value },
-                t('settings.languageSaved', {
-                  language:
-                    value === SCHOOL_DEFAULT ? t('settings.schoolDefault') : (languageName(value) ?? value),
-                }),
-              );
-            }}
-          />
-        </View>
+        {sheet === 'language' ? (
+          <View style={{ direction }}>
+            <OptionGroup
+              options={languageOptions}
+              selected={locale ?? SCHOOL_DEFAULT}
+              footer={t('settings.languageHint')}
+              onSelect={(value) => {
+                close();
+                if (value === (locale ?? SCHOOL_DEFAULT)) return;
+                save(
+                  { locale: value === SCHOOL_DEFAULT ? '' : value },
+                  t('settings.languageSaved', {
+                    language:
+                      value === SCHOOL_DEFAULT ? t('settings.schoolDefault') : (languageName(value) ?? value),
+                  }),
+                );
+              }}
+            />
+          </View>
+        ) : null}
       </Sheet>
 
       <Sheet
@@ -387,33 +368,62 @@ export default function SettingsScreen() {
         title={t('settings.timeZone')}
         onClose={close}
       >
-        {/* A fixed height keeps the search field and its first results above the keyboard as the list narrows. */}
-        <View className="gap-6" style={{ minHeight: windowHeight * 0.72, direction }}>
-          <SearchField
-            value={search}
-            onChangeText={setSearch}
-            placeholder={t('settings.searchZones')}
-            accessibilityLabel={t('settings.searchZones')}
-            returnKeyType="search"
+        {sheet === 'timeZone' ? (
+          <TimeZoneOptions
+            timeZone={timeZone}
+            onClose={close}
+            onSelect={(value) =>
+              save({ time_zone: value }, t('settings.zoneSaved', { zone: localizedZoneName(value) }))
+            }
           />
-          {zoneOptions.length ? (
-            <OptionGroup
-              options={zoneOptions}
-              selected={timeZone}
-              onSelect={(value) => {
-                close();
-                if (value === timeZone) return;
-                save({ time_zone: value }, t('settings.zoneSaved', { zone: localizedZoneName(value) }));
-              }}
-            />
-          ) : (
-            <Text variant="subhead" tone="muted" align="center" className="py-6">
-              {t('settings.noZones', { search: search.trim() })}
-            </Text>
-          )}
-        </View>
+        ) : null}
       </Sheet>
       {toast.element}
+    </View>
+  );
+}
+
+function TimeZoneOptions({
+  timeZone,
+  onClose,
+  onSelect,
+}: {
+  timeZone: string;
+  onClose: () => void;
+  onSelect: (value: string) => void;
+}) {
+  const { t, direction, locale } = useTranslation();
+  const { height: windowHeight } = useWindowDimensions();
+  const [search, setSearch] = useState('');
+  const { options: all, complete } = useTimeZoneOptions(locale, timeZone, t('settings.deviceZone'));
+  const options = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return term ? all.filter((option) => option.searchText.includes(term)) : all;
+  }, [all, search]);
+  return (
+    <View className="gap-6" style={{ minHeight: windowHeight * 0.72, direction }}>
+      <SearchField
+        value={search}
+        onChangeText={setSearch}
+        placeholder={t('settings.searchZones')}
+        accessibilityLabel={t('settings.searchZones')}
+        returnKeyType="search"
+      />
+      {options.length ? (
+        <OptionGroup
+          options={options}
+          selected={timeZone}
+          onSelect={(value) => {
+            onClose();
+            if (value === timeZone) return;
+            onSelect(value);
+          }}
+        />
+      ) : complete ? (
+        <Text variant="subhead" tone="muted" align="center" className="py-6">
+          {t('settings.noZones', { search: search.trim() })}
+        </Text>
+      ) : null}
     </View>
   );
 }

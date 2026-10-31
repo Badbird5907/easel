@@ -58,7 +58,7 @@ export function PageList({ context }: { context: PageContext }) {
   const visible = term ? all.filter((p) => p.title.toLowerCase().includes(term)) : all;
 
   if (pages.isPending) return <ListSkeleton rows={5} />;
-  if (pages.isError)
+  if (pages.isError && !pages.data)
     return <LoadError title={t('pages.loadError')} error={pages.error} onRetry={() => pages.refetch()} />;
   if (all.length === 0)
     return (
@@ -117,7 +117,7 @@ export function pageEditRoute(context: PageContext, pageUrl: string) {
     : { pathname: '/group/[groupId]/page/[pageUrl]/edit', params: { groupId: context.id, pageUrl } };
 }
 
-export function PageBody({ page, onEdit }: { page: Page; onEdit?: () => void }) {
+export function PageBody({ page, onEdit, loadingBody = false }: { page: Page; onEdit?: () => void; loadingBody?: boolean }) {
   const { t, locale } = useTranslation();
   const timeZone = useDisplayTimeZone();
   const dates = createDateContext(locale, timeZone);
@@ -154,6 +154,8 @@ export function PageBody({ page, onEdit }: { page: Page; onEdit?: () => void }) 
         <Callout tone="warning" icon={Lock} title={t('pages.locked')}>
           {page.lockExplanation ?? t('pages.lockExplanation')}
         </Callout>
+      ) : loadingBody ? (
+        <DetailSkeleton />
       ) : page.html.trim() ? (
         <RichContent html={page.html} />
       ) : (
@@ -183,11 +185,12 @@ export function PageContent({
   const where: PageContext = context ?? { type: 'course', id: courseId ?? '' };
   const query = useContextPage(where, pageUrl);
   if (query.isPending) return <DetailSkeleton />;
-  if (query.isError)
+  if (query.isError && !query.data)
     return <LoadError title={t('pages.pageLoadError')} error={query.error} onRetry={() => query.refetch()} />;
   return (
     <PageBody
       page={query.data}
+      loadingBody={query.isPlaceholderData && !query.data.html}
       onEdit={() => router.push(pageEditRoute(where, query.data.url) as never)}
     />
   );
@@ -340,7 +343,7 @@ export function PageEditor({ context, pageUrl }: { context: PageContext; pageUrl
       <Screen {...scrollProps} automaticallyAdjustKeyboardInsets contentClassName="gap-5">
         {page.isPending ? (
           <DetailSkeleton />
-        ) : page.isError ? (
+        ) : page.isError && !page.data ? (
           <LoadError title={t('pages.pageLoadError')} error={page.error} onRetry={() => page.refetch()} />
         ) : !page.data.editable ? (
           <Callout tone="info" icon={Lock} title={t('pages.noPermission')}>

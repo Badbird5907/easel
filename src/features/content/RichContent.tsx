@@ -1,5 +1,5 @@
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { PixelRatio, Platform, View } from 'react-native';
+import { PixelRatio, Platform, useWindowDimensions, View } from 'react-native';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import { extractThemeFiles, type SchoolTheme, useSchoolTheme } from '@/canvas/api/brand';
@@ -31,6 +31,14 @@ export type RichContentProps = {
   variant?: 'body' | 'subhead';
 };
 
+// Bounded, account-scoped layout memory. Never retain the HTML or a WebView session.
+const contentHeights = new Map<string, number>();
+function contentHash(text: string): string {
+  let hash = 2166136261;
+  for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
+  return `${text.length}:${hash >>> 0}`;
+}
+
 type Message =
   | { type: 'height'; value: number }
   | { type: 'presentationReady' }
@@ -57,7 +65,8 @@ export function RichContent({ html, onLinkPress, minHeight = 24, variant = 'body
   const { colors, scheme } = useTheme();
   const { account, client } = useCanvas();
   const launchTool = useLaunchTool();
-  const [height, setHeight] = useState(minHeight);
+  const { width } = useWindowDimensions();
+  const [measured, setMeasured] = useState<{ key: string; height: number } | null>(null);
   const fontScale = PixelRatio.getFontScale();
 
   // HTML-8: Canvas writes the school's mobile theme tags into API HTML. They always come
@@ -102,6 +111,10 @@ export function RichContent({ html, onLinkPress, minHeight = 24, variant = 'body
     [offlineContent, colors, scheme, fontScale, variant, account.baseUrl, theme],
   );
 
+  const heightKey = useMemo(() => `${account.id}:${width}:${contentHash(document)}`,
+    [account.id, width, document]);
+  const height = measured?.key === heightKey ? measured.height : contentHeights.get(heightKey) ?? minHeight;
+
   const source = useMemo(() => ({ html: document, baseUrl: account.baseUrl }), [document, account.baseUrl]);
 
   const toolAction = useToolAction(JSON.stringify([document, account.baseUrl, online]), online);
@@ -137,7 +150,13 @@ export function RichContent({ html, onLinkPress, minHeight = 24, variant = 'body
     if (message.type === 'presentationReady') {
       session?.presentationReady();
     }
-    if (message.type === 'height' && message.value > 0) setHeight(Math.ceil(message.value));
+    if (message.type === 'height' && Number.isFinite(message.value) && message.value > 0) {
+      const height = Math.ceil(message.value);
+      contentHeights.delete(heightKey);
+      contentHeights.set(heightKey, height);
+      if (contentHeights.size > 64) contentHeights.delete(contentHeights.keys().next().value!);
+      setMeasured({ key: heightKey, height });
+    }
     if (message.type === 'session') {
       session?.demand();
     }
@@ -440,7 +459,7 @@ export function buildDocument(
     <meta charset="utf-8" />${school ? SCHOOL_THEME_CSP : ''}
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <style>${css}</style>${school ? schoolThemeStyle(school.css, fontScale) : ''}${math}
   </head><body>${body}<script>${script}</script>${school ? schoolThemeScript(school.js, c, dark) : ''}</body></html>`;
 }

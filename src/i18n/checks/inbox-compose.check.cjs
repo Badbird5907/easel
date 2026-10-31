@@ -271,6 +271,8 @@ vm.runInNewContext(
             return mutation;
           },
         };
+      // Detail placeholders from list caches; mutations here don't exercise them.
+      if (name === './cacheSeed') return { useListPlaceholder: () => () => undefined };
       throw Error('Unexpected API import ' + name);
     },
   },

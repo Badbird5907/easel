@@ -1,3 +1,4 @@
+import { useListPlaceholder } from './cacheSeed';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { courseColors } from '@/design/tokens/colors';
@@ -86,7 +87,12 @@ export async function fetchCourse(
 }
 
 export function useCourse(courseId: string) {
-  return useCanvasQuery(['courses', courseId], (client, signal) => fetchCourse(client, courseId, signal));
+  const placeholderData = useListPlaceholder<Course[], CourseDetail>(['courses', 'dashboard'], (list) => {
+    const course = list.find((item) => item.id === courseId);
+    return course ? { id: course.id, code: course.code, name: course.name, term: course.term,
+      defaultView: null, score: null, grade: null, hideFinalGrades: true, restricted: true, teachers: [] } : undefined;
+  });
+  return useCanvasQuery<CourseDetail>(['courses', courseId], (client, signal) => fetchCourse(client, courseId, signal), { placeholderData });
 }
 
 // --- Customizing Home (HOME-4) ---------------------------------------------------------

@@ -210,7 +210,7 @@ export function TopicView({ context, topicId }: { context: DiscussionContext; to
         >
           {topic.isPending ? (
             <TopicSkeleton />
-          ) : topic.isError ? (
+          ) : topic.isError && !topic.data ? (
             <Callout
               tone="danger"
               title={t('discussionDetail.loadError')}
@@ -632,7 +632,7 @@ function Replies({
                 <Skeleton className="h-4 w-full" />
                 <Skeleton className="h-4 w-3/4" />
               </Card>
-            ) : thread.isError ? (
+            ) : thread.isError && !visible ? (
               <Callout
                 tone="danger"
                 title={t('discussionDetail.repliesError')}

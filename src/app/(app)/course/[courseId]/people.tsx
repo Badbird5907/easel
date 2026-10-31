@@ -101,7 +101,7 @@ export default function PeopleScreen() {
           }}
           ListEmptyComponent={term.length === 1 ? (
             <Text tone="muted">{t('people.searchMinimum')}</Text>
-          ) : people.isPending ? <ListSkeleton rows={6} /> : people.isError ? (
+          ) : people.isPending ? <ListSkeleton rows={6} /> : people.isError && !people.data ? (
             <LoadError title={t('people.loadError')} error={people.error} onRetry={() => people.refetch()} />
           ) : term ? <Text tone="muted">{t('people.noMatch', { search: term })}</Text> : (
             <Card padding="none"><EmptyState icon={Users} title={t('people.empty')} description={t('people.emptyDescription')} /></Card>

@@ -160,7 +160,7 @@ export default function HomeScreen() {
               </View>
             </View>
           </Card>
-        ) : planner.isError ? (
+        ) : planner.isError && !planner.data ? (
           <Callout
             tone="danger"
             title={t('home.dueError')}
@@ -196,7 +196,7 @@ export default function HomeScreen() {
               <Skeleton className="h-36 flex-1 rounded-2xl" />
               <Skeleton className="h-36 flex-1 rounded-2xl" />
             </View>
-          ) : courses.isError ? (
+          ) : courses.isError && !courses.data ? (
             <Callout
               tone="danger"
               title={t('home.coursesError')}

@@ -1,3 +1,4 @@
+import { useListPlaceholder } from './cacheSeed';
 import { type QueryClient, useQueryClient } from '@tanstack/react-query';
 
 import { type CanvasClient, CanvasError } from '../client';
@@ -765,8 +766,20 @@ export function useCourseDiscussions(courseId: string) {
 }
 
 export function useDiscussionTopic(context: DiscussionContext, topicId: string) {
-  return useCanvasQuery(['discussion', contextKey(context), topicId], (client, signal) =>
+  const discussion = useListPlaceholder<DiscussionTopic[], DiscussionTopic>(
+    ['discussions', contextKey(context)], (list) => list.find((item) => item.id === topicId),
+  );
+  const announcement = useListPlaceholder<Announcement[], DiscussionTopic>(['announcements'], (list) => {
+    const item = list.find((item) => item.id === topicId &&
+      (context.type === 'course' ? item.courseId === context.id : item.htmlUrl.includes(`/groups/${context.id}/`)));
+    return item ? { ...toDiscussionTopic({ id: item.id, title: item.title, message: item.html,
+      author: { display_name: item.author.name, avatar_image_url: item.author.avatarUrl },
+      posted_at: item.postedAt.toISOString(), html_url: item.htmlUrl, is_announcement: true } as CanvasTopic, context),
+      canReply: false, canAttach: false, canSeePosts: false } : undefined;
+  });
+  return useCanvasQuery<DiscussionTopic>(['discussion', contextKey(context), topicId], (client, signal) =>
     fetchDiscussionTopic(client, context, topicId, signal),
+    { placeholderData: () => discussion() ?? announcement() },
   );
 }
 

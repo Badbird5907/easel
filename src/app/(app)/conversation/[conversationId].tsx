@@ -240,7 +240,7 @@ export default function ConversationScreen() {
               <Skeleton className="h-4 w-2/3" />
             </Card>
           </View>
-        ) : conversation.isError ? (
+        ) : conversation.isError && !conversation.data ? (
           <Callout
             tone="danger"
             title={t('inboxBrowse.loadConversationError')}
@@ -287,6 +287,7 @@ export default function ConversationScreen() {
               <Callout tone="info">{t('inboxBrowse.repliesOff')}</Callout>
             )}
 
+            {conversation.isPlaceholderData ? <Skeleton className="h-24 w-full" /> : null}
             {conversation.data.messages.map((m) => (
               <MessageCard
                 key={m.id}

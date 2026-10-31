@@ -99,7 +99,7 @@ export function DiscussionListScreen({ context }: { context: DiscussionContext }
             <Skeleton className="h-3 w-20" />
             <Skeleton className="h-40 rounded-2xl" />
           </View>
-        ) : discussions.isError ? (
+        ) : discussions.isError && !discussions.data ? (
           <Callout
             tone="danger"
             title={t('discussions.loadError')}
@@ -166,7 +166,7 @@ export function AnnouncementListScreen({ context }: { context: DiscussionContext
             <Skeleton className="h-16 rounded-2xl" />
             <Skeleton className="h-16 rounded-2xl" />
           </View>
-        ) : announcements.isError ? (
+        ) : announcements.isError && !announcements.data ? (
           <Callout
             tone="danger"
             title={t('announcements.loadError')}

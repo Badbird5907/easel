@@ -1,3 +1,4 @@
+import { cacheCompletedQuiz } from '@/features/planner/submissionCache';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useAccountKey } from '@/canvas/query';
@@ -30,14 +31,16 @@ export function useQuizAttempt({
     () => ({ accountId: account.id, client, courseId, quizId, submissionId, loadKey }),
     [account.id, client, courseId, quizId, submissionId, loadKey],
   );
-  const [view, setView] = useState<{ engine: QuizAttemptEngine; snapshot: AttemptSnapshot } | null>(
-    null,
-  );
+  const [view, setView] = useState<{ engine: QuizAttemptEngine; snapshot: AttemptSnapshot } | null>(null);
   useLayoutEffect(() => {
     const engine = new QuizAttemptEngine(
       context,
       t,
-      (snapshot) => setView({ engine, snapshot }),
+      (snapshot) => {
+        if (snapshot.status.kind === 'submitted')
+          cacheCompletedQuiz(queryClient, accountKey, courseId, quizId, snapshot.status.submission);
+        setView({ engine, snapshot });
+      },
       () => {
         void queryClient.invalidateQueries({
           queryKey: [accountKey, 'courses', courseId, 'quizzes', quizId],

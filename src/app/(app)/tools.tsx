@@ -146,7 +146,7 @@ export default function ToolsScreen() {
             <Skeleton className="h-16 rounded-2xl" />
             <Skeleton className="h-16 rounded-2xl" />
           </View>
-        ) : tools.isError ? (
+        ) : tools.isError && !tools.data ? (
           <Callout
             tone="danger"
             title={t('tools.loadError')}

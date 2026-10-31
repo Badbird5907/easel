@@ -55,7 +55,7 @@ export default function ModulesScreen() {
           <TabDisabled courseId={courseId} label={t('modules.title')} />
         ) : modules.isPending ? (
           <ListSkeleton rows={6} />
-        ) : modules.isError ? (
+        ) : modules.isError && !modules.data ? (
           <LoadError
             title={t('modules.loadError')}
             error={modules.error}

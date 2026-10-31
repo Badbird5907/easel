@@ -106,3 +106,5 @@ export const upcomingRange = scopedUpcomingRange,
   fetchDashboardCourses = async () => [],
   fetchGradesOverview = async () => [],
   fetchAnnouncements = async () => [];
+
+export const requireOptionalNativeModule = () => null;

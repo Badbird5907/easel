@@ -377,6 +377,7 @@ This is where Easel must be clearly better than the official Android app. That a
 | NOTIF-2 | P0 | **Local notifications.** For due-date reminders (ASSIGN-14, TODO-7). |
 | NOTIF-3 | P0 | **Background refresh.** Checks for new grades, announcements, inbox messages, submission comments, and newly posted assignments, and posts local notifications per SET-5 (4.3). |
 | NOTIF-4 | P2 | **Real-time push.** If Instructure configures SNS for Easel's key (4.3). |
+| NOTIF-6 | P0 | **Android Canvas Student bridge.** Explicitly opt in to on-device notification access. Native event-driven delivery, category/quiet-hour settings, account/course routing, optional hide-copy (default on), bounded foreground-refresh markers and reduced activity/inbox polling while connected. No network, timers, wake locks or JS startup in the listener. Canvas Student required. |
 | NOTIF-5 | P0 | **Routing.** Notification taps and badge counts route to the right account and screen. |
 
 ### 7.17 Rich content rendering (HTML)

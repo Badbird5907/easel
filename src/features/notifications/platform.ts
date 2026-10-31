@@ -62,6 +62,9 @@ const channels: Record<NotificationKind | 'quiet', Channel> = {
     description: 'Work that just appeared in your courses',
     importance: AndroidImportance.DEFAULT,
   },
+  discussions: { name: 'Discussions', description: 'Discussions and mentions', importance: AndroidImportance.DEFAULT },
+  calendar: { name: 'Calendar', description: 'Calendar updates', importance: AndroidImportance.DEFAULT },
+  other: { name: 'Other Canvas alerts', description: 'Other updates', importance: AndroidImportance.DEFAULT },
   test: {
     name: 'Developer tests',
     description: 'Test notifications from the developer settings',

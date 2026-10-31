@@ -7,9 +7,12 @@ import { JsonStore } from './storage';
  * hours, and the default due-date reminder. Device-wide, for every account.
  */
 
-export type UpdateCategory = 'grades' | 'comments' | 'announcements' | 'messages' | 'assignments';
+export type UpdateCategory = 'grades' | 'comments' | 'announcements' | 'messages' | 'assignments' | 'discussions' | 'calendar' | 'other';
 
 export const updateCategories: { value: UpdateCategory; label: string; detail: string }[] = [
+  { value: 'discussions', label: 'Discussions', detail: 'Discussions and mentions from Canvas Student' },
+  { value: 'calendar', label: 'Calendar', detail: 'Calendar updates from Canvas Student' },
+  { value: 'other', label: 'Other Canvas alerts', detail: 'Unrecognized alerts from Canvas Student' },
   { value: 'grades', label: 'Grades', detail: 'New and changed grades, once they’re posted' },
   { value: 'comments', label: 'Submission comments', detail: 'Feedback on your work' },
   { value: 'announcements', label: 'Announcements', detail: 'New announcements in your courses' },
@@ -25,6 +28,8 @@ export type QuietHours = {
 };
 
 export type NotificationSettings = {
+  bridgeEnabled: boolean;
+  bridgeHideCopy: boolean;
   updates: Record<UpdateCategory, boolean>;
   /** Due-date reminders the student set. Off cancels them without deleting them. */
   reminders: boolean;
@@ -34,7 +39,9 @@ export type NotificationSettings = {
 };
 
 const defaults: NotificationSettings = {
-  updates: { grades: true, comments: true, announcements: true, messages: true, assignments: true },
+  bridgeEnabled: false,
+  bridgeHideCopy: true,
+  updates: { grades: true, comments: true, announcements: true, messages: true, assignments: true, discussions: true, calendar: true, other: true },
   reminders: true,
   quietHours: { enabled: false, start: 22 * 60, end: 7 * 60 },
   defaultReminderMinutes: null,

@@ -1,0 +1,11 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+group = 'dev.evanyu.easel.bridge'
+version = '1.0.0'
+android {
+  namespace 'dev.evanyu.easel.bridge'
+  buildFeatures { buildConfig true }
+}
+dependencies { testImplementation 'junit:junit:4.13.2' }

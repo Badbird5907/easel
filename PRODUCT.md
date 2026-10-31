@@ -28,6 +28,8 @@ Easel is an independent third-party client, not affiliated with Instructure. It 
 
 ## Capabilities and Constraints
 
+- **Android real-time alerts:** optional on-device notification access bridges Canvas Student alerts to Easel with explicit consent. No server or push registration; Canvas Student must remain installed with pushes enabled. The bridge skips activity/inbox polling while connected and leaves due-date reminders intact.
+
 - **Stack (existing):** Expo SDK 58, Expo Router, React Native 0.88, NativeWind 4 on Tailwind 3, TypeScript.
 - **Platform chrome:** iOS uses the system tab bar (Liquid Glass on iOS 26) and native headers on pushed screens. Tab roots on both platforms draw their own large-title row so a control, such as Settings, can sit beside the title. Android does **not** use Material Design. It gets Easel's own tab bar and headers, matching the current Easel look, while still respecting Android platform behavior such as the back gesture and edge-to-edge.
 - **Authentication:** mobile credential discovery through Instructure's `mobile_verify` service, with developer-key and personal-access-token alternatives sharing one session model. Discovered keys require embedded login; Easel-registered keys retain browser SSO. Easel remains independent. See `docs/PRD.md` section 4.1 for the private-service dependency and compatibility limits.

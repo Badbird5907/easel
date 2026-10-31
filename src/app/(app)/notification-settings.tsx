@@ -1,8 +1,9 @@
 import { Stack } from 'expo-router';
 import { Bell, BellOff, Moon } from 'lucide-react-native';
 import { useEffect, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
+import { Alert, AppState, Linking, Platform } from 'react-native';
 
+import { canvasBridge, type BridgeStatus } from '@/features/notifications/canvasBridge';
 import { useSession } from '@/canvas/session';
 import {
   IconTile,
@@ -76,6 +77,7 @@ export default function NotificationSettingsScreen() {
     <>
       <Stack.Screen options={{ title: t('notifications.title') }} />
       <Screen contentClassName="gap-6">
+        {Platform.OS === 'android' && <CanvasBridgeSettings />}
         <ListGroup>
           <ListItem
             leading={
@@ -301,4 +303,40 @@ function DeveloperSection({ onMessage }: { onMessage: (message: string) => void 
       />
     </ListGroup>
   );
+}
+
+function CanvasBridgeSettings() {
+  const { t } = useTranslation();
+  const settings = useNotificationSettings();
+  const [status, setStatus] = useState<BridgeStatus | null>(() => canvasBridge?.status() ?? null);
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', state => {
+      if (state === 'active') setStatus(canvasBridge?.status() ?? null);
+    });
+    return () => sub.remove();
+  }, []);
+  const enable = () => Alert.alert(t('bridge.title'), t('bridge.disclosure'), [
+    { text: t('bridge.cancel'), style: 'cancel' },
+    { text: t('bridge.agree'), onPress: async () => {
+      if (await ensurePermission() !== 'granted') return;
+      updateSettings(s => ({ ...s, bridgeEnabled: true }));
+      canvasBridge?.openSettings();
+    } },
+  ]);
+  return <ListGroup header={t('bridge.title')} footer={t('bridge.restricted')}>
+    <ListItem title={t('bridge.privacy')} subtitle={t('bridge.battery')} />
+    <ListItem title={t(status?.installed ? 'bridge.installed' : 'bridge.missing')}
+      subtitle={!status?.installed ? t('bridge.install') : undefined}
+      onPress={!status?.installed ? () => { void Linking.openURL('https://play.google.com/store/apps/details?id=com.instructure.candroid'); } : undefined} />
+    <ListItem title={t(status?.granted ? 'bridge.granted' : 'bridge.access')}
+      subtitle={t(!canvasBridge ? 'bridge.build' : status?.connected ? 'bridge.connected' : 'bridge.disconnected')}
+      disabled={!canvasBridge} onPress={enable} />
+    <ListItem title={t('bridge.enabled')} trailing={<Switch accessibilityLabel={t('bridge.enabled')}
+      value={settings.bridgeEnabled} onValueChange={value => {
+        if (value) enable(); else updateSettings(s => ({ ...s, bridgeEnabled: false }));
+      }} />} />
+    <ListItem title={t('bridge.hide')} subtitle={t('bridge.hideHint')}
+      trailing={<Switch accessibilityLabel={t('bridge.hide')} value={settings.bridgeHideCopy}
+        onValueChange={value => updateSettings(s => ({ ...s, bridgeHideCopy: value }))} />} />
+  </ListGroup>;
 }

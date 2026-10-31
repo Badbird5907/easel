@@ -21,7 +21,7 @@ try {
         name: 'native-boundaries',
         setup(b) {
           b.onResolve(
-            { filter: /^(react-native|expo-notifications|@\/canvas\/session|@\/canvas\/query)$/ },
+            { filter: /^(expo|react-native|expo-notifications|@\/canvas\/session|@\/canvas\/query)$/ },
             () => ({ path: stub }),
           );
           b.onResolve({ filter: /^(\.\/kv|\.\/layouts)$/ }, () => ({ path: stub }));

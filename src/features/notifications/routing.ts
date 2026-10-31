@@ -1,5 +1,5 @@
 import * as Notifications from 'expo-notifications';
-import { type Href, router, useRootNavigationState } from 'expo-router';
+import { type Href, router, useRootNavigationState, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 
 import { useSession } from '@/canvas/session';
@@ -82,4 +82,20 @@ export function useNotificationRouting() {
     // A frame for the active account's screens to settle before pushing.
     requestAnimationFrame(() => open(target, account.baseUrl, fromAnotherAccount));
   }, [taps, status, navigationKey, accounts, active, switchAccount]);
+}
+
+/** Native notifications enter through an easel:// link and share account-switching semantics. */
+export function useBridgedNotificationRouting() {
+  const { accountId, path } = useLocalSearchParams<{ accountId?: string; path?: string }>();
+  const { status, accounts, active, switchAccount } = useSession();
+  useEffect(() => {
+    if (status !== 'ready') return;
+    const account = accounts.find(a => a.id === accountId && !a.expired);
+    if (!account) { router.replace('/'); return; }
+    if (active?.id !== account.id) { void switchAccount(account.id); return; }
+    // Only allow bridge destinations, never arbitrary URLs supplied in an intent.
+    const safe = path && /^\/(activity|inbox|calendar|course\/[^/]+\/(announcements|grades|discussions|assignments))$/.test(path);
+    if (router.canDismiss()) router.dismissAll();
+    router.replace((safe ? path : '/activity') as Href);
+  }, [status, accounts, active?.id, accountId, path, switchAccount]);
 }

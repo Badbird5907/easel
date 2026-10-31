@@ -6,6 +6,8 @@ import { registerAccountCleanup, useSession } from '@/canvas/session';
 import { syncReminders, requestReminderSync } from '@/features/reminders/schedule';
 import { removeAccountReminders } from '@/features/reminders/store';
 
+import { useCanvasBridge } from './canvasBridgeRuntime';
+
 import { useSeenFromScreens } from './bridge';
 import { checkForUpdates } from './check';
 import { dismissPresented, setForegroundHandler, setUpChannels } from './platform';
@@ -68,6 +70,7 @@ export function NotificationsRuntime() {
   const { status, accounts, active } = useSession();
   const ready = status === 'ready';
   useNotificationRouting();
+  useCanvasBridge();
   useSeenFromScreens();
   useForegroundChecks(ready && !!active && !active.expired);
   useBackgroundRegistration(ready && accounts.length > 0);

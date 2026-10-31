@@ -17,6 +17,8 @@ import { syncReminders } from '@/features/reminders/schedule';
 import { refreshAccountDisplay } from '@/i18n/account-display';
 import { accountDateContext } from '@/i18n/account-preferences';
 
+import { bridgeLive } from './canvasBridge';
+
 import { paths, plannablePath } from './paths';
 import { type NotificationData, type NotificationText, presentNow } from './platform';
 import { reloadSeen, seenFor, type SeenState, updateBadge, watermark } from './seen';
@@ -61,25 +63,26 @@ export function checkForUpdates(reason: CheckReason): Promise<CheckResult> {
       return Promise.resolve({ accounts: 0, posted: 0, failed: 0, throttled: true });
     }
   }
-  running ??= run().finally(() => {
+  running ??= run(reason).finally(() => {
     running = null;
   });
   return running;
 }
 
-async function run(): Promise<CheckResult> {
+async function run(reason: CheckReason): Promise<CheckResult> {
   // The background task may share this JS runtime with the app, or not: read fresh.
   settingsStore.reload();
   metaStore.reload();
   reloadSeen();
   reloadReminders();
   const settings = getSettings();
+  const reducePolling = reason !== 'manual' && settings.bridgeEnabled && bridgeLive();
   const stored = await loadStoredClients();
   let posted = 0;
   let failed = 0;
   for (const { account, client } of stored) {
     try {
-      posted += await checkAccount(account, client, settings, stored.length > 1);
+      posted += await checkAccount(account, client, settings, stored.length > 1, reducePolling);
     } catch (error) {
       failed += 1;
       // A rejected token: show "Sign in again" next time the app opens (AUTH-8).
@@ -109,12 +112,13 @@ async function checkAccount(
   client: CanvasClient,
   settings: NotificationSettings,
   multipleAccounts: boolean,
+  reducePolling = false,
 ): Promise<number> {
   if (!isStoredAccountClient(account.id, client)) return 0;
   const results = await Promise.allSettled([
-    fetchStreamChanges(client),
-    fetchUnreadMessages(client),
-    fetchUnreadCount(client),
+    reducePolling ? Promise.resolve(null) : fetchStreamChanges(client),
+    reducePolling ? Promise.resolve(null) : fetchUnreadMessages(client),
+    reducePolling ? Promise.resolve(null) : fetchUnreadCount(client),
     fetchPlannedWork(client),
     refreshAccountDisplay(account, client),
   ]);
@@ -156,6 +160,8 @@ async function checkAccount(
   }
 
   const changes = findChanges(account, state, { stream, messages, work }, now);
+  // Keep planner metadata for reminders, but Canvas Student supplies new-work alerts.
+  if (reducePolling) changes.assignments = [];
   const posted = await announce(account, client, changes, settings, multipleAccounts);
 
   // Raise every watermark, even for categories that are off, so turning one on doesn't replay old news.
@@ -275,8 +281,8 @@ async function announce(
   settings: NotificationSettings,
   multipleAccounts: boolean,
 ): Promise<number> {
-  const enabled = (category: UpdateCategory) => settings.updates[category] && changes[category].length > 0;
-  const categories = (Object.keys(changes) as UpdateCategory[]).filter(enabled);
+  const enabled = (category: keyof Changes) => settings.updates[category] && changes[category].length > 0;
+  const categories = (Object.keys(changes) as (keyof Changes)[]).filter(enabled);
   if (!categories.length) return 0;
 
   const names: Record<string, string> = await fetchCourseNames(client).catch(() => ({}));

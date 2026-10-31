@@ -239,6 +239,7 @@ function assertOptions(web, req) {
   equal(web.source, { uri: req.url, ...(req.siteAdmin && { headers: { cookie: 'canvas_sa_delegated=1' } }) });
   equal(web.originWhitelist, ['http://*', 'https://*', 'easel://*', 'duotrustedendpoints://*']);
   assert.equal(web.incognito, true); assert.equal(web.setSupportMultipleWindows, false);
+  assert.equal(web.javaScriptCanOpenWindowsAutomatically, true, "Automatic Duo app handoff must not be blocked before navigation interception");
   assert.equal(web.javaScriptEnabled, true); assert.equal(web.domStorageEnabled, true);
   assert.equal(web.applicationNameForUserAgent, 'Easel');
   assert.equal(web.injectedJavaScriptBeforeContentLoaded, req.siteAdmin ? "document.cookie = 'canvas_sa_delegated=1; path=/'; true;" : undefined);

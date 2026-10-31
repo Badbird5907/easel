@@ -203,6 +203,8 @@ function SignInWebView({ request, owner, onFinish }: {
           incognito
           // Popups (target=_blank, window.open) load in this view, as the official apps do.
           setSupportMultipleWindows={false}
+          // Duo launches device verification from JavaScript, without a link tap.
+          javaScriptCanOpenWindowsAutomatically
           javaScriptEnabled
           domStorageEnabled
           applicationNameForUserAgent="Easel"

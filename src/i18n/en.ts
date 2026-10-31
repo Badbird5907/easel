@@ -1,4 +1,5 @@
 export const en = {
+  "authEmbedded.duoUnavailable": "Couldn’t open Duo Mobile. Make sure it’s installed, then retry. After completing verification in Duo, return to Easel to finish signing in.",
   "authQr.title": "Sign in with QR code",
   "authQr.instructions": "On another device, sign in to Canvas in a browser. Open Account → QR for Mobile Login, then scan the code here.",
   "authQr.schoolHelp": "If QR for Mobile Login is missing, your school may have disabled it.",

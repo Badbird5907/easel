@@ -142,12 +142,13 @@ const allowed = new Set(['i18n', 'i18n/runtime', 'i18n/en', 'i18n/fr', 'i18n/ar'
   'features/auth/EmbeddedSignIn', 'features/auth/authEmbeddedLifetime', 'features/auth/oauth']);
 const elements = names => Object.fromEntries(names.split(' ').map(n => [n, n]));
 const jsx = (type, props, key) => ({ type, props: props ?? {}, key });
+let openApp = async () => {};
 const prompts = [], timers = [], calls = [];
 const native = { goBack: () => calls.push('back'), reload: () => calls.push('reload') };
 const forbidden = () => { throw new Error('Forbidden external effect'); };
 const mocks = {
   react, 'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'Fragment' },
-  'react-native': { ...elements('View Modal Pressable'), Platform: { OS: 'ios' }, Alert: { prompt: (...args) => prompts.push(args) } },
+  'react-native': { ...elements('View Modal Pressable'), Platform: { OS: 'ios' }, Linking: { openURL: url => openApp(url), canOpenURL: forbidden }, Alert: { prompt: (...args) => prompts.push(args) } },
   'react-native-safe-area-context': { useSafeAreaInsets: () => ({ top: 17, bottom: 9 }) },
   'react-native-webview': { WebView: 'WebView' },
   'lucide-react-native': elements('ArrowLeft ChevronLeft Lock RotateCw X'),
@@ -174,6 +175,7 @@ function load(name, parent = path.join(root, 'entry.ts')) {
   });
   return module.exports;
 }
+allowed.add('features/auth/duoLink');
 const runtime = load('@/i18n/runtime');
 const { EmbeddedSignIn } = load('@/features/auth/EmbeddedSignIn');
 const locale = lang => { runtime.setAccountLocale('synthetic-viewer', lang); return runtime.createTranslator(lang); };
@@ -235,7 +237,7 @@ function field(f, key) { return one(f.form, 'TextField', p => p.label === runtim
 function button(tree, key) { return one(tree, 'Button', p => p.children === runtime.t('authEmbedded.' + key)); }
 function assertOptions(web, req) {
   equal(web.source, { uri: req.url, ...(req.siteAdmin && { headers: { cookie: 'canvas_sa_delegated=1' } }) });
-  equal(web.originWhitelist, ['http://*', 'https://*', 'easel://*']);
+  equal(web.originWhitelist, ['http://*', 'https://*', 'easel://*', 'duotrustedendpoints://*']);
   assert.equal(web.incognito, true); assert.equal(web.setSupportMultipleWindows, false);
   assert.equal(web.javaScriptEnabled, true); assert.equal(web.domStorageEnabled, true);
   assert.equal(web.applicationNameForUserAgent, 'Easel');
@@ -411,3 +413,40 @@ for (const os of ['ios', 'android']) {
   oldClose(); oldClose(); equal(f.completions, [null]); f.unmount();
 }
 console.log('auth-embedded: production presentation/protocol/ownership checks passed (synthetic native/hooks/timers; no external effects)');
+
+async function duoHandoff() {
+  const { isDuoAppLink } = load('@/features/auth/duoLink');
+  // Synthetic values only: no live authentication links belong in test output or fixtures.
+  const link = 'duotrustedendpoints://duo.com/trusted_ep?authkey=synthetic&app_redirect_url=&collect_cert=False';
+  assert.equal(isDuoAppLink(link), true);
+  for (const bad of [link.replace('duo.com', 'duo.com.evil.test'), link.replace('/trusted_ep', '/other'), link.replace('://', '://user:pass@'), link + '#fragment', 'https://duo.com/trusted_ep']) {
+    assert.equal(isDuoAppLink(bad), false);
+  }
+  for (const os of ['android', 'ios']) {
+    let opened = 0, resolve;
+    openApp = url => { assert.ok(url === link, 'Preserve the full handoff URL unchanged'); opened++; return new Promise(r => { resolve = r; }); };
+    const f = fixture(os);
+    assert.equal(f.web.onShouldStartLoadWithRequest({ url: link }), false);
+    assert.equal(f.web.onShouldStartLoadWithRequest({ url: link }), false);
+    assert.equal(opened, 1);
+    assert.equal(f.completions.length, 0, 'Opening Duo must preserve the OAuth session');
+    f.web.onError({ nativeEvent: { url: link } }); f.render(); assert.equal(nodes(f.tree, 'Callout').length, 0);
+    resolve(); await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
+    assert.equal(f.web.onShouldStartLoadWithRequest({ url: 'https://identity.invalid/continue' }), true);
+    openApp = async () => { throw new Error('synthetic unavailable'); };
+    f.web.onShouldStartLoadWithRequest({ url: link }); await Promise.resolve(); await Promise.resolve(); f.render();
+    assert.equal(one(f.tree, 'Callout').children, runtime.t('authEmbedded.duoUnavailable'));
+    f.unmount();
+    let reject;
+    openApp = () => new Promise((_resolve, r) => { reject = r; });
+    const retired = fixture(os); retired.web.onShouldStartLoadWithRequest({ url: link }); retired.unmount();
+    reject(new Error('synthetic failure after close')); await Promise.resolve(); await Promise.resolve();
+    assert.equal(retired.completions.length, 0);
+  }
+  openApp = async () => { throw new Error('Malformed link must never open an app'); };
+  const f = fixture();
+  assert.equal(f.web.onShouldStartLoadWithRequest({ url: link.replace('duo.com', 'evil.test') }), false);
+  f.render(); assert.equal(one(f.tree, 'Callout').children, runtime.t('authEmbedded.duoUnavailable')); f.unmount();
+  console.log('PASS Duo native handoff, unchanged URL, duplicate events, absent app, and retired login');
+}
+duoHandoff().catch(error => { console.error(error); process.exitCode = 1; });

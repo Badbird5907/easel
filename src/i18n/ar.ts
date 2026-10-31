@@ -2,6 +2,7 @@ import type { Catalog } from './types';
 
 
 export const ar = {
+  "authEmbedded.duoUnavailable": "تعذّر فتح Duo Mobile. تأكد من تثبيت التطبيق ثم أعد المحاولة. بعد إكمال التحقق في Duo، عُد إلى Easel لإكمال تسجيل الدخول.",
   "authQr.title": "تسجيل الدخول برمز QR",
   "authQr.instructions": "على جهاز آخر، سجّل الدخول إلى Canvas في المتصفح. افتح الحساب ← رمز QR لتسجيل الدخول عبر الجوال، ثم امسح الرمز هنا.",
   "authQr.schoolHelp": "إذا لم يظهر هذا الخيار، فربما عطّلته مؤسستك التعليمية.",

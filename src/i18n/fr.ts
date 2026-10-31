@@ -2,6 +2,7 @@ import type { Catalog } from './types';
 
 
 export const fr = {
+  "authEmbedded.duoUnavailable": "Impossible d’ouvrir Duo Mobile. Vérifiez que l’application est installée, puis réessayez. Après la vérification dans Duo, revenez dans Easel pour terminer la connexion.",
   "authQr.title": "Se connecter par code QR",
   "authQr.instructions": "Sur un autre appareil, connectez-vous à Canvas dans un navigateur. Ouvrez Compte → QR pour connexion mobile, puis scannez le code ici.",
   "authQr.schoolHelp": "Si cette option est absente, votre établissement l’a peut-être désactivée.",

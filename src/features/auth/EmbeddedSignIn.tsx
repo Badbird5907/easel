@@ -1,6 +1,6 @@
 import { ArrowLeft, ChevronLeft, Lock, RotateCw, X } from 'lucide-react-native';
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Modal, Platform, Pressable, View } from 'react-native';
+import { Alert, Linking, Modal, Platform, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
@@ -8,6 +8,7 @@ import { Button, Callout, Icon, IconButton, ProgressBar, Text, TextField, useThe
 import { useTranslation } from '@/i18n';
 
 import { type AuthEmbeddedChallenge, type AuthEmbeddedOwner, useAuthEmbeddedLifetime } from './authEmbeddedLifetime';
+import { isDuoAppLink, isDuoScheme } from './duoLink';
 import { type AuthorizationRequest, isCallback } from './oauth';
 
 type Props = {
@@ -63,7 +64,7 @@ function SignInWebView({ request, owner, onFinish }: {
   const [loading, setLoading] = useState(true);
   const [canGoBack, setCanGoBack] = useState(false);
   const [pageUrl, setPageUrl] = useState(request.url);
-  const [failure, setFailure] = useState<'developerKey' | 'loadError' | null>(null);
+  const [failure, setFailure] = useState<'developerKey' | 'loadError' | 'duo' | null>(null);
   const [credential, setCredential] = useState<{ value: Credential; prompt: AuthEmbeddedChallenge; }>();
   // Schedule only after the credential prop is committed to the WebView. A timer
   // delivered after retirement still rechecks the exact request and challenge.
@@ -71,6 +72,8 @@ function SignInWebView({ request, owner, onFinish }: {
     if (credential) owner.scheduleReload(credential.prompt, () => webView.current?.reload());
   }, [credential, owner]);
   // Android has no native login prompt, so it gets an in-view form.
+  const duoOpening = useRef(false);
+
   const [challenge, setChallenge] = useState<AuthEmbeddedChallenge | null>(null);
 
   const finish = (url: string | null) => {
@@ -118,6 +121,18 @@ function SignInWebView({ request, owner, onFinish }: {
     } else {
       setChallenge(prompt);
     }
+  };
+
+  const openDuo = (url: string) => {
+    if (!owner.current() || duoOpening.current) return;
+    if (!isDuoAppLink(url)) { setFailure('duo'); return; }
+    duoOpening.current = true;
+    setFailure(null);
+    // Do not preflight canOpenURL: Android package visibility may hide an installed Duo app.
+    // Pass the original link unchanged; never print, copy, or persist its authentication parameters.
+    void Linking.openURL(url).catch(() => {
+      if (owner.current()) setFailure('duo');
+    }).finally(() => { duoOpening.current = false; });
   };
 
   const topInset = Platform.OS === 'ios' ? 0 : insets.top;
@@ -170,12 +185,16 @@ function SignInWebView({ request, owner, onFinish }: {
         <WebView
           ref={webView}
           source={source}
-          // easel:// must pass the allow list, or the view hands it to the OS instead of to us.
+          // Intercept OAuth and Duo links ourselves instead of the library’s canOpenURL fallback.
           originWhitelist={ORIGIN_WHITELIST}
           onShouldStartLoadWithRequest={(navigation) => {
             if (!owner.current()) return false;
             if (isCallback(navigation.url, request)) {
               finish(navigation.url);
+              return false;
+            }
+            if (isDuoScheme(navigation.url)) {
+              openDuo(navigation.url);
               return false;
             }
             return true;
@@ -217,7 +236,7 @@ function SignInWebView({ request, owner, onFinish }: {
           }}
           onError={(event) => {
             // Cancelled navigations (our own callback catch) aren't failures.
-            if (isCallback(event.nativeEvent.url ?? '') || !owner.current()) return;
+            if (!owner.current() || isCallback(event.nativeEvent.url ?? '', request) || isDuoScheme(event.nativeEvent.url ?? '')) return;
             setFailure('loadError');
           }}
           style={{ flex: 1, backgroundColor: colors.bg }}
@@ -226,7 +245,7 @@ function SignInWebView({ request, owner, onFinish }: {
         {failure ? (
           <View className="absolute inset-0 justify-center bg-bg px-6">
             <Callout tone="danger" title={t('authEmbedded.failureTitle')}>
-              {failure === 'developerKey' ? t('authEmbedded.developerKey', { host: request.host.host }) : t('authEmbedded.loadError')}
+              {failure === 'developerKey' ? t('authEmbedded.developerKey', { host: request.host.host }) : t(failure === 'duo' ? 'authEmbedded.duoUnavailable' : 'authEmbedded.loadError')}
             </Callout>
             <View className="mt-4 flex-row gap-3">
               <Button
@@ -344,7 +363,7 @@ function CredentialForm({
   );
 }
 
-const ORIGIN_WHITELIST = ['http://*', 'https://*', 'easel://*'];
+const ORIGIN_WHITELIST = ['http://*', 'https://*', 'easel://*', 'duotrustedendpoints://*'];
 
 function safeUrl(url: string): URL | null {
   try {

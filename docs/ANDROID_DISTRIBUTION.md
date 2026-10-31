@@ -30,6 +30,7 @@ release `1.0.0` with version code 6 as **completed** (rolled out to internal tes
 | 2026-10-31 | [`917bcdff`](https://expo.dev/accounts/badbird5907/projects/easel/updates/917bcdff-86f0-42df-8078-f9a6695d5d74) | `b889b86` | Pull-to-refresh spinner starts below the title on Android |
 | 2026-10-31 | [`f2149776`](https://expo.dev/accounts/badbird5907/projects/easel/updates/f2149776-1dc8-4e33-b91a-ef4f3c4785a7) | `13153bd` | Fix mobile sign-in redirect URI to match the official Android callback; matching authorization and token exchange |
 | 2026-10-31 | [`67985750`](https://expo.dev/accounts/badbird5907/projects/easel/updates/67985750-0aaa-49fa-b730-553696f524c2) | `713e214` | Open Duo Mobile verification links directly from embedded sign-in while preserving the login session |
+| 2026-10-31 | [`fa6f3fc2`](https://expo.dev/accounts/badbird5907/projects/easel/updates/fa6f3fc2-1139-4fe3-805f-2bfef0ce64e9) | `a9b82f5` | Enable automatic JavaScript window launches in sign-in so scripted Duo app handoffs can reach native navigation |
 
 ### Version 5
 

@@ -166,6 +166,7 @@ const mocks = {
     haptics: { selection() { }, success: () => calls.push(['success']), error: () => calls.push(['error']) }
   },
   '@/canvas/client': { normalizeHost },
+  '@/canvas/mobileVerify': { MobileVerifyError: SignInError, discoverMobileCredentials: stage('discover', async () => { throw new SignInError('RAW mobile sign-in unavailable'); }) },
   '@/canvas/session': {
     useSession: () => session, SignInError, ObsoleteSignInError,
     storedClientCredentials: stage('stored', async () => null),
@@ -184,7 +185,7 @@ const mocks = {
   '@/features/auth/oauth': {
     SignInCanceled,
     checkSchool: stage('check', async () => { }),
-    createAuthorization: stage('create', async (host, key, options) => ({ host, key, options, state: 'inert-state', verifier: 'inert-verifier', embedded: options.mode === 'embedded' })),
+    createAuthorization: stage('create', async (host, key, options) => ({ host, key, options, state: 'inert-state', verifier: 'inert-verifier', embedded: !!key.mobileVerify || options.mode === 'embedded' })),
     authorizeInBrowser: stage('authorize', async () => 'easel://oauth/callback?code=inert'),
     codeFromCallback: stage('code', () => 'inert-code'),
     exchangeCode: stage('exchange', async () => ({ access_token: 'inert-response' })),
@@ -207,7 +208,7 @@ function load(name, parent = path.join(root, 'entry.ts')) {
     fileName: file, compilerOptions: {
       module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX,
     }
-  }).outputText, { filename: file }).runInNewContext({ module, exports: module.exports, require: n => load(n, file), Intl, Date, Error, URL });
+  }).outputText, { filename: file }).runInNewContext({ module, exports: module.exports, require: n => load(n, file), Intl, Date, Error, URL, AbortController });
   if (key === '@/features/auth/authFormsLifetime') {
     const claim = module.exports.authFormsClaim;
     module.exports.authFormsClaim = (...args) => {
@@ -365,7 +366,25 @@ async function main() {
     f.m.unmount();
   }
   reset(); registeredKey = null; f = form(); f.edit('school', 'one.test'); f.submit(); await tick(); locale('fr'); f.render();
-  assert.ok(f.field('token')); assert.equal(one(f.tree, 'Callout').children, runtime.createTranslator('fr')('authForms.noKey', { host: 'one.test' })); assert.equal(count('check'), 0); f.m.unmount();
+  assert.equal(one(f.tree, 'Callout').children, 'RAW mobile sign-in unavailable'); assert.equal(count('discover'), 1); assert.equal(count('check'), 0); f.m.unmount();
+
+  // Retired discovery never opens login or captures credentials for a replacement form.
+  reset(); registeredKey = null; gate = deferred(); behavior.discover = () => gate.promise;
+  f = form(); f.edit('school', 'one.test'); f.submit(); await tick();
+  const discoverySignal = calls.find(c => c[0] === 'discover')[2];
+  f.m.unmount(); assert.equal(discoverySignal.aborted, true);
+  gate.resolve({ host: normalizeHost('canonical.test'), key: { clientId: 'synthetic-mobile', mobileVerify: true } });
+  await tick(); assert.equal(count('check'), 0); assert.equal(count('create'), 0);
+
+  reset(); registeredKey = null;
+  behavior.discover = async () => ({ host: normalizeHost('canonical.test'), key: { clientId: 'synthetic-mobile', mobileVerify: true } });
+  f = form(); f.edit('school', 'one.test'); f.submit(); await tick(); f.render();
+  const mobileEmbedded = one(f.tree, 'EmbeddedSignIn');
+  assert.equal(mobileEmbedded.request.host.host, 'canonical.test');
+  assert.equal(count('authorize'), 0);
+  mobileEmbedded.onFinish('https://canonical.test/login/oauth2/auth?code=inert'); await tick();
+  assert.equal(calls.find(c => c[0] === 'verifyOAuth')[1].host, 'canonical.test');
+  assert.equal(count('save'), 1); f.m.unmount();
 
   // Stored key lookups: old account and unmounted replies cannot supply replacement credentials.
   reset(); const oldKey = deferred(), newKey = deferred(); behavior.stored = id => id === 'old' ? oldKey.promise : newKey.promise;

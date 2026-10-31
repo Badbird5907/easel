@@ -24,6 +24,9 @@ import { type ClientCredentials, OAUTH_REDIRECT_URI, SignInError } from '@/canva
  */
 export type LoginMode = 'browser' | 'canvas' | 'site-admin' | 'embedded';
 
+const MOBILE_REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+const redirectUri = (key: ClientCredentials) => key.mobileVerify ? MOBILE_REDIRECT_URI : OAUTH_REDIRECT_URI;
+
 export type AuthorizationRequest = {
   url: string;
   state: string;
@@ -84,12 +87,13 @@ export async function createAuthorization(
   const params: Record<string, string> = {
     client_id: key.clientId,
     response_type: 'code',
-    redirect_uri: OAUTH_REDIRECT_URI,
+    redirect_uri: redirectUri(key),
     state,
     code_challenge: challenge,
     code_challenge_method: 'S256',
     purpose: tokenPurpose(),
   };
+  if (key.mobileVerify) params.mobile = '1';
   if (options.mode === 'canvas') params.canvas_login = '1';
   if (options.mode === 'site-admin') params.canvas_sa_delegated = '1';
   else if (options.authenticationProvider && options.mode !== 'canvas')
@@ -104,7 +108,7 @@ export async function createAuthorization(
     verifier,
     host,
     key,
-    embedded: options.mode === 'embedded' || options.mode === 'site-admin',
+    embedded: !!key.mobileVerify || options.mode === 'embedded' || options.mode === 'site-admin',
     siteAdmin: options.mode === 'site-admin',
   };
 }
@@ -146,16 +150,26 @@ export async function authorizeInBrowser(request: AuthorizationRequest): Promise
 }
 
 /** Whether a URL is the OAuth redirect. */
-export const isCallback = (url: string) => url.startsWith(OAUTH_REDIRECT_URI);
+export const isCallback = (url: string, request?: AuthorizationRequest) => {
+  if (!request?.key.mobileVerify) return url.startsWith(OAUTH_REDIRECT_URI);
+  try {
+    const parsed = new URL(url);
+    return !parsed.username && !parsed.password && parsed.origin === new URL(request.host.baseUrl).origin &&
+      parsed.pathname === '/login/oauth2/auth' &&
+      (parsed.searchParams.has('code') || parsed.searchParams.has('error'));
+  } catch {
+    return false;
+  }
+};
 
 /** Errors `final_redirect` can send back (oauth2_provider_controller.rb#auth). */
-function callbackError(error: string, description: string | null, host: string): Error {
+function callbackError(error: string, description: string | null, host: string, mobileVerify = false): Error {
   switch (error) {
     case 'access_denied':
       return new SignInCanceled();
     case 'unauthorized_client':
       return new SignInError(
-        `${host} hasn’t turned on Easel’s developer key. Ask your school’s Canvas admin to turn it on, or sign in with an access token.`,
+        mobileVerify ? `${host} hasn’t enabled this mobile sign-in key. Use a developer key or access token.` : `${host} hasn’t turned on Easel’s developer key. Ask your school’s Canvas admin to turn it on, or sign in with an access token.`,
       );
     case 'invalid_scope':
       return new SignInError(
@@ -170,6 +184,8 @@ function callbackError(error: string, description: string | null, host: string):
 
 /** Reads the authorization code out of the redirect, checking `state`. */
 export function codeFromCallback(url: string, request: AuthorizationRequest): string {
+  if (request.key.mobileVerify && !isCallback(url, request))
+    throw new SignInError('The sign-in response came from an unexpected address. Try again.');
   const query = url.includes('?') ? url.slice(url.indexOf('?') + 1).split('#')[0] : '';
   const params = new Map<string, string>();
   for (const part of query.split('&')) {
@@ -177,8 +193,10 @@ export function codeFromCallback(url: string, request: AuthorizationRequest): st
     const [key, ...rest] = part.split('=');
     params.set(decodeURIComponent(key), decodeURIComponent(rest.join('=').replace(/\+/g, ' ')));
   }
+  if (request.key.mobileVerify && params.get('state') !== request.state)
+    throw new SignInError('The sign-in response didn’t match this request. Try again.');
   const error = params.get('error');
-  if (error) throw callbackError(error, params.get('error_description') ?? null, request.host.host);
+  if (error) throw callbackError(error, params.get('error_description') ?? null, request.host.host, request.key.mobileVerify);
   if (params.get('state') !== request.state)
     throw new SignInError('The sign-in response didn’t match this request. Try again.');
   const code = params.get('code');
@@ -195,7 +213,7 @@ export async function exchangeCode(request: AuthorizationRequest, code: string):
       client_secret: request.key.clientSecret ?? undefined,
       code,
       code_verifier: request.verifier,
-      redirect_uri: OAUTH_REDIRECT_URI,
+      redirect_uri: redirectUri(request.key),
     });
   } catch (error) {
     if (error instanceof CanvasOAuthError) {

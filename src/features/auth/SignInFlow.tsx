@@ -13,6 +13,7 @@ import { Keyboard, Platform, TextInput, View } from 'react-native';
 
 import { acceptTerms, fetchRequiresTerms } from '@/canvas/api/legal';
 import { normalizeHost } from '@/canvas/client';
+import { discoverMobileCredentials, MobileVerifyError } from '@/canvas/mobileVerify';
 import {
   type Account,
   type ClientCredentials,
@@ -316,22 +317,27 @@ export function SignInFlow({ showTitle, expired, addingAccount, onSignedIn, foot
   const continueWithCanvas = () =>
     run(async (operation) => {
       if (!host || !school) return;
-      const key: ClientCredentials | null =
+      let authHost = host;
+      let key: ClientCredentials | null =
         method === 'key'
           ? { clientId: clientId.trim(), clientSecret: clientSecret.trim() || null }
           : ((storedKey?.owner === owner ? storedKey?.key : null) ?? developerKeyFor(host.host));
       if (!key?.clientId) {
-        // No developer key for this school: the access token is the way in (PRD 4.1).
-        replaceForm();
-        setMethod('token');
-        setMessage({
-          tone: 'info',
-          title: 'authForms.tokenTitle',
-          text: 'authForms.noKey', host: host.host,
-        });
-        return;
+        const controller = new AbortController();
+        const release = operation.onRetire(() => controller.abort());
+        try {
+          const discovered = await discoverMobileCredentials(host, controller.signal);
+          if (!operation.current()) return;
+          authHost = discovered.host;
+          key = discovered.key;
+        } catch (error) {
+          if (error instanceof MobileVerifyError) throw new SignInError(error.message);
+          throw error;
+        } finally {
+          release();
+        }
       }
-      await checkSchool(host);
+      await checkSchool(authHost);
       if (!operation.current()) return;
       const mode: LoginMode = method === 'key' || method === 'token' ? 'browser' : method;
       const options = {
@@ -339,24 +345,24 @@ export function SignInFlow({ showTitle, expired, addingAccount, onSignedIn, foot
         authenticationProvider: school.authenticationProvider,
         forceLogin: !!addingAccount && !expired,
       };
-      let request = await createAuthorization(host, key, options);
+      let request = await createAuthorization(authHost, key, options);
       if (!operation.current()) return;
       let callback = await authorize(request);
       if (!operation.current()) return;
       // Older Canvas doesn't know prompt=login. Ask again without it.
       if (options.forceLogin && callback.includes('error=unsupported_prompt_type')) {
-        request = await createAuthorization(host, key, { ...options, forceLogin: false });
+        request = await createAuthorization(authHost, key, { ...options, forceLogin: false });
         if (!operation.current()) return;
         callback = await authorize(request);
         if (!operation.current()) return;
       }
       const code = codeFromCallback(callback, request);
-      const source = createOAuthSource(host, key, operation.current);
+      const source = createOAuthSource(authHost, key, operation.current);
       operation.onRetire(source.abandon);
       const tokens = await exchangeCode(request, code);
       source.capture(tokens);
       if (!operation.current()) return;
-      await finish(await verifyOAuth(host, tokens, key, { source }), operation);
+      await finish(await verifyOAuth(authHost, tokens, key, { source }), operation);
     });
 
   const signInWithToken = () =>

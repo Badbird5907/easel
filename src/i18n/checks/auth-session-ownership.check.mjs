@@ -372,6 +372,7 @@ function formsHarness(actual) {
     console,
     process,
     URL,
+    AbortController,
     boundarySession: actual,
   };
   const inject = `
@@ -787,4 +788,34 @@ for (const failure of ['obsolete', 'native']) {
   await rejectLocal(h.session.reviewInternals.addAccount(pending, { current: () => true }), h.session);
   assert.equal(h.control.sets.length, 1); assert.equal(h.control.deletes.length, 0);
   console.log('PASS explicit local release fences uncertain retry even without an original form predicate');
+}
+
+{
+  const h = await harness({ empty: true });
+  simpleTransport();
+  const mobileKey = { clientId: 'test-key', clientSecret: 'synthetic-mobile-secret', mobileVerify: true };
+  const pending = await h.session.verifyOAuth(host, response, mobileKey);
+  await h.session.reviewInternals.addAccount(pending);
+  const saved = h.secure.get('easel.token.example.test_1');
+  assert.equal(JSON.parse(saved).mobileVerify, true);
+  const reloaded = await harness();
+  reloaded.secure.set('easel.token.example.test_1', saved);
+  assert.deepEqual(await reloaded.session.storedClientCredentials(id), mobileKey);
+  let rotated = false;
+  globalThis.fetch = async (url, init) => {
+    if (url.endsWith('/login/oauth2/token')) {
+      const fields = new URLSearchParams(init.body);
+      assert.equal(fields.get('client_secret'), mobileKey.clientSecret);
+      assert.equal(fields.get('refresh_token'), response.refresh_token);
+      rotated = true;
+      return json({ access_token: 'synthetic-mobile-rotated' });
+    }
+    return rotated ? json({ ok: true }) : json({}, 401);
+  };
+  const [{ client }] = await reloaded.session.loadStoredClients();
+  await client.get('/api/test');
+  assert.equal(rotated, true);
+  assert.equal(JSON.parse(reloaded.secure.get('easel.token.example.test_1')).mobileVerify, true);
+  assert.deepEqual(await reloaded.session.storedClientCredentials(id), mobileKey);
+  console.log('PASS mobile credentials and OOB marker survive SecureStore reload and refresh');
 }

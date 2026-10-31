@@ -60,10 +60,12 @@ export type Credentials = {
   /** The developer key that issued the token, needed to refresh it. */
   clientId: string | null;
   clientSecret: string | null;
+  /** Discovered mobile keys use Canvas’s embedded out-of-band callback. */
+  mobileVerify?: boolean;
 };
 
 /** A developer key's client credentials (AUTH-2, AUTH-6). */
-export type ClientCredentials = { clientId: string; clientSecret?: string | null };
+export type ClientCredentials = { clientId: string; clientSecret?: string | null; mobileVerify?: boolean };
 
 type StoredIndex = { accounts: Account[]; activeId: string | null };
 
@@ -131,6 +133,7 @@ async function readCredentials(accountId: string): Promise<ReadResult> {
             issuedAt: typeof data.issuedAt === 'number' ? data.issuedAt : null,
             clientId: data.clientId ?? null,
             clientSecret: data.clientSecret ?? null,
+            ...(data.mobileVerify === true && { mobileVerify: true }),
           },
         };
       }
@@ -486,7 +489,7 @@ export function isStoredAccountLifetime(lifetime: StoredAccountLifetime): boolea
 export async function storedClientCredentials(accountId: string): Promise<ClientCredentials | null> {
   await ensureLoaded();
   const credentials = credentialCache.get(accountId);
-  return credentials?.clientId ? { clientId: credentials.clientId, clientSecret: credentials.clientSecret } : null;
+  return credentials?.clientId ? { clientId: credentials.clientId, clientSecret: credentials.clientSecret, ...(credentials.mobileVerify && { mobileVerify: true }) } : null;
 }
 
 type AccountCleanup = (accountId: string) => Promise<void> | void;
@@ -589,6 +592,7 @@ export function createOAuthSource(host: CanvasHost, key: ClientCredentials, curr
         ...expiryFrom(response.expires_in),
         clientId: key.clientId,
         clientSecret: key.clientSecret ?? null,
+        ...(key.mobileVerify && { mobileVerify: true }),
       };
     },
     abandon: () => abandonSource(state),
@@ -692,7 +696,7 @@ export async function verifyOAuth(
   const handle = options.source ?? createOAuthSource(host, key);
   const source = oauthSources.get(handle);
   if (!source || source.host.baseUrl !== host.baseUrl || source.key.clientId !== key.clientId ||
-      source.key.clientSecret !== key.clientSecret) throw new ObsoleteSignInError();
+      source.key.clientSecret !== key.clientSecret || !!source.key.mobileVerify !== !!key.mobileVerify) throw new ObsoleteSignInError();
   if (!source.response) handle.capture(response);
   else if (source.response !== response) throw new ObsoleteSignInError();
   requirePending(source);

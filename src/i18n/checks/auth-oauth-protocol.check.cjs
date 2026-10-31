@@ -112,6 +112,7 @@ function harness({ os = 'ios', deviceName = rawDevice, modelName = 'synthetic mo
         btoa: (value) => Buffer.from(value, 'latin1').toString('base64'),
         Error,
         URIError,
+        URL,
         Math: syntheticMath,
         console: {
           log: denied('production logging'),
@@ -629,8 +630,40 @@ async function legal() {
   }
 }
 
+async function mobileOAuth() {
+  const h = harness();
+  planCrypto(h);
+  const mobileHost = { host: 'canonical.example.test', baseUrl: 'https://canonical.example.test' };
+  const mobileKey = { ...key, mobileVerify: true };
+  const r = await h.oauth.createAuthorization(mobileHost, mobileKey, { mode: 'browser' });
+  const auth = new URL(r.url);
+  assert.equal(auth.searchParams.get('redirect_uri'), 'urn:ietf:wg:oauth:2.0:oob');
+  assert.equal(auth.searchParams.get('mobile'), '1');
+  assert.equal(r.embedded, true);
+  const callback = mobileHost.baseUrl + '/login/oauth2/auth?code=synthetic&state=' + encodeURIComponent(r.state);
+  assert.equal(h.oauth.isCallback(callback, r), true);
+  assert.equal(h.oauth.isCallback(r.url, r), false);
+  assert.equal(h.oauth.codeFromCallback(callback, r), 'synthetic');
+  for (const bad of [callback.replace('canonical.example.test', 'attacker.test'), callback.replace('/auth?', '/auth/other?'), callback.replace('https:', 'http:'), 'easel://oauth/callback?code=synthetic&state=' + r.state]) {
+    assert.equal(h.oauth.isCallback(bad, r), false);
+    assert.throws(() => h.oauth.codeFromCallback(bad, r), h.SignInError);
+  }
+  assert.throws(() => h.oauth.codeFromCallback(callback.replace(r.state, 'wrong'), r), h.SignInError);
+  h.queue.fetch.push((url, init) => {
+    assert.equal(url, mobileHost.baseUrl + '/login/oauth2/token');
+    const fields = new URLSearchParams(init.body);
+    assert.equal(fields.get('redirect_uri'), 'urn:ietf:wg:oauth:2.0:oob');
+    assert.equal(fields.get('client_secret'), mobileKey.clientSecret);
+    assert.equal(fields.get('code_verifier'), r.verifier);
+    return response(tokenResult);
+  });
+  await h.oauth.exchangeCode(r, 'synthetic');
+  h.done();
+}
+
 async function main() {
   for (const [label, run] of [
+    ['mobile OAuth embedded OOB, origin/state and exchange', mobileOAuth],
     ['authorization PKCE, purpose and mode matrix', authorization],
     ['callback decoding and current policy boundaries', callbacks],
     ['code exchange and refresh transport serialization', exchange],

@@ -59,23 +59,20 @@ These come from the Canvas server source and the official apps. Each needs a dec
 
 The official apps call `sso.canvaslms.com/api/v1/mobile_verify.json`. That endpoint returns Instructure's own OAuth client ID and secret, and it lives in a private Instructure plugin, not in canvas-lms. Canvas only accepts an OAuth client if the school's account allows that developer key (`DeveloperKey#authorized_for_account?`).
 
-Easel will not use Instructure's keys or spoof the official apps' user agents. The legitimate paths are:
+**Decision (2026-10-31, user-directed).** Easel now discovers mobile OAuth credentials through `mobile_verify` when no stored, manually supplied, or registered developer key is available. The request uses the reference Android app selector with explicit Easel identification: `candroid Easel/1.0`, in both the query and HTTP User-Agent. Easel remains an independent app.
 
-| Path | Works at | Who acts | Notes |
-| --- | --- | --- | --- |
-| Global developer key from Instructure | Every Instructure-hosted school that leaves it on | Instructure partnership | Best experience. Documented in `doc/api/developer_keys.md` ("may request a global developer key"). Self-hosted Canvas instances never see it. |
-| Per-school developer key | One school | That school's Canvas admin | Admin creates a key with Easel's redirect URI. Easel ships a registry of known keys by domain, plus manual entry of client ID and secret. |
-| Personal access token | Schools that allow student tokens | The student | Generated in Canvas settings. Schools can block it (`restrict_personal_access_tokens_from_students`). Last-resort fallback. |
+Discovered credentials use Canvas's out-of-band redirect (`urn:ietf:wg:oauth:2.0:oob`) and embedded sign-in. The callback must come from the verified Canvas origin at `/login/oauth2/auth`, and its state must match. A canonical HTTPS school address returned by the service is used for authorization and token exchange. Credentials and their mobile-flow marker are stored with the account in SecureStore, never committed or logged.
 
-**Decision (2026-10-29).** Support all three paths behind one session model, and apply to Instructure for a global key in parallel. Develop and test against a local canvas-lms instance with a locally created key, so M0 isn't blocked on Instructure.
+This private service can reject an app or school, change its contract, or rotate credentials. Failures remain visible and students can choose a developer key or personal access token. Embedded login may be rejected by some identity providers; a school-issued Easel key retains the system-browser flow. No claim of Instructure endorsement or guaranteed school compatibility is made.
 
-**Ruled out: Instructure's own app keys.** Their client ID and secret can be pulled from `mobile_verify` or the official app binaries. Easel won't do this, for these reasons:
+| Path | Behavior |
+| --- | --- |
+| Stored / manually supplied / registered developer key | Takes precedence; uses the existing Easel callback and browser flow unless explicitly selecting embedded login. |
+| Mobile verification | Discovers credentials at runtime, uses embedded out-of-band login, and stores credentials securely with the account. |
+| Personal access token | Explicit alternative for schools permitting student tokens. |
+| Easel global developer key | Still a future registration option; none is configured in the checkout. |
 
-- It presents Easel to schools and students as Instructure's official app. This breaks the PRODUCT.md brand commitment.
-- Instructure hasn't licensed it, which risks Instructure's terms and store removal.
-- Instructure can rotate the secret or add app attestation, which would lock out every user at once.
-- It forces embedded web-view sign-in, because those keys only redirect to Instructure's domain or `oob`. That loses AUTH-3.
-- The Easel repo is public, so the secret would be published.
+See [official Android credentials](OFFICIAL_ANDROID_OAUTH_CREDENTIALS.md) for reference sources and verification limits.
 
 ### 4.2 Session lifetime
 
@@ -145,7 +142,7 @@ Requirement IDs are stable so issues and commits can reference them.
 | --- | --- | --- |
 | AUTH-1 | P0 | **School search.** Find a school by name or domain, or type a domain directly. Self-hosted domains work. The search source depends on 4.1. If Instructure's `accounts/search` isn't available to Easel, use a bundled list plus direct domain entry. |
 | AUTH-2 | P0 | **OAuth sign-in.** Authorization-code flow with PKCE (`/login/oauth2/auth`, `/login/oauth2/token`) and an Easel redirect URI (custom scheme or claimed https). Send `purpose` so the token is labeled "Easel on <device>" in the student's Canvas settings. |
-| AUTH-3 | P0 | **Browser session.** Sign-in runs in the system auth browser (ASWebAuthenticationSession on iOS, Auth Tab or Custom Tabs on Android). This lets SAML, CAS, OIDC, Google, Microsoft, Apple, Clever, Duo, passkeys, password managers, and device-certificate SSO work as they do in a browser. |
+| AUTH-3 | P0 | **Browser session.** Easel-registered developer-key sign-in runs in the system auth browser (ASWebAuthenticationSession on iOS, Auth Tab or Custom Tabs on Android). Mobile-discovered keys require embedded out-of-band login. This lets SAML, CAS, OIDC, Google, Microsoft, Apple, Clever, Duo, passkeys, password managers, and device-certificate SSO work as they do in a browser. |
 | AUTH-4 | P0 | **Embedded fallback.** An in-app web view sign-in fallback, for IdPs that break in the system browser. It must handle HTTP Basic and NTLM challenges, popups, and `authentication_provider` hints. |
 | AUTH-5 | P0 | **Other login modes.** Support `canvas_login=1` (skip SSO and use Canvas credentials) and site-admin login (`canvas_sa_delegated`), selectable from an "Other ways to sign in" menu, not a hidden gesture. |
 | AUTH-6 | P0 | **Manual entry.** Enter a client ID and secret, or paste a personal access token (4.1). |
@@ -468,7 +465,7 @@ These are recommendations to settle in M0, not requirements.
 
 | # | Decision | Recommendation |
 | --- | --- | --- |
-| 1 | Credential strategy (4.1) | **Decided.** Support all three paths, and apply to Instructure for a global, unscoped, confidential developer key. Never use Instructure's official app keys. |
+| 1 | Credential strategy (4.1) | **Decided (2026-10-31).** Discover mobile credentials when no developer key is available; preserve developer-key and access-token alternatives. An Easel global key remains a future option. |
 | 2 | Push notifications (4.3) | Local and background-refresh notifications in 1.0. SNS through the partnership later. No token-holding relay server. |
 | 3 | PDF engine | Native renderers (free). Use DocViewer web for annotation assignments. Revisit a commercial SDK (Nutrient, Apryse) only if FILE-12 or quality demands it. |
 | 4 | Tablet layouts in 1.0 | Not in 1.0 (SYS-5 is P2). Phones in portrait. |

@@ -20,7 +20,7 @@ type Props = {
 /**
  * Sign-in inside Easel (AUTH-4), for identity providers that break in the
  * system browser, and for site admin login, whose cookie only a web view can
- * set. Catches the `easel://oauth/callback` redirect before it leaves the view.
+ * set. Catches Easel callbacks and Canvas out-of-band callbacks for mobile keys.
  */
 export function EmbeddedSignIn({ request, onFinish }: Props) {
   const owner = useAuthEmbeddedLifetime(request);
@@ -174,7 +174,7 @@ function SignInWebView({ request, owner, onFinish }: {
           originWhitelist={ORIGIN_WHITELIST}
           onShouldStartLoadWithRequest={(navigation) => {
             if (!owner.current()) return false;
-            if (isCallback(navigation.url)) {
+            if (isCallback(navigation.url, request)) {
               finish(navigation.url);
               return false;
             }
@@ -201,7 +201,8 @@ function SignInWebView({ request, owner, onFinish }: {
           onNavigationStateChange={(state) => {
             if (!owner.current()) return;
             setCanGoBack(state.canGoBack);
-            if (state.url && !isCallback(state.url)) setPageUrl(state.url);
+            if (state.url && isCallback(state.url, request)) finish(state.url);
+            else if (state.url) setPageUrl(state.url);
           }}
           onHttpError={(event) => {
             if (!owner.current()) return;

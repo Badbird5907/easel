@@ -1,8 +1,8 @@
 import type { ClientCredentials } from '@/canvas/session';
 
 /**
- * Developer keys Easel knows, by Canvas host (PRD 4.1, AUTH-2). Easel never
- * uses Instructure's own app keys or `mobile_verify`.
+ * Developer keys Easel knows, by Canvas host (PRD 4.1, AUTH-2).
+ * Hosts without a registered key use mobile_verify discovery.
  *
  * Adding a school:
  * 1. The school's Canvas admin opens Admin > Developer Keys > + Developer Key > + API Key.

@@ -166,6 +166,8 @@ const mocks = {
     haptics: { selection() { }, success: () => calls.push(['success']), error: () => calls.push(['error']) }
   },
   '@/canvas/client': { normalizeHost },
+  '@/canvas/qrLogin': { exchangeQrLogin: stage('exchangeQr', async () => ({})), ExpiredQrLoginError: class extends Error {} },
+  '@/features/auth/QrSignIn': { QrSignIn: 'QrSignIn' },
   '@/canvas/mobileVerify': { MobileVerifyError: SignInError, discoverMobileCredentials: stage('discover', async () => { throw new SignInError('RAW mobile sign-in unavailable'); }) },
   '@/canvas/session': {
     useSession: () => session, SignInError, ObsoleteSignInError,
@@ -386,6 +388,33 @@ async function main() {
   assert.equal(calls.find(c => c[0] === 'verifyOAuth')[1].host, 'canonical.test');
   assert.equal(count('save'), 1); f.m.unmount();
 
+  // QR sign-in does not require school input, uses the canonical discovery host, and coalesces callbacks.
+  const qrLogin = { host: normalizeHost('qr.test'), code: 'synthetic-qr-code' };
+  const openQr = f => {
+    one(f.tree, 'Button', p => p.children === runtime.createTranslator('en')('authQr.title')).onPress();
+    f.render();
+    return one(f.tree, 'QrSignIn');
+  };
+  reset(); f = form();
+  const canceledScanner = openQr(f); canceledScanner.onClose(); f.render();
+  canceledScanner.onScan(qrLogin); await tick(); assert.equal(count('discover'), 0); f.m.unmount();
+  reset(); behavior.discover = async () => ({ host: normalizeHost('canonical.test'), key: { clientId: 'synthetic-mobile', mobileVerify: true } });
+  f = form(); const qrScan = openQr(f).onScan; qrScan(qrLogin); qrScan(qrLogin); await tick();
+  assert.equal(count('discover'), 1); assert.equal(count('exchangeQr'), 1); assert.equal(count('create'), 0);
+  assert.equal(calls.find(c => c[0] === 'exchangeQr')[1].host, 'canonical.test');
+  assert.equal(count('terms'), 1); assert.equal(count('save'), 1); f.m.unmount();
+  for (const stageName of ['discover', 'exchangeQr']) {
+    reset(); gate = deferred();
+    behavior.discover = async () => ({ host: normalizeHost('canonical.test'), key: { clientId: 'synthetic-mobile', mobileVerify: true } });
+    behavior[stageName] = () => gate.promise;
+    f = form(); openQr(f).onScan(qrLogin); await tick(); f.m.unmount();
+    gate.resolve(stageName === 'discover' ? { host: normalizeHost('canonical.test'), key: { clientId: 'synthetic-mobile', mobileVerify: true } } : {});
+    await tick(); assert.equal(count('verifyOAuth'), 0); assert.equal(count('save'), 0);
+  }
+  reset(); behavior.discover = async () => ({ host: normalizeHost('canonical.test'), key: { clientId: 'synthetic-mobile', mobileVerify: true } });
+  f = form({ expired: account('expected', 'oauth') }); openQr(f).onScan(qrLogin); await tick();
+  assert.equal(count('discard'), 1); assert.equal(count('save'), 0); f.m.unmount();
+
   // Stored key lookups: old account and unmounted replies cannot supply replacement credentials.
   reset(); const oldKey = deferred(), newKey = deferred(); behavior.stored = id => id === 'old' ? oldKey.promise : newKey.promise;
   f = form({ expired: account('old', 'oauth') }); locale('fr'); f.render(); assert.equal(count('stored'), 1);
@@ -436,6 +465,33 @@ async function main() {
   gate = deferred(); behavior.switch = () => gate.promise; const switching = switchRow.onPress(); switchRow.onPress(); assert.equal(count('switch'), 1); gate.resolve(); await switching;
   locale('fr'); tree = route.render(); assert.equal(one(tree, 'ListItem', p => p.destructive).title, runtime.createTranslator('fr')('authForms.remove', { name: 'RAW expired' }));
   session.active = account('replacement'); session.accounts = [session.active]; route.render(); await oldConfirm[1](oldConfirm[0].id); await switchRow.onPress(); removeRow.onPress(); assert.equal(count('remove'), 0); assert.equal(count('switch'), 1); route.unmount();
+  // Render the real scanner with synthetic camera/permission boundaries.
+  delete mocks['@/features/auth/QrSignIn']; allowed.add('features/auth/QrSignIn');
+  let appStateListener, backListener, scans = 0;
+  const permission = { granted: true, canAskAgain: true };
+  mocks['expo-camera'] = { CameraView: 'CameraView', useCameraPermissions: () => [permission, async () => {}, async () => permission] };
+  mocks['react-native'].AppState = { currentState: 'active', addEventListener: (_name, listener) => {
+    appStateListener = listener; return { remove() {} };
+  }};
+  mocks['react-native'].BackHandler = { addEventListener: (_name, listener) => { backListener = listener; return { remove() {} }; } };
+  mocks['react-native'].Linking = { openSettings: async () => {} };
+  mocks['@/canvas/qrLogin'].parseCanvasQrLogin = text => text === 'synthetic-valid' ? qrLogin : null;
+  const { QrSignIn } = load('@/features/auth/QrSignIn');
+  locale('en');
+  let closed = 0;
+  const scanner = mount(() => QrSignIn({ onScan: () => scans++, onClose: () => closed++ }));
+  tree = scanner.render();
+  const scanCallback = one(tree, 'CameraView').onBarcodeScanned;
+  scanCallback({ data: 'invalid' }); tree = scanner.render(); assert.equal(scans, 0); assert.equal(nodes(tree, 'CameraView').length, 0);
+  one(tree, 'Button', p => p.children === runtime.createTranslator('en')('authQr.retry')).onPress(); tree = scanner.render();
+  mocks['react-native'].AppState.currentState = 'background'; appStateListener('background'); tree = scanner.render();
+  assert.equal(nodes(tree, 'CameraView').length, 0); scanCallback({ data: 'synthetic-valid' }); assert.equal(scans, 0);
+  mocks['react-native'].AppState.currentState = 'active'; appStateListener('active'); tree = scanner.render();
+  one(tree, 'CameraView').onBarcodeScanned({ data: 'synthetic-valid' });
+  one(tree, 'CameraView').onBarcodeScanned({ data: 'synthetic-valid' }); assert.equal(scans, 1);
+  assert.equal(backListener(), true); assert.equal(closed, 1);
+  scanner.unmount(); scanCallback({ data: 'synthetic-valid' }); assert.equal(scans, 1);
+
   console.log('Auth forms: production forms/routes/lifetime; synthetic hooks, school/auth/terms/session/browser boundaries; historical values preserved; TZ=' + (process.env.TZ || 'default'));
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

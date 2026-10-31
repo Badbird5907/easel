@@ -51,3 +51,11 @@ The service is private and may change or reject this client. An Easel global dev
 - [Instructure's developer-key administration guide](https://community.instructure.com/en/kb/articles/661518-how-do-i-manage-developer-keys-for-an-account)
 
 This describes the local source checkout inspected on October 31, 2026, rather than a verification of a particular installed Android release.
+
+## QR sign-in
+
+Easel follows `QRLogin.kt` in the Android reference: read `domain` and `code_android` from an HTTPS link on `sso.canvaslms.com` (or its official beta/test hosts), discover the mobile credentials, and exchange the code at the canonical school's token endpoint. Both Easel platforms use the Android Student code because discovery selects the Android Student client. Teacher, parent, and iOS-only codes are not accepted.
+
+This grant was already issued by Canvas, so the exchange follows Android `OAuthAPI.getToken`: `redirect_uri=urn:ietf:wg:oauth:2.0:oob`, without inventing a PKCE verifier. This differs from starting a new browser authorization, which uses the registered HTTPS callback described above. QR contents stay in memory; the resulting account uses the existing SecureStore, terms, refresh, and identity checks.
+
+The sign-in screen offers camera scanning and a paste-link alternative. In Canvas on another device, choose Account → QR for Mobile Login. Generate a new code if it expires or has already been used. Some schools disable this option. Synthetic protocol and lifetime tests cover the flow; a real Canvas-generated code is still required to verify end-to-end sign-in.

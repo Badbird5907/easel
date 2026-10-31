@@ -94,7 +94,7 @@ Canvas only registers a push device when the token's developer key has an Amazon
 
 ### 4.4 Features tied to Instructure's domains
 
-- **QR-code login.** Its backend and QR format are in the private plugin and tied to Instructure's key. Out of scope unless the partnership provides it.
+- **QR-code login.** Uses the Student Android grant (`code_android`) from Canvas’s “QR for Mobile Login” page, matching the cloned Android app. Discover the school’s mobile credentials, exchange the short-lived code with the QR-specific OOB redirect, and finish through the shared session/terms flow. Scanning and pasted links are supported; availability depends on the school enabling QR login and Instructure’s private service.
 - **Universal links / App Links for `*.instructure.com`.** These need Instructure-hosted association files. Easel can't claim them. Easel instead routes Canvas links internally (in rendered content, notifications, and pasted or shared URLs), and offers an `easel://` scheme.
 
 ### 4.5 Scoped developer keys
@@ -150,7 +150,7 @@ Requirement IDs are stable so issues and commits can reference them.
 | AUTH-8 | P0 | **Token refresh.** Refresh transparently on 401 with request queueing. If the refresh token is dead, show "Sign in again" for the same user. Signing in as a different user there is refused. |
 | AUTH-9 | P0 | **Secure storage.** Tokens live in Keychain / Keystore, never in plain storage. |
 | AUTH-10 | P0 | **Log out.** Revoke the token (`DELETE /login/oauth2/token?expire_sessions=1`), follow `forward_url` for SSO single logout, and clear that account's caches, reminders, and downloads. Warn if uploads are running. |
-| AUTH-11 | P2 | **QR login.** Only if Instructure provides it (4.4). |
+| AUTH-11 | P1 | **QR login.** Scan or paste a Canvas Student QR sign-in link. Validate official SSO hosts, discover credentials, and exchange `code_android` as the official Android app does. Handle permission denial, invalid/expired codes, cancellation, duplicate scans, terms, and account identity (4.4). |
 
 ### 7.2 Accounts (ACCT)
 

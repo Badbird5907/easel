@@ -2,6 +2,7 @@ import {
   AppWindow,
   Globe,
   KeyRound,
+  QrCode,
   type LucideIcon,
   School as SchoolIcon,
   ShieldCheck,
@@ -12,6 +13,7 @@ import { type ComponentRef, type ReactNode, useEffect, useLayoutEffect, useMemo,
 import { Keyboard, Platform, TextInput, View } from 'react-native';
 
 import { acceptTerms, fetchRequiresTerms } from '@/canvas/api/legal';
+import { exchangeQrLogin, ExpiredQrLoginError, type CanvasQrLogin } from '@/canvas/qrLogin';
 import { normalizeHost } from '@/canvas/client';
 import { discoverMobileCredentials, MobileVerifyError } from '@/canvas/mobileVerify';
 import {
@@ -48,6 +50,7 @@ import {
 import { useTranslation, type MessageKey, type Translate } from '@/i18n';
 
 import { authFormsClaim, authFormsRetire, useAuthFormsLifetime, type AuthFormsOperation, type AuthFormsOwner } from './authFormsLifetime';
+import { QrSignIn } from './QrSignIn';
 import { EmbeddedSignIn } from './EmbeddedSignIn';
 import { developerKeyFor } from './keys';
 import {
@@ -146,6 +149,7 @@ export function SignInFlow({ showTitle, expired, addingAccount, onSignedIn, foot
   const [clientSecret, setClientSecret] = useState('');
   const [token, setToken] = useState('');
   const [busy, setBusy] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [pending, setPending] = useState<{ signIn: PendingSignIn; operation: AuthFormsOperation; retry?: number; } | null>(null);
@@ -172,6 +176,7 @@ export function SignInFlow({ showTitle, expired, addingAccount, onSignedIn, foot
     setStateOwner(owner);
     setRevision(0);
     setBusy(false);
+    setQrOpen(false);
     setPending(null);
     setEmbedded(null);
     setMessage(null);
@@ -365,6 +370,29 @@ export function SignInFlow({ showTitle, expired, addingAccount, onSignedIn, foot
       await finish(await verifyOAuth(authHost, tokens, key, { source }), operation);
     });
 
+  const signInWithQr = (login: CanvasQrLogin) => {
+    if (!eligible() || owner.claimed) return;
+    setQrOpen(false);
+    void run(async operation => {
+      const controller = new AbortController();
+      const release = operation.onRetire(() => controller.abort());
+      try {
+        const { host: qrHost, key } = await discoverMobileCredentials(login.host, controller.signal);
+        if (!operation.current()) return;
+        const source = createOAuthSource(qrHost, key, operation.current);
+        operation.onRetire(source.abandon);
+        const tokens = await exchangeQrLogin(qrHost, key, login.code);
+        source.capture(tokens);
+        if (!operation.current()) return;
+        await finish(await verifyOAuth(qrHost, tokens, key, { source }), operation);
+      } catch (error) {
+        if (error instanceof ExpiredQrLoginError) throw new SignInError(t('authQr.expired'));
+        if (error instanceof MobileVerifyError) throw new SignInError(error.message);
+        throw error;
+      } finally { release(); }
+    });
+  };
+
   const signInWithToken = () =>
     run(async (operation) => {
       if (!host) return;
@@ -420,6 +448,11 @@ export function SignInFlow({ showTitle, expired, addingAccount, onSignedIn, foot
       </Screen>
     );
   }
+
+  if (qrOpen) return <QrSignIn onScan={signInWithQr} onClose={() => {
+    if (!replaceForm()) return;
+    setQrOpen(false);
+  }} />;
 
   const info = methods[method];
   const submit = method === 'token' ? signInWithToken : continueWithCanvas;
@@ -618,6 +651,11 @@ export function SignInFlow({ showTitle, expired, addingAccount, onSignedIn, foot
           <Button size="lg" loading={busy} onPress={submitValidated}>
             {method === 'token' ? t('authForms.signIn') : expired ? t('authForms.signInAgain') : t('authForms.continue')}
           </Button>
+          <Button variant="secondary" leadingIcon={QrCode} disabled={busy} onPress={() => {
+            if (!eligible() || owner.claimed || !replaceForm()) return;
+            setMessage(null);
+            setQrOpen(true);
+          }}>{t('authQr.title')}</Button>
           {method === 'browser' ? (
             <Button ref={otherWaysTrigger} variant="ghost" onPress={() => openSheet('other')} disabled={busy}>
               {t('authForms.otherWays')}

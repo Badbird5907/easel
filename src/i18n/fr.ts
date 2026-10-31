@@ -1,6 +1,23 @@
 import type { Catalog } from './types';
 
+
 export const fr = {
+  "authQr.title": "Se connecter par code QR",
+  "authQr.instructions": "Sur un autre appareil, connectez-vous à Canvas dans un navigateur. Ouvrez Compte → QR pour connexion mobile, puis scannez le code ici.",
+  "authQr.schoolHelp": "Si cette option est absente, votre établissement l’a peut-être désactivée.",
+  "authQr.invalidTitle": "Code de connexion Canvas non reconnu",
+  "authQr.invalid": "Scannez un code QR de connexion Canvas Student ou collez son lien de connexion complet.",
+  "authQr.viewfinder": "Aperçu de la caméra pour le code QR Canvas",
+  "authQr.cameraFailed": "Impossible de démarrer la caméra. Vous pouvez coller le lien de connexion du code QR.",
+  "authQr.cameraHelp": "Autorisez la caméra pour scanner votre code de connexion Canvas.",
+  "authQr.allowCamera": "Autoriser la caméra",
+  "authQr.openSettings": "Ouvrir les réglages",
+  "authQr.link": "Lien de connexion QR",
+  "authQr.retry": "Scanner à nouveau",
+  "authQr.scanInstead": "Utiliser la caméra",
+  "authQr.paste": "Coller le lien de connexion",
+  "authQr.back": "Retour à la connexion",
+  "authQr.expired": "Ce code a expiré ou a déjà été utilisé. Générez un nouveau code QR dans Canvas et réessayez.",
   "demo.label": "Démo",
   "demo.start": "Mode démo",
   "demo.hint": "Découvrez Easel avec des cours fictifs.",

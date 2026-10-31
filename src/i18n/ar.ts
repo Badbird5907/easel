@@ -1,6 +1,23 @@
 import type { Catalog } from './types';
 
+
 export const ar = {
+  "authQr.title": "تسجيل الدخول برمز QR",
+  "authQr.instructions": "على جهاز آخر، سجّل الدخول إلى Canvas في المتصفح. افتح الحساب ← رمز QR لتسجيل الدخول عبر الجوال، ثم امسح الرمز هنا.",
+  "authQr.schoolHelp": "إذا لم يظهر هذا الخيار، فربما عطّلته مؤسستك التعليمية.",
+  "authQr.invalidTitle": "هذا ليس رمز تسجيل دخول إلى Canvas",
+  "authQr.invalid": "امسح رمز تسجيل دخول Canvas Student أو الصق رابط تسجيل الدخول الكامل الخاص به.",
+  "authQr.viewfinder": "معاينة الكاميرا لرمز QR الخاص بـ Canvas",
+  "authQr.cameraFailed": "تعذّر تشغيل الكاميرا. يمكنك لصق رابط تسجيل الدخول الخاص برمز QR بدلاً من ذلك.",
+  "authQr.cameraHelp": "اسمح بالوصول إلى الكاميرا لمسح رمز تسجيل الدخول إلى Canvas.",
+  "authQr.allowCamera": "السماح بالكاميرا",
+  "authQr.openSettings": "فتح الإعدادات",
+  "authQr.link": "رابط تسجيل الدخول برمز QR",
+  "authQr.retry": "المسح مجددًا",
+  "authQr.scanInstead": "استخدام الكاميرا",
+  "authQr.paste": "لصق رابط تسجيل الدخول",
+  "authQr.back": "العودة إلى تسجيل الدخول",
+  "authQr.expired": "انتهت صلاحية هذا الرمز أو استُخدم بالفعل. أنشئ رمز QR جديدًا في Canvas وحاول مجددًا.",
   "demo.label": "تجريبي",
   "demo.start": "الوضع التجريبي",
   "demo.hint": "استكشف Easel باستخدام مقررات نموذجية.",

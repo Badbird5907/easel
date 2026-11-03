@@ -48,6 +48,8 @@ Docs: https://docs.expo.dev/eas/index.md
 
 - Preserve `modules/canvas-notification-bridge`: Android notification access is implemented there, never in generated `android/`. Keep release allowlisting Canvas Student only; no network, wake locks, timers or JS startup in the listener.
 
+- Preserve `modules/easel-downloads`: Android Save (MediaStore Downloads and the system Save dialog) is implemented there. JS feature-detects it, so 1.1.0 builds without it fall back to the folder picker.
+
 - Keep `plugins/withAndroidConfigChanges.js` registered in `app.json`: MainActivity must handle `fontScale` so live text resizing preserves navigation.
 
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.

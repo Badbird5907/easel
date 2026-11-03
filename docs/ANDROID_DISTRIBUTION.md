@@ -8,6 +8,19 @@
 
 ## Current internal release
 
+Version **1.2.0 (8)** was built on EAS and auto-submitted to the internal testing
+track on November 3, 2026; EAS reports the submission **finished**. It adds
+`modules/easel-downloads` (a native module): tapping Save on Android puts the file
+straight in the public Downloads folder through MediaStore, and touch and hold opens
+the system Save dialog. It runs on its own OTA runtime, `1.2.0`; 1.1.0 (7) keeps
+runtime `1.1.0`, where Save falls back to a remembered folder picked once.
+
+- [EAS build](https://expo.dev/accounts/badbird5907/projects/easel/builds/addba6dc-756d-41d8-93ae-8eed1f1ea800)
+  (`play-internal`, channel `production`, runtime `1.2.0`, commit `51b558d`) and
+  [submission](https://expo.dev/accounts/badbird5907/projects/easel/submissions/3f1d6b9d-ec31-4800-b5aa-a78b6573a4f6).
+
+### Version 7
+
 Version **1.1.0 (7)** was built on EAS and auto-submitted to the internal testing
 track on October 31, 2026; the Google Play Developer API reports it **completed**.
 It adds the Canvas Student notification bridge (a native module), so it runs on

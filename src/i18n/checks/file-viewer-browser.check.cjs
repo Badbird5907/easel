@@ -191,6 +191,7 @@ const mocks = {
     },
   },
   '@react-native-async-storage/async-storage': { getItem: unexpected, setItem: unexpected },
+  expo: {},
   'expo-clipboard': {},
   'expo-file-system': {},
   'expo-media-library': {},

@@ -103,7 +103,7 @@ const state = {
     { id: 'other', color: 'other-tint' },
   ],
 };
-const actionNames = ['share', 'save', 'openIn', 'print', 'shareLink'];
+const actionNames = ['share', 'save', 'saveElsewhere', 'openIn', 'print', 'shareLink'];
 const actions = {
   busy: null,
   canPrint: true,
@@ -147,6 +147,7 @@ const mocks = {
   '@/canvas/api/courses': { useDashboardCourses: () => ({ data: state.courses }) },
   '@/design': new Proxy(
     {
+      haptics: { light: () => calls.push(['haptic']) },
       useTheme: () => ({
         colors: { accentFg: 'accent' },
         scheme: state.scheme,
@@ -750,6 +751,7 @@ const reset = (f) => {
       }
     }
   // Bar IDs/order/callbacks and busy/locked/canPrint policies, same mounted component.
+  for (const os of ['android', 'ios'])
   for (const canPrint of [false, true])
     for (const locked of [false, true])
       for (const busy of [null, 'share', 'save', 'open', 'print', 'link'])
@@ -759,6 +761,7 @@ const reset = (f) => {
             actions.busy = busy;
             actions.download.status = status;
             actions.download.progress = { fraction, bytes: 1234 };
+            native.Platform.OS = os;
             const r = harness(bar.FileActionBar);
             for (const l of langs) {
               const t = view(l),
@@ -784,11 +787,29 @@ const reset = (f) => {
                   n.props.accessibilityLabel,
                   t(id === 'open' ? 'files.viewer.openLabel' : 'files.' + key),
                 );
-                assert.equal(n.props.accessibilityHint, t('files.viewer.hint.' + id));
+                assert.equal(
+                  n.props.accessibilityHint,
+                  t('files.viewer.hint.' + (id === 'save' && os === 'android' ? 'saveDownloads' : id)),
+                );
                 assert.equal(find(n, 'Text').children, t('files.' + key));
                 if (!disabled) {
                   n.props.onPress();
                   assert.deepEqual(calls.pop(), [callback]);
+                }
+                // Touch and hold Save chooses the destination; screen readers get it as an action.
+                if (id === 'save' && !disabled) {
+                  assert.deepEqual(n.props.accessibilityActions, [
+                    { name: 'longpress', label: t('files.actions.chooseWhere') },
+                  ]);
+                  n.props.onAccessibilityAction({ nativeEvent: { actionName: 'activate' } });
+                  n.props.onAccessibilityAction({ nativeEvent: { actionName: 'longpress' } });
+                  assert.deepEqual(calls.splice(before), [['saveElsewhere']]);
+                  n.props.onLongPress();
+                  assert.deepEqual(calls.splice(before), [['haptic'], ['saveElsewhere']]);
+                } else {
+                  assert.equal(n.props.onLongPress, undefined);
+                  assert.equal(n.props.accessibilityActions, undefined);
+                  assert.equal(n.props.onAccessibilityAction, undefined);
                 }
               });
               assert.equal(!!find(tree, 'ProgressBar'), status === 'downloading' && !!busy);

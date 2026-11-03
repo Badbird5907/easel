@@ -9,6 +9,7 @@ export type FileActionOrigin =
       reason:
         | 'sharing-unavailable'
         | 'folder-picker'
+        | 'downloads-copy'
         | 'photos-permission'
         | 'gallery-permission'
         | 'print-open'

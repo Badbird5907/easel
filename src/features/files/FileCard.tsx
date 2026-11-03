@@ -3,7 +3,7 @@ import { ActivityIndicator, View } from 'react-native';
 
 import { useCourseLookup } from '@/canvas/api/courses';
 import type { FileItem } from '@/canvas/api/files';
-import { Button, Callout, Icon, ListGroup, ListItem, ProgressBar, Text, useTheme } from '@/design';
+import { Button, Callout, haptics, Icon, ListGroup, ListItem, ProgressBar, Text, useTheme } from '@/design';
 import type { ColorToken } from '@/design';
 
 import { formatNumber, type Translate, useTranslation } from '@/i18n';
@@ -104,6 +104,7 @@ export function DownloadProgress({ actions }: { actions: FileActions }) {
 export function FileActionButtons({ actions, locked }: { actions: FileActions; locked: boolean }) {
   const { t } = useTranslation();
   const busy = actions.busy;
+  const saveDisabled = locked || (!!busy && busy !== 'save');
   return (
     <View className="gap-3">
       <View className="flex-row gap-3">
@@ -121,8 +122,18 @@ export function FileActionButtons({ actions, locked }: { actions: FileActions; l
           variant="tonal"
           leadingIcon={FolderDown}
           loading={busy === 'save'}
-          disabled={locked || (!!busy && busy !== 'save')}
+          disabled={saveDisabled}
           onPress={actions.save}
+          onLongPress={() => {
+            haptics.light();
+            actions.saveElsewhere();
+          }}
+          accessibilityActions={
+            saveDisabled ? undefined : [{ name: 'longpress', label: t('files.actions.chooseWhere') }]
+          }
+          onAccessibilityAction={(event) => {
+            if (!saveDisabled && event.nativeEvent.actionName === 'longpress') actions.saveElsewhere();
+          }}
         >
           {t('files.save')}
         </Button>

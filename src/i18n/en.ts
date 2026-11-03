@@ -961,6 +961,7 @@ export const en = {
 
   'files.actions.saveFiles': 'Save to Files',
   'files.actions.saveFolder': 'Save to…',
+  'files.actions.chooseWhere': 'Choose where to save',
   'files.actions.saveDownloads': 'Save to Downloads',
   'files.actions.savePhotos': 'Save to Photos',
   'files.actions.saveGallery': 'Save to gallery',
@@ -975,6 +976,7 @@ export const en = {
   'files.actions.destination.gallery': 'your gallery',
   'files.actions.error.sharing': 'Sharing isn’t available on this device.',
   'files.actions.error.picker': 'Couldn’t open the folder picker.',
+  'files.actions.error.downloads': 'Couldn’t save to Downloads. Touch and hold Save to choose another folder.',
   'files.actions.error.copy': 'Couldn’t save to {destination}. Pick another folder.',
   'files.actions.error.photos': 'Easel can’t add to Photos. Allow it in Settings > Easel > Photos.',
   'files.actions.error.gallery': 'Easel can’t add to your gallery. Allow photo access in Settings.',
@@ -1042,6 +1044,7 @@ export const en = {
   'files.viewer.position': '{current} of {total}',
   'files.viewer.openLabel': 'Open in another app',
   'files.viewer.hint.share': 'Sends the file to another app',
+  'files.viewer.hint.saveDownloads': 'Saves a copy in Downloads',
   'files.viewer.hint.save': 'Saves a copy on this device',
   'files.viewer.hint.open': 'Opens the file in another app',
   'files.viewer.hint.print': 'Prints the file',

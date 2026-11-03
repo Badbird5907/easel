@@ -1010,6 +1010,7 @@ export const ar = {
   'files.previews.zoomHint': 'اضغط بإصبعين أو انقر مرتين للتكبير',
   'files.actions.saveFiles': 'حفظ في الملفات',
   'files.actions.saveFolder': 'حفظ في…',
+  'files.actions.chooseWhere': 'اختيار مكان الحفظ',
   'files.actions.saveDownloads': 'حفظ في التنزيلات',
   'files.actions.savePhotos': 'حفظ في الصور',
   'files.actions.saveGallery': 'حفظ في المعرض',
@@ -1024,6 +1025,7 @@ export const ar = {
   'files.actions.destination.gallery': 'معرضك',
   'files.actions.error.sharing': 'المشاركة غير متاحة على هذا الجهاز.',
   'files.actions.error.picker': 'تعذّر فتح أداة اختيار المجلد.',
+  'files.actions.error.downloads': 'تعذّر الحفظ في التنزيلات. المس زر حفظ مع الاستمرار لاختيار مجلد آخر.',
   'files.actions.error.copy': 'تعذّر الحفظ في {destination}. اختر مجلدًا آخر.',
   'files.actions.error.photos':
     'لا يستطيع Easel الإضافة إلى الصور. اسمح بذلك في الإعدادات > Easel > الصور.',
@@ -1090,6 +1092,7 @@ export const ar = {
   'files.viewer.position': '{current} من {total}',
   'files.viewer.openLabel': 'فتح في تطبيق آخر',
   'files.viewer.hint.share': 'يرسل الملف إلى تطبيق آخر',
+  'files.viewer.hint.saveDownloads': 'يحفظ نسخة في التنزيلات',
   'files.viewer.hint.save': 'يحفظ نسخة على هذا الجهاز',
   'files.viewer.hint.open': 'يفتح الملف في تطبيق آخر',
   'files.viewer.hint.print': 'يطبع الملف',

@@ -38,7 +38,7 @@ const mocks={
  '@/canvas/api/files':{MIN_SEARCH_LENGTH:2,useRootFolder:query('root'),useFolder:query('sub'),useFolderContents:query('contents'),useFileSearch:query('search'),fetchFolderByPath:(...a)=>{calls.push(['path',...a]);return Promise.resolve(state.pathFolder);}},
  '@/canvas/api/courses':{useCourseLookup:()=>id=>state.courses.find(c=>c.id===id),useDashboardCourses:()=>({data:state.courses})},
  '@/canvas/session':{useCanvas:()=>({client})},
- '@/design':new Proxy({useTheme:()=>({colors:{fgMuted:'muted',fg:'fg'},scheme:'light'}),deriveAccent:()=>({accentFg:'tint'})},{get:(o,k)=>o[k]??k}),
+ '@/design':new Proxy({haptics:{light:()=>calls.push(['haptic'])},useTheme:()=>({colors:{fgMuted:'muted',fg:'fg'},scheme:'light'}),deriveAccent:()=>({accentFg:'tint'})},{get:(o,k)=>o[k]??k}),
  '@/features/files/FileThumbnail':{FileThumbnail:'FileThumbnail',kindTone:{document:'info'}},
  '@/features/files/open':{openFile:(...a)=>calls.push(['openFile',...a])},
  '@/features/files/upload':{useUploadToFolder:(id)=>{queries.push(['upload',id]);return state.upload;}},
@@ -67,7 +67,7 @@ const langs=['en','fr','ar'],zones=['UTC','America/Los_Angeles','Asia/Tokyo'];
 const view=(locale,zone='UTC')=>{i18n.setAccountLocale('test',locale);dates.setDisplayTimeZone(zone);return i18n.createTranslator(locale);};
 const file={id:'f',name:'Files',filename:'test.docx',contentType:'application/octet-stream',size:1250,modifiedAt:new Date('2026-01-01T00:30:00Z'),createdAt:new Date('2025-12-31T23:30:00Z'),updatedAt:new Date('2026-01-02T00:30:00Z'),uploader:'Uploaded',context:{type:'user',id:'self'},lockedForUser:false,hidden:false,unlockAt:null,lockAt:null};
 const folder={id:'fo',name:'Folder',foldersCount:2,filesCount:11,hidden:false,lockedForUser:false,context:{type:'groups',id:'g'}};
-const actionNames=['share','save','openIn','shareLink','print','copyLink'];
+const actionNames=['share','save','openIn','shareLink','print','copyLink','saveElsewhere'];
 const actions={busy:null,canPrint:true,link:'raw',...Object.fromEntries(actionNames.map(n=>[n,()=>calls.push([n])])),download:{status:'downloading',progress:{fraction:0,bytes:0},cancel:()=>calls.push(['cancel'])}};
 const flush=async()=>{await Promise.resolve();await Promise.resolve();};
 (async()=>{
@@ -119,6 +119,13 @@ const flush=async()=>{await Promise.resolve();await Promise.resolve();};
    const a={...actions,busy,canPrint},bs=all(buttons({actions:a,locked}),'Button').map(n=>n.props);
    assert.deepEqual(bs.map(b=>text(b.children)),['share','save','openIn','shareLink',...(canPrint?['print']:[])].map(n=>t('files.'+n)));
    bs.forEach((b,i)=>{const name=['share','save','openIn','shareLink','print'][i],job=name==='openIn'?'open':name;assert.equal(b.onPress,a[name]);if(name!=='shareLink'){assert.equal(b.disabled,locked||!!busy&&busy!==job);assert.equal(b.loading,busy===job);}});
+   // Touch and hold Save chooses where; screen readers get it as an action while Save is enabled.
+   const save=bs[1],saveOff=locked||!!busy&&busy!=='save',mark=calls.length;
+   assert.deepEqual(save.accessibilityActions,saveOff?undefined:[{name:'longpress',label:t('files.actions.chooseWhere')}]);
+   save.onAccessibilityAction({nativeEvent:{actionName:'activate'}});save.onAccessibilityAction({nativeEvent:{actionName:'longpress'}});
+   assert.deepEqual(calls.splice(mark),saveOff?[]:[['saveElsewhere']]);
+   save.onLongPress();assert.deepEqual(calls.splice(mark),[['haptic'],['saveElsewhere']]);
+   for(const b of bs.filter(b=>b!==save))assert.equal(b.onLongPress,undefined);
   }
   assert.equal(calls.length,before,'locale-only card renders have no effects');
  }

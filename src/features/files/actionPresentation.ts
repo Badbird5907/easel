@@ -54,6 +54,8 @@ export function createActionPresentation(locale: string) {
             return t('files.actions.error.sharing');
           case 'folder-picker':
             return t('files.actions.error.picker');
+          case 'downloads-copy':
+            return t('files.actions.error.downloads');
           case 'folder-copy':
             return t('files.actions.error.copy', {
               destination: destinationLabel(origin.destination, t),

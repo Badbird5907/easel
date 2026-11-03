@@ -992,6 +992,7 @@ export const fr = {
   'files.previews.zoomHint': 'Pincez ou touchez deux fois pour zoomer',
   'files.actions.saveFiles': 'Enregistrer dans Fichiers',
   'files.actions.saveFolder': 'Enregistrer dans…',
+  'files.actions.chooseWhere': 'Choisir où enregistrer',
   'files.actions.saveDownloads': 'Enregistrer dans Téléchargements',
   'files.actions.savePhotos': 'Enregistrer dans Photos',
   'files.actions.saveGallery': 'Enregistrer dans la galerie',
@@ -1006,6 +1007,7 @@ export const fr = {
   'files.actions.destination.gallery': 'votre galerie',
   'files.actions.error.sharing': 'Le partage n’est pas disponible sur cet appareil.',
   'files.actions.error.picker': 'Impossible d’ouvrir le sélecteur de dossiers.',
+  'files.actions.error.downloads': 'Impossible d’enregistrer dans Téléchargements. Maintenez Enregistrer appuyé pour choisir un autre dossier.',
   'files.actions.error.copy':
     'Impossible d’enregistrer dans {destination}. Choisissez un autre dossier.',
   'files.actions.error.photos':
@@ -1081,6 +1083,7 @@ export const fr = {
   'files.viewer.position': '{current} sur {total}',
   'files.viewer.openLabel': 'Ouvrir dans une autre app',
   'files.viewer.hint.share': 'Envoie le fichier à une autre app',
+  'files.viewer.hint.saveDownloads': 'Enregistre une copie dans Téléchargements',
   'files.viewer.hint.save': 'Enregistre une copie sur cet appareil',
   'files.viewer.hint.open': 'Ouvre le fichier dans une autre app',
   'files.viewer.hint.print': 'Imprime le fichier',

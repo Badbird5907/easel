@@ -172,6 +172,8 @@ class Directory {
     return record('pick', ...a);
   }
 }
+/** Easel's Android downloads module; null is a build without it (1.1.0). */
+let nativeDownloads = null;
 const account = { id: 'synthetic-account', baseUrl: 'https://school.invalid' };
 const client = { baseUrl: account.baseUrl, authHeaders: { Authorization: 'synthetic-token' } };
 const mocks = {
@@ -184,7 +186,13 @@ const mocks = {
     File,
     Directory,
     Paths: { cache: 'file:///cache', document: 'file:///documents' },
-    FileMode: { ReadOnly: 'ReadOnly' },
+    FileMode: { ReadOnly: 'ReadOnly', WriteOnly: 'WriteOnly' },
+  },
+  expo: {
+    requireOptionalNativeModule: (name) => {
+      assert.equal(name, 'EaselDownloads');
+      return nativeDownloads;
+    },
   },
   '@react-native-async-storage/async-storage': {
     getItem: (...a) => record('get', ...a),
@@ -416,6 +424,33 @@ async function operations() {
   allow('share');
   assert.equal(await a.openInApp(local, file), true);
   assert.equal(of('share').length, 1);
+  const outUri = new File(dir, local.name).uri;
+  const chunks = [Uint8Array.of(1, 2, 3), Uint8Array.of(4)];
+  /** Synthetic handles: the local file reads in chunks; documents record each write. */
+  const streams =
+    (parts, { failWrite = false, short = false } = {}) =>
+    (f, mode) => {
+      if (mode === 'ReadOnly') {
+        const queue = [...parts];
+        return {
+          size: parts.reduce((n, c) => n + c.length, 0) + (short ? 1 : 0),
+          readBytes: async (n) => {
+            assert.equal(n, 1 << 20);
+            return queue.shift() ?? new Uint8Array(0);
+          },
+          close: () => calls.push(['close', f.uri]),
+        };
+      }
+      assert.equal(mode, 'WriteOnly');
+      return {
+        writeBytes: async (bytes) => {
+          if (failWrite) throw new Error('disk');
+          calls.push(['wrote', f.uri, bytes]);
+        },
+        close: () => calls.push(['close', f.uri]),
+      };
+    };
+  const writes = () => of('wrote').map((c) => [c[1], c[2]]);
   for (const os of ['ios', 'android'])
     for (const name of [
       undefined,
@@ -435,6 +470,8 @@ async function operations() {
       setName(name);
       allow('pick', () => dir);
       allow('copy');
+      allow('open', streams(chunks));
+      if (os === 'android') entries.set(outUri, { exists: true });
       allow('createFile', (directory, n, mime) => {
         assert.equal(directory, dir);
         assert.equal(n, local.name);
@@ -446,11 +483,21 @@ async function operations() {
         : os === 'ios' && name === 'File Provider Storage'
           ? { label: 'On My iPhone', origin: 'iphone' }
           : { label: name };
+      const made = os === 'ios' ? 'copy' : 'createFile';
       assert.deepEqual(await a.saveToFolderResult(local, file, 'initial-uri'), expected);
-      assert.equal(of('copy').length, 1);
+      assert.equal(of(made).length, 1);
       assert.deepEqual(of('pick'), [['pick', 'initial-uri']]);
       assert.equal(await a.saveToFolder(local, file), expected.label);
-      assert.equal(of('copy').length, 2);
+      assert.equal(of(made).length, 2);
+      if (os === 'android') {
+        // Written into the new document, never copied over it (a copy deletes it first).
+        assert.equal(of('copy').length, 0);
+        assert.deepEqual(writes(), [...chunks, ...chunks].map((b) => [outUri, b]));
+        assert.deepEqual(
+          of('close').map((c) => c[1]),
+          [outUri, local.uri, outUri, local.uri],
+        );
+      }
     }
   native.Platform.OS = 'ios';
   native.Platform.isPad = true;
@@ -486,61 +533,153 @@ async function operations() {
     setName('Downloads');
     allow('copy', failure('disk'));
     allow('createFile', (directory, n) => new File(directory, n));
-    allow('bytes', () => Uint8Array.of(1, 2));
-    allow('write', failure('disk'));
+    allow('open', streams(chunks, { failWrite: true }));
+    allow('delete');
+    entries.set(outUri, { exists: true });
     const copy = await rejection(() => a.saveToFolderResult(local, file));
     assert.equal(copy.message, 'Couldn’t save to Downloads. Pick another folder.');
     assert.deepEqual(copy.origin, { reason: 'folder-copy', destination: { label: 'Downloads' } });
+    // A failed Android write removes the empty document it created.
+    assert.deepEqual(
+      of('delete').map((c) => c[1].uri),
+      os === 'android' ? [outUri] : [],
+    );
   }
+  // A short copy, or a document that vanished, is a failure rather than a false "Saved".
   native.Platform.OS = 'android';
+  for (const vanished of [false, true]) {
+    reset();
+    setName('Notes');
+    allow('pick', () => dir);
+    allow('createFile', (directory, n) => new File(directory, n));
+    allow('open', streams(chunks, { short: !vanished }));
+    allow('delete');
+    if (!vanished) entries.set(outUri, { exists: true });
+    const e = await rejection(() => a.saveToFolderResult(local, file));
+    assert.deepEqual(e.origin, { reason: 'folder-copy', destination: { label: 'Notes' } });
+    assert.deepEqual(
+      of('delete').map((c) => c[1].uri),
+      vanished ? [] : [outUri],
+    );
+  }
+  // The system Save dialog's documents, by provider: Downloads, a folder, or "the folder".
+  const DOWNLOADS = { label: 'Downloads', origin: 'downloads' };
+  const storage = 'content://com.android.externalstorage.documents/document/',
+    downloadsProvider = 'content://com.android.providers.downloads.documents/document/';
+  for (const [uri, expected] of [
+    [storage + 'primary%3ADownload%2Fraw.pdf', DOWNLOADS],
+    [storage + 'primary%3ADownload%2FNotes%2Fraw.pdf', { label: 'Notes' }],
+    [storage + 'primary%3ADocuments%2Fraw.pdf', { label: 'Documents' }],
+    [storage + 'primary%3ADocuments%2FDownload%2Fraw.pdf', { label: 'Download' }],
+    [storage + '1A2B-3C4D%3ADownload%2Fraw.pdf', DOWNLOADS],
+    [storage + 'primary%3Araw.pdf', { label: 'the folder', origin: 'folder' }],
+    [storage + 'primary%3ADownload%2F%E0%A4%ZZ.pdf', { label: 'the folder', origin: 'folder' }],
+    [downloadsProvider + 'msf%3A1000000033', DOWNLOADS],
+    [downloadsProvider + 'raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Fraw.pdf', DOWNLOADS],
+    [downloadsProvider + 'raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2FWeek%201%2Fraw.pdf', { label: 'Week 1' }],
+    ['content://com.google.android.apps.docs.storage/document/acc%3D1%3Bdoc%3D2', { label: 'the folder', origin: 'folder' }],
+    ['content://media/external/downloads/12', { label: 'the folder', origin: 'folder' }],
+  ])
+    assert.deepEqual(a.documentDestination(uri), expected, uri);
+  // Quick save: MediaStore Downloads through Easel's module, with no dialog.
+  const module = {
+    canSave: () => true,
+    save: (...args) => record('mediaStore', ...args),
+    saveAs: (...args) => record('saveAs', ...args),
+  };
+  const payload = ['mediaStore', local.uri, local.name, 'application/pdf'];
   reset();
-  allow('pick', () => dir);
-  allow('createFile', (directory, n) => new File(directory, n));
-  allow('copy', failure('SAF copy'));
-  const bytes = Uint8Array.of(10, 20);
-  allow('bytes', () => bytes);
-  allow('write');
-  await a.saveToFolder(local, file);
-  assert.equal(of('copy').length, 1);
-  assert.deepEqual(of('copy')[0].slice(3), [{ overwrite: true }]);
-  assert.equal(of('bytes').length, 1);
-  assert.equal(of('write')[0][2], bytes);
+  nativeDownloads = module;
+  allow('mediaStore', () => ({ uri: 'content://media/external/downloads/12' }));
+  assert.deepEqual(await a.saveToDownloadsResult(local, file), DOWNLOADS);
+  assert.equal(await a.saveToDownloads(local, file), 'Downloads');
+  assert.deepEqual(of('mediaStore'), [payload, payload]);
+  assert.equal(of('saveAs').length + of('pick').length + of('get').length, 0);
+  allow('mediaStore', failure('No space left on device'));
+  const full = await rejection(() => a.saveToDownloadsResult(local, file));
+  assert.equal(
+    full.message,
+    'Couldn’t save to Downloads. Touch and hold Save to choose another folder.',
+  );
+  assert.deepEqual(full.origin, { reason: 'downloads-copy' });
+  // Android 9 and earlier have no MediaStore Downloads: the module's Save dialog instead.
+  reset();
+  nativeDownloads = { ...module, canSave: () => false };
+  allow('saveAs', () => ({ uri: storage + 'primary%3ADownload%2Fraw.pdf' }));
+  assert.deepEqual(await a.saveToDownloadsResult(local, file), DOWNLOADS);
+  assert.deepEqual(of('saveAs'), [['saveAs', local.uri, local.name, 'application/pdf']]);
+  assert.equal(of('mediaStore').length, 0);
+  allow('saveAs', () => ({ uri: storage + 'primary%3ADocuments%2FWeek%201%2Fraw.pdf' }));
+  const photo = new File('file:///synthetic/photo.jpg');
+  assert.deepEqual(await a.saveAsResult(photo, image), { label: 'Week 1' });
+  assert.deepEqual(of('saveAs').at(-1), ['saveAs', photo.uri, 'photo.jpg', 'image/jpeg']);
+  allow('saveAs', () => null);
+  assert.equal(await a.saveAsResult(local, file), null);
+  allow('saveAs', () => {
+    throw Object.assign(new Error('No activity'), { code: 'ERR_SAVE_DIALOG' });
+  });
+  assert.equal((await rejection(() => a.saveAsResult(local, file))).origin.reason, 'folder-picker');
+  const thatFolder = {
+    reason: 'folder-copy',
+    destination: { label: 'that folder', origin: 'that-folder' },
+  };
+  allow('saveAs', failure('Write failed'));
+  const unwritten = await rejection(() => a.saveAsResult(local, file));
+  assert.deepEqual(unwritten.origin, thatFolder);
+  assert.equal(unwritten.message, 'Couldn’t save to that folder. Pick another folder.');
+  assert.equal(of('pick').length + of('open').length, 0);
+  // 1.1.0 builds have no module. Save to… is the folder picker, opened at Downloads.
   const pref = 'easel.files.downloadsFolder',
     initial = 'content://com.android.externalstorage.documents/document/primary%3ADownload';
-  for (const name of [undefined, null, '', 'Downloads', 'Photos', 'On My iPhone']) {
+  reset();
+  nativeDownloads = null;
+  setName('Notes');
+  allow('pick', () => dir);
+  allow('createFile', (directory, n) => new File(directory, n));
+  allow('open', streams(chunks));
+  entries.set(outUri, { exists: true });
+  assert.deepEqual(await a.saveAsResult(local, file), { label: 'Notes' });
+  assert.deepEqual(of('pick'), [['pick', initial]]);
+  assert.deepEqual(writes(), chunks.map((b) => [outUri, b]));
+  // Quick save asks for a folder once (Android won't grant Downloads itself), then saves there.
+  for (const name of [undefined, null, '', 'Downloads', 'Easel', 'On My iPhone']) {
     reset();
     setName(name);
     allow('get', () => null);
     allow('pick', () => dir);
     allow('createFile', (directory, n) => new File(directory, n));
-    allow('copy');
+    allow('open', streams(chunks));
     allow('set');
+    entries.set(outUri, { exists: true });
     const result = await a.saveToDownloadsResult(local, file);
-    assert.deepEqual(result, name ? { label: name } : { label: 'Downloads', origin: 'downloads' });
+    assert.deepEqual(result, name ? { label: name } : DOWNLOADS);
     assert.deepEqual(of('get'), [['get', pref]]);
     assert.deepEqual(of('pick'), [['pick', initial]]);
     assert.deepEqual(of('set'), [['set', pref, dir.uri]]);
-    assert.equal(of('copy').length, 1);
+    assert.equal(of('createFile').length, 1);
     allow('get', () => dir.uri);
     assert.equal(await a.saveToDownloads(local, file), result.label);
     assert.equal(of('pick').length, 1);
     assert.equal(of('set').length, 1);
-    assert.equal(of('copy').length, 2);
+    assert.equal(of('createFile').length, 2);
+    assert.deepEqual(writes(), [...chunks, ...chunks].map((b) => [outUri, b]));
   }
+  // A remembered folder that fails (revoked or deleted) is forgotten, and the picker asks again.
   reset();
   allow('get', () => dir.uri);
-  allow('createFile', (directory, n) => new File(directory, n));
   let tries = 0;
-  allow('copy', () => {
+  allow('createFile', (directory, n) => {
     if (!tries++) throw Error('revoked');
+    return new File(directory, n);
   });
-  allow('bytes', failure('revoked'));
+  allow('open', streams(chunks));
   allow('remove');
   allow('pick', () => dir);
   allow('set');
+  entries.set(outUri, { exists: true });
   await a.saveToDownloadsResult(local, file);
   assert.deepEqual(of('remove'), [['remove', pref]]);
-  assert.equal(of('copy').length, 2);
+  assert.equal(of('createFile').length, 2);
   assert.deepEqual(of('pick'), [['pick', initial]]);
   reset();
   allow('get', () => null);
@@ -548,7 +687,12 @@ async function operations() {
   assert.equal(await a.saveToDownloads(local, file), null);
   assert.equal(await a.saveToDownloadsResult(local, file), null);
   assert.equal(of('set').length, 0);
-  // Generated failure destinations are tagged at their existing policy branches.
+  reset();
+  allow('get', () => null);
+  allow('pick', failure('Unavailable'));
+  const pickerError = await rejection(() => a.saveToDownloadsResult(local, file));
+  assert.equal(pickerError.origin.reason, 'folder-picker');
+  // Failure destinations are tagged at their policy branches; nothing is remembered.
   for (const os of ['ios', 'android'])
     for (const name of ['', 'File Provider Storage']) {
       reset();
@@ -558,7 +702,9 @@ async function operations() {
       allow('copy', failure('disk'));
       allow('get', () => null);
       allow('createFile', (directory, n) => new File(directory, n));
-      allow('bytes', failure('disk'));
+      allow('open', streams(chunks, { failWrite: true }));
+      allow('delete');
+      entries.set(outUri, { exists: true });
       const destination = !name
         ? { label: 'that folder', origin: 'that-folder' }
         : os === 'ios'
@@ -571,11 +717,7 @@ async function operations() {
       }
       assert.equal(of('set').length, 0);
     }
-  reset();
-  allow('get', () => null);
-  allow('pick', failure('Unavailable'));
-  const pickerError = await rejection(() => a.saveToDownloadsResult(local, file));
-  assert.equal(pickerError.origin.reason, 'folder-picker');
+  native.Platform.OS = 'android';
   for (const context of [undefined, { type: 'course', id: 'c' }, { type: 'group', id: 'g' }]) {
     const f = { ...file, context };
     assert.equal(a.fileWebUrl(client.baseUrl, f, 'explicit'), 'explicit');
@@ -863,6 +1005,7 @@ function presentation() {
     const reasons = {
       'sharing-unavailable': 'sharing',
       'folder-picker': 'picker',
+      'downloads-copy': 'downloads',
       'photos-permission': 'photos',
       'gallery-permission': 'gallery',
       'print-open': 'print',
@@ -922,6 +1065,7 @@ for (const name of [
   'openInApp',
   'saveToFolderResult',
   'saveToDownloadsResult',
+  'saveAsResult',
   'saveToPhotos',
   'shareLink',
   'copyLink',
@@ -968,18 +1112,54 @@ const feedback = () => {
 };
 async function hooks() {
   native.Platform.OS = 'android';
-  // Same instance, same file; only labels change. No operation or sheet side effects.
+  // Android tap: straight to Downloads, no sheet, feedback in the invocation language.
   for (const media of [false, true]) {
     reset();
+    feedback();
     const f = media ? image : file,
       render = hookFor(f);
+    const t = view('fr');
+    allow('ensure', () => local);
+    allow('saveToDownloadsResult', () => ({ label: 'Downloads', origin: 'downloads' }));
+    const job = render().save();
+    view('ar');
+    render();
+    await job;
+    assert.equal(sheetRequest(render()), null);
+    assert.deepEqual(of('ensure'), [['ensure']]);
+    assert.deepEqual(of('saveToDownloadsResult'), [['saveToDownloadsResult', local, f]]);
+    assert.deepEqual(of('toast'), [
+      [
+        'toast',
+        t('files.actions.saved', { destination: t('files.actions.destination.downloads') }),
+      ],
+    ]);
+    assert.equal(of('success').length, 1);
+    // Touch and hold a non-media file: the Save dialog directly.
+    if (!media) {
+      reset();
+      feedback();
+      allow('ensure', () => local);
+      allow('saveAsResult', () => null);
+      render().saveElsewhere();
+      for (let i = 0; i < 8; i++) await Promise.resolve();
+      assert.equal(sheetRequest(render()), null);
+      assert.deepEqual(of('saveAsResult'), [['saveAsResult', local, f]]);
+      assert.equal(of('toast').length, 0);
+    }
+  }
+  // Touch and hold a photo: Save to… or the gallery. Same instance; only labels change.
+  {
+    reset();
+    const f = image,
+      render = hookFor(f);
     view('en');
-    render().save();
+    render().saveElsewhere();
     const first = sheetRequest(render());
     assert.equal(first.title, f.name);
     assert.deepEqual(
       first.options.map((o) => o.key),
-      media ? ['downloads', 'folder', 'photos'] : ['downloads', 'folder'],
+      ['folder', 'photos'],
     );
     const callbacks = first.options.map((o) => o.onPress),
       icons = first.options.map((o) => o.icon);
@@ -1014,44 +1194,40 @@ async function hooks() {
     // A preserved Android callback captures the language when chosen, not when opened.
     feedback();
     allow('ensure', () => local);
-    allow('saveToDownloadsResult', () => ({ label: 'Downloads', origin: 'downloads' }));
+    allow('saveAsResult', () => ({ label: 'Week 1' }));
     const t = view('fr');
     render();
     await callbacks[0]();
     assert.deepEqual(of('ensure'), [['ensure']]);
-    assert.deepEqual(of('saveToDownloadsResult'), [['saveToDownloadsResult', local, f]]);
-    assert.deepEqual(of('toast'), [
-      [
-        'toast',
-        t('files.actions.saved', { destination: t('files.actions.destination.downloads') }),
-      ],
-    ]);
+    assert.deepEqual(of('saveAsResult'), [['saveAsResult', local, f]]);
+    assert.equal(of('saveToFolderResult').length, 0);
+    assert.deepEqual(of('toast'), [['toast', t('files.actions.saved', { destination: 'Week 1' })]]);
   }
   // Real ActionSheet delayed choose is unchanged and locale rendering cannot schedule it.
   reset();
   feedback();
   allow('ensure', () => local);
-  allow('saveToFolderResult', () => null);
+  allow('saveAsResult', () => null);
   view('en');
-  const delayed = hookFor(file);
-  delayed().save();
+  const delayed = hookFor(image);
+  delayed().saveElsewhere();
   const node = nodes(delayed().elements).find(
     (n) => typeof n.type === 'function' && n.type.name === 'AndroidSheet',
   );
-  node.props.onChoose(node.props.request.options[1]);
+  node.props.onChoose(node.props.request.options[0]);
   assert.equal(timers.length, 1);
   assert.equal(timers[0].ms, 250);
   assert.equal(sheetRequest(delayed()), null);
   const pending = timers[0].fn();
   await pending;
-  assert.deepEqual(of('saveToFolderResult'), [['saveToFolderResult', local, file]]);
+  assert.deepEqual(of('saveAsResult'), [['saveAsResult', local, image]]);
   assert.equal(of('toast').length, 0);
   native.Platform.OS = 'ios';
   for (const locale of langs) {
     reset();
     view(locale);
     const render = hookFor(image);
-    render().save();
+    render()[locale === 'fr' ? 'saveElsewhere' : 'save']();
     assert.equal(sheets.length, 1);
     const [opts, choose] = sheets[0],
       t = i18n.createTranslator(locale);
@@ -1144,9 +1320,8 @@ async function hooks() {
     const render = hookFor(file),
       gate = deferred();
     allow('ensure', () => local);
-    allow('saveToFolderResult', () => gate.promise);
-    render().save();
-    const job = sheetRequest(render()).options[1].onPress();
+    allow('saveToDownloadsResult', () => gate.promise);
+    const job = render().save();
     for (let i = 0; i < 4; i++) await Promise.resolve();
     view(locale === 'ar' ? 'fr' : 'ar');
     render();
@@ -1211,9 +1386,9 @@ async function hooks() {
     allow('ensure', () => local);
     allow('saveToPhotos');
     const render = hookFor(image);
-    render().save();
+    render().saveElsewhere();
     if (os === 'ios') await sheets[0][1](1);
-    else await sheetRequest(render()).options[2].onPress();
+    else await sheetRequest(render()).options[1].onPress();
     assert.deepEqual(of('toast'), [
       [
         'toast',
@@ -1280,6 +1455,7 @@ async function hooks() {
   await absent.copyLink();
   await absent.shareLink();
   absent.save();
+  absent.saveElsewhere();
   assert.equal(calls.length, 0);
   assert.equal(absent.canPrint, false);
   assert.equal(absent.link, null);

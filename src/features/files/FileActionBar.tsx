@@ -1,8 +1,8 @@
 import { ExternalLink, FolderDown, Link, type LucideIcon, Printer, Share } from 'lucide-react-native';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Icon, PressableScale, ProgressBar, Text, useTheme } from '@/design';
+import { haptics, Icon, PressableScale, ProgressBar, Text, useTheme } from '@/design';
 import { useTranslation } from '@/i18n';
 
 import type { FileAction, FileActions } from './useFileActions';
@@ -15,6 +15,8 @@ type Item = {
   hint: string;
   icon: LucideIcon;
   onPress: () => void;
+  /** Touch and hold, also offered to screen readers under this label. */
+  longPress?: { label: string; run: () => void };
 };
 
 /** Share, Save, Open in, and Share link under a preview. */
@@ -35,9 +37,10 @@ export function FileActionBar({ actions, locked }: { actions: FileActions; locke
       key: 'save',
       label: t('files.save'),
       spoken: t('files.save'),
-      hint: t('files.viewer.hint.save'),
+      hint: t(Platform.OS === 'android' ? 'files.viewer.hint.saveDownloads' : 'files.viewer.hint.save'),
       icon: FolderDown,
       onPress: actions.save,
+      longPress: { label: t('files.actions.chooseWhere'), run: actions.saveElsewhere },
     },
     {
       key: 'open',
@@ -87,6 +90,7 @@ export function FileActionBar({ actions, locked }: { actions: FileActions; locke
         {items.map((item) => {
           const busy = actions.busy === item.key;
           const disabled = (locked && item.key !== 'link') || (!!actions.busy && !busy);
+          const longPress = disabled ? undefined : item.longPress;
           return (
             <PressableScale
               key={item.key}
@@ -96,6 +100,20 @@ export function FileActionBar({ actions, locked }: { actions: FileActions; locke
               accessibilityState={{ disabled, busy }}
               disabled={disabled}
               onPress={item.onPress}
+              onLongPress={
+                longPress &&
+                (() => {
+                  haptics.light();
+                  longPress.run();
+                })
+              }
+              accessibilityActions={longPress ? [{ name: 'longpress', label: longPress.label }] : undefined}
+              onAccessibilityAction={
+                longPress &&
+                ((event) => {
+                  if (event.nativeEvent.actionName === 'longpress') longPress.run();
+                })
+              }
               className={`min-h-[52px] flex-1 items-center justify-center gap-1 rounded-xl py-1.5 ${disabled ? 'opacity-40' : ''}`}
             >
               {busy ? (

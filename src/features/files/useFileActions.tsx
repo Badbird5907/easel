@@ -1,5 +1,5 @@
 import type { File } from 'expo-file-system';
-import { Download, FolderDown, Images } from 'lucide-react-native';
+import { FolderDown, Images } from 'lucide-react-native';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 
@@ -14,6 +14,7 @@ import {
   FileActionError,
   fileWebUrl,
   openInApp,
+  saveAsResult,
   saveToDownloadsResult,
   saveToFolderResult,
   saveToPhotos,
@@ -97,7 +98,8 @@ export function useFileActions(
         );
     });
 
-  const save = () => {
+  /** Touch and hold Save: pick where the file goes (Android adds the gallery for photos and videos). */
+  const saveElsewhere = () => {
     if (!file) return;
     const media = canSaveToPhotos(file);
     const ios = Platform.OS === 'ios';
@@ -122,25 +124,10 @@ export function useFileActions(
       icon: FolderDown,
       onPress: () =>
         withLocal('save', async (local, f, presentation) => {
-          saved(await saveToFolderResult(local, f), presentation);
+          saved(await (ios ? saveToFolderResult(local, f) : saveAsResult(local, f)), presentation);
         }),
     };
-    const sheetOptions =
-      Platform.OS === 'ios'
-        ? [toFolder, ...(media ? [photos] : [])]
-        : [
-            {
-              key: 'downloads' as const,
-              label: saveOptionLabel('downloads', ios, t),
-              icon: Download,
-              onPress: () =>
-                withLocal('save', async (local, f, presentation) => {
-                  saved(await saveToDownloadsResult(local, f), presentation);
-                }),
-            },
-            toFolder,
-            ...(media ? [photos] : []),
-          ];
+    const sheetOptions = [toFolder, ...(media ? [photos] : [])];
     if (sheetOptions.length === 1) {
       sheetOptions[0].onPress();
       return;
@@ -152,6 +139,18 @@ export function useFileActions(
       presentation: (translator) => ({
         options: keys.map((key) => saveOptionLabel(key, ios, translator)),
       }),
+    });
+  };
+
+  /** Android: straight to Downloads. iOS: Files, or a choice of Files and Photos. */
+  const save = () => {
+    if (!file) return;
+    if (Platform.OS !== 'android') {
+      saveElsewhere();
+      return;
+    }
+    return withLocal('save', async (local, f, presentation) => {
+      saved(await saveToDownloadsResult(local, f), presentation);
     });
   };
 
@@ -208,6 +207,7 @@ export function useFileActions(
     busy,
     share,
     save,
+    saveElsewhere,
     openIn,
     print,
     canPrint,

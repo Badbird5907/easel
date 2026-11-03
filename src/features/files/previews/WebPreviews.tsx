@@ -1,15 +1,28 @@
 import type { File } from 'expo-file-system';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, View } from 'react-native';
+import { ActivityIndicator, Linking, Platform, View } from 'react-native';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import { useCanvas } from '@/canvas/session';
 import { Text, useTheme } from '@/design';
 import { useTranslation } from '@/i18n';
 import { pdfPresentation, pdfPresentationScript } from './presentation';
-import { openCanvasLink } from '@/features/content/links';
+import { openCanvasLink, resolveCanvasLink } from '@/features/content/links';
 
 type PreviewProps = { onError: () => void };
+
+/**
+ * A link tapped inside a document. Canvas pages Easel has a screen for open
+ * there; anything else leaves Easel for the browser (or mail, phone, messages).
+ * Other schemes, like intent: and file:, are ignored.
+ */
+function openDocumentLink(url: string, baseUrl: string) {
+  if (resolveCanvasLink(url, baseUrl)) {
+    openCanvasLink(url, baseUrl);
+    return;
+  }
+  if (/^(https?|mailto|tel|sms):/i.test(url)) Linking.openURL(url).catch(() => {});
+}
 
 function Loading() {
   const { t } = useTranslation();
@@ -23,15 +36,18 @@ function Loading() {
 
 /**
  * A downloaded file in WKWebView, which renders PDFs (zoom, text selection) and
- * Office, iWork, and RTF documents natively. iOS only.
+ * Office, iWork, and RTF documents natively. iOS only. Links in the document
+ * open outside it.
  */
 export function LocalDocumentPreview({
   local,
   onError,
   title,
 }: PreviewProps & { local: File; title: string }) {
+  const { account } = useCanvas();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
+  const loaded = useRef(false);
   const folder = local.parentDirectory.uri;
   const source = useMemo(() => ({ uri: local.uri }), [local.uri]);
   return (
@@ -45,12 +61,18 @@ export function LocalDocumentPreview({
         javaScriptEnabled={false}
         incognito
         accessibilityLabel={title}
-        onLoadEnd={() => setLoading(false)}
+        onLoadEnd={() => {
+          loaded.current = true;
+          setLoading(false);
+        }}
         onError={onError}
         onContentProcessDidTerminate={onError}
-        onShouldStartLoadWithRequest={(request) =>
-          request.url.startsWith('file://') || request.url === 'about:blank'
-        }
+        onShouldStartLoadWithRequest={(request) => {
+          if (request.url.startsWith('file://') || request.url === 'about:blank') return true;
+          // Once the document is showing, any other navigation is a tapped link.
+          if (loaded.current && request.isTopFrame) openDocumentLink(request.url, account.baseUrl);
+          return false;
+        }}
       />
       {loading ? <Loading /> : null}
     </View>
@@ -147,7 +169,8 @@ export const ANDROID_PDF_LIMIT = 30_000_000;
 
 /**
  * Android's WebView can't render PDFs, so pdf.js does, page by page as they
- * scroll into view. Pinch zoom comes from the viewport.
+ * scroll into view. Pinch zoom comes from the viewport. Links open outside the
+ * viewer, or jump to the page they point at.
  */
 export function PdfJsPreview({
   local,
@@ -155,6 +178,7 @@ export function PdfJsPreview({
   title,
 }: PreviewProps & { local: File; title: string }) {
   const { t, locale } = useTranslation();
+  const { account } = useCanvas();
   const webRef = useRef<WebView<object>>(null);
   const labels = useMemo(() => pdfPresentationScript(pdfPresentation(locale)), [locale]);
   const currentLabels = useRef(labels);
@@ -187,12 +211,15 @@ export function PdfJsPreview({
         type: string;
         page?: number;
         pages?: number;
+        url?: string;
       };
       if (message.type === 'loaded') {
         setLoading(false);
         setPage({ current: 1, total: message.pages ?? 1 });
       } else if (message.type === 'page' && message.page) {
         setPage((p) => (p ? { ...p, current: message.page! } : p));
+      } else if (message.type === 'link' && message.url) {
+        openDocumentLink(message.url, account.baseUrl);
       } else if (message.type === 'error') {
         onError();
       }
@@ -248,6 +275,7 @@ function pdfJsDocument(background: string, muted: string) {
   #pages { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px 0 32px; }
   .page { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); position: relative; }
   .page canvas { display: block; width: 100%; height: 100%; }
+  .page a { position: absolute; }
   #status { font: 15px system-ui, sans-serif; color: ${muted}; text-align: center; padding: 48px 24px; }
 </style>
 <script src="${PDFJS}/pdf.min.js"></script>
@@ -263,9 +291,14 @@ function pdfJsDocument(background: string, muted: string) {
     var labels = window.easelPdfLabels;
     if (!labels) return;
     function number(n) { return String(n).replace(/[0-9]/g, function (d) { return labels.digits[Number(d)]; }); }
-    div.setAttribute('aria-label', labels.page.replace(/\\{(current|total)\\}/g, function (_, key) {
-      return number(key === 'current' ? div.dataset.page : labelTotal);
-    }));
+    function name(page) {
+      return labels.page.replace(/\\{(current|total)\\}/g, function (_, key) {
+        return number(key === 'current' ? page : labelTotal);
+      });
+    }
+    div.setAttribute('aria-label', name(div.dataset.page));
+    // A link to another page reads as that page.
+    (div.links || []).forEach(function (a) { if (a.dataset.page) a.setAttribute('aria-label', name(a.dataset.page)); });
   }
   window.easelUpdatePdfLabels = function () { labelHolders.forEach(labelPage); };
   window.renderPdf = async function (b64) {
@@ -303,7 +336,51 @@ function pdfJsDocument(background: string, muted: string) {
         canvas.width = viewport.width; canvas.height = viewport.height;
         div.appendChild(canvas);
         await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+        addLinks(page, div, width / base.width).catch(function () {});
       }
+      // Links: a web, mail or phone link goes to the app; a link inside the PDF scrolls to its page.
+      async function linkTarget(a) {
+        if (a.subtype !== 'Link') return null;
+        if (a.url) return { url: a.url };
+        if (!a.dest) return null;
+        var dest = typeof a.dest === 'string' ? await pdf.getDestination(a.dest) : a.dest;
+        var ref = Array.isArray(dest) ? dest[0] : null;
+        var index = ref && typeof ref === 'object' ? await pdf.getPageIndex(ref) : ref;
+        return Number.isInteger(index) && holders[index] ? { page: index + 1 } : null;
+      }
+      async function addLinks(page, div, scale) {
+        var annotations = await page.getAnnotations({ intent: 'display' });
+        var targets = await Promise.all(annotations.map(function (a) {
+          return linkTarget(a).catch(function () { return null; });
+        }));
+        var viewport = page.getViewport({ scale: scale }), links = [];
+        annotations.forEach(function (a, i) {
+          var target = targets[i];
+          if (!target) return;
+          var r = pdfjsLib.Util.normalizeRect(viewport.convertToViewportRectangle(a.rect));
+          var link = document.createElement('a');
+          link.href = target.url || '#';
+          if (target.page) link.dataset.page = target.page;
+          else link.setAttribute('aria-label', target.url.replace(/^mailto:/, ''));
+          link.style.left = r[0] + 'px';
+          link.style.top = r[1] + 'px';
+          link.style.width = r[2] - r[0] + 'px';
+          link.style.height = r[3] - r[1] + 'px';
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (target.url) post({ type: 'link', url: target.url });
+            else holders[target.page - 1].scrollIntoView();
+          });
+          div.appendChild(link);
+          links.push(link);
+        });
+        if (!links.length) return;
+        // An image's children are hidden from screen readers; a group's links aren't.
+        div.links = links;
+        div.setAttribute('role', 'group');
+        labelPage(div);
+      }
+      // End links.
       var seen = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) { if (e.isIntersecting) draw(e.target); });
       }, { rootMargin: '800px 0px' });

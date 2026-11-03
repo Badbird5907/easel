@@ -91,6 +91,12 @@ const native = Object.fromEntries(
 );
 native.Platform = { OS: 'android', select: (v) => v.android ?? v.default };
 native.StyleSheet = { absoluteFill: { position: 'absolute' } };
+native.Linking = {
+  openURL(url) {
+    operations.push(['openURL', url]);
+    return Promise.resolve();
+  },
+};
 const events = {};
 let playerDefaults = {};
 function newPlayer(source, setup) {
@@ -169,7 +175,10 @@ const mocks = {
   },
   '@/design/interop': { AnimatedView: 'AnimatedView' },
   '@/features/files/FileCard': { FileHero: 'FileHero' },
-  '@/features/content/links': { openCanvasLink: (...args) => operations.push(['link', ...args]) },
+  '@/features/content/links': {
+    openCanvasLink: (...args) => operations.push(['link', ...args]),
+    resolveCanvasLink: (url, base) => (url.startsWith(`${base}/courses/`) ? { pathname: 'x' } : null),
+  },
   '@/lib/cn': { cn: (...args) => args.filter(Boolean).join(' ') },
   'react-native-gesture-handler': {
     GestureDetector: 'GestureDetector',
@@ -367,12 +376,19 @@ assert.equal(
   ),
   sourceNode(baseline.sources.MediaPreviews, 'usePlayerStatus'),
 );
-// Removing only the presentation bridge recovers the frozen PDF engine exactly.
+// Removing only the presentation bridge and the link layer recovers the frozen PDF engine exactly.
 const webSource = fs.readFileSync(
   path.join(root, 'features/files/previews/WebPreviews.tsx'),
   'utf8',
 );
-const engineOnly = webSource
+const linkLayer = [
+  '  .page a { position: absolute; }\n',
+  '        addLinks(page, div, width / base.width).catch(function () {});\n',
+];
+for (const line of linkLayer) assert.equal(webSource.split(line).length, 2, 'exact link layer delta');
+const engineOnly = linkLayer
+  .reduce((source, line) => source.replace(line, ''), webSource)
+  .replace(/      \/\/ Links:[\s\S]*?      \/\/ End links\.\n/, '')
   .replace(/  \/\/ Presentation only:[\s\S]*?  window.renderPdf =/, '  window.renderPdf =')
   .replace('      labelHolders = holders;\n      labelTotal = pdf.numPages;\n', '')
   .replace(
@@ -857,6 +873,7 @@ function pdfDom(html, pendingDocument = false) {
       children,
       dataset: {},
       style: {},
+      listeners: {},
       offsetTop: holders.length * 900,
       setAttribute(k, v) {
         assert.ok(['role', 'aria-label'].includes(k));
@@ -865,6 +882,12 @@ function pdfDom(html, pendingDocument = false) {
       appendChild(child) {
         children.push(child);
       },
+      addEventListener(name, fn) {
+        this.listeners[name] = fn;
+      },
+      scrollIntoView() {
+        calls.push(['scroll', this.dataset.page]);
+      },
       getContext(kind) {
         assert.equal(kind, '2d');
         return 'synthetic-context';
@@ -872,13 +895,37 @@ function pdfDom(html, pendingDocument = false) {
     };
   }
   let resolveDoc;
+  // Page 3 carries links: web, named and explicit destinations, and ones to skip.
+  const annotations = [
+    { subtype: 'Link', url: 'mailto:ta@school.invalid', rect: [60, 840, 240, 820] },
+    { subtype: 'Link', dest: 'intro', rect: [60, 600, 300, 630] },
+    { subtype: 'Link', dest: [{ num: 9, gen: 0 }, { name: 'XYZ' }], rect: [60, 500, 300, 530] },
+    { subtype: 'Link', dest: 'missing', rect: [0, 0, 1, 1] },
+    { subtype: 'Link', unsafeUrl: 'javascript:alert(1)', rect: [0, 0, 1, 1] },
+    { subtype: 'Widget', url: 'https://form.invalid', rect: [0, 0, 1, 1] },
+  ];
   const pdf = {
     numPages: 3,
+    getDestination: (name) => Promise.resolve(name === 'intro' ? [{ num: 5, gen: 0 }] : null),
+    getPageIndex: (ref) => Promise.resolve({ 5: 0, 9: 1 }[ref.num]),
     getPage(n) {
       calls.push(['page', n]);
       return Promise.resolve({
+        getAnnotations(options) {
+          same(options, { intent: 'display' });
+          return Promise.resolve(n === 3 ? annotations : []);
+        },
         getViewport({ scale }) {
-          return { width: 600 * scale, height: 900 * scale };
+          return {
+            width: 600 * scale,
+            height: 900 * scale,
+            convertToViewportRectangle: ([x1, y1, x2, y2]) => [
+              x1 * scale,
+              (900 - y1) * scale,
+              x2 * scale,
+              (900 - y2) * scale,
+            ],
+          };
         },
         render(options) {
           calls.push(['render', options]);
@@ -889,6 +936,14 @@ function pdfDom(html, pendingDocument = false) {
   };
   const pdfjsLib = {
     GlobalWorkerOptions: {},
+    Util: {
+      normalizeRect: ([x1, y1, x2, y2]) => [
+        Math.min(x1, x2),
+        Math.min(y1, y2),
+        Math.max(x1, x2),
+        Math.max(y1, y2),
+      ],
+    },
     getDocument({ data }) {
       calls.push(['document', Array.from(data)]);
       return {
@@ -1041,6 +1096,21 @@ async function checkWeb() {
             view.onShouldStartLoadWithRequest(request),
             original.onShouldStartLoadWithRequest(request),
           );
+        if (name === 'LocalDocumentPreview') {
+          // Once showing, a tapped link opens outside the document; the view never navigates.
+          const opened = operations.length;
+          for (const request of [
+            { url: 'https://outside.invalid/x', isTopFrame: true },
+            { url: 'https://school.invalid/courses/1/assignments/2', isTopFrame: true },
+            { url: 'intent://launch#Intent;end', isTopFrame: true },
+            { url: 'https://frame.invalid/', isTopFrame: false },
+          ])
+            assert.equal(view.onShouldStartLoadWithRequest(request), false);
+          same(operations.slice(opened), [
+            ['openURL', 'https://outside.invalid/x'],
+            ['link', 'https://school.invalid/courses/1/assignments/2', 'https://school.invalid'],
+          ]);
+        }
       } else view.onLoadEnd();
       assert.equal(of(after.render(), 'ActivityIndicator').length, 0);
       const e = errors;
@@ -1161,9 +1231,52 @@ async function checkWeb() {
     { isIntersecting: true, target: dom.holders[2] },
   ]);
   await tick();
+  await tick();
   assert.equal(first.children.length, 1);
-  assert.equal(dom.holders[2].children.length, 1);
   checkLabels('ar');
+  // Page 3's links sit over the canvas at the annotation rectangles, scaled to the page width.
+  const [, mail, intro, explicit, ...extra] = dom.holders[2].children;
+  assert.equal(extra.length, 0);
+  // 180 x 20 PDF points at x 60, 60 from the top, on a 600 point page drawn 376px wide.
+  same(
+    Object.values(mail.style).map((v) => Math.round(parseFloat(v) * 600) / 376),
+    [60, 60, 180, 20],
+  );
+  assert.equal(mail.href, 'mailto:ta@school.invalid');
+  assert.equal(mail.attributes['aria-label'], 'ta@school.invalid');
+  assert.equal(intro.href, '#');
+  assert.equal(intro.dataset.page, 1);
+  assert.equal(explicit.dataset.page, 2);
+  const pageLabel = (l, current) =>
+    runtime.createTranslator(l)('files.previews.pageLabel', {
+      current: runtime.formatNumber(current, { useGrouping: false }, l),
+      total: runtime.formatNumber(3, { useGrouping: false }, l),
+    });
+  assert.equal(intro.attributes['aria-label'], pageLabel('ar', 1));
+  assert.equal(explicit.attributes['aria-label'], pageLabel('ar', 2));
+  same(
+    dom.holders.map((h) => h.attributes.role),
+    ['img', 'img', 'group'],
+  );
+  let prevented = 0;
+  const click = (link) => link.listeners.click({ preventDefault: () => prevented++ });
+  click(mail);
+  same(dom.messages.at(-1), { type: 'link', url: 'mailto:ta@school.invalid' });
+  click(explicit);
+  same(dom.calls.at(-1), ['scroll', 2]);
+  assert.equal(prevented, 2);
+  // The app opens web links outside Easel, Canvas links in Easel, and ignores other schemes.
+  const opened = operations.length;
+  for (const url of [
+    'https://outside.invalid/reading',
+    'https://school.invalid/courses/1/assignments/2',
+    'intent://launch#Intent;end',
+  ])
+    view.onMessage({ nativeEvent: { data: JSON.stringify({ type: 'link', url }) } });
+  same(operations.slice(opened), [
+    ['openURL', 'https://outside.invalid/reading'],
+    ['link', 'https://school.invalid/courses/1/assignments/2', 'https://school.invalid'],
+  ]);
   const special = {
     page: '</script> " \\ \u2028 \u2029 {current} / {total}',
     digits: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
@@ -1175,6 +1288,10 @@ async function checkWeb() {
   assert.equal(
     first.attributes['aria-label'],
     special.page.replace('{current}', '1').replace('{total}', '3'),
+  );
+  assert.equal(
+    explicit.attributes['aria-label'],
+    special.page.replace('{current}', '2').replace('{total}', '3'),
   );
   // A later WebView load uses the latest committed language, even via retained callback.
   const oldLoad = view.onLoadEnd;

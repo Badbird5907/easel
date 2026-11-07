@@ -2,7 +2,12 @@ import { useTranslation, type Translate } from '@/i18n';
 import { Check, CloudUpload, EyeOff, type LucideIcon, RotateCcw } from 'lucide-react-native';
 import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import {
+  type SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { AnimatedView } from '@/design/interop';
 
@@ -64,35 +69,66 @@ function Trailing({ item, showDay }: { item: WorkItem; showDay: boolean }) {
   );
 }
 
+/**
+ * The action under a swiping row. It covers only the strip the row has uncovered,
+ * never the area under the row: the group clips its rounded corners per layer, so
+ * any color under the row would show along the anti-aliased corner arcs.
+ */
 function SwipeAction({
   icon,
   label,
   tone,
   side,
+  translation,
+  width,
 }: {
   icon: LucideIcon;
   label: string;
   tone: 'success' | 'warning';
+  /** The physical edge the row uncovers: left when swiped right. */
   side: 'left' | 'right';
+  translation: SharedValue<number>;
+  width: SharedValue<number>;
 }) {
+  const { direction } = useTranslation();
+  // Slide the full-width strip so its inner edge follows the row's edge.
+  const strip = useAnimatedStyle(() => {
+    const t = translation.value;
+    const shown = side === 'left' ? t > 0 : t < 0;
+    const x = side === 'left' ? t - width.value : t + width.value;
+    return { opacity: shown ? 1 : 0, transform: [{ translateX: x }] };
+  });
+  // Counter-slide the label so it stays pinned to the row's outer edge.
+  const content = useAnimatedStyle(() => {
+    const t = translation.value;
+    const x = side === 'left' ? t - width.value : t + width.value;
+    return { transform: [{ translateX: -x }] };
+  });
+  // Justify by physical side: flex-row runs right to left in Arabic.
+  const atEnd = (side === 'right') !== (direction === 'rtl');
   return (
-    <View
-      className={cn(
-        'flex-1 flex-row items-center gap-2 px-6',
-        tone === 'success' ? 'bg-success' : 'bg-warning',
-        side === 'left' ? 'justify-start' : 'justify-end',
-      )}
+    <AnimatedView
+      className={cn('absolute inset-0 overflow-hidden', tone === 'success' ? 'bg-success' : 'bg-warning')}
+      animatedStyle={strip}
+      pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
     >
-      <Icon icon={icon} size={20} token={tone === 'success' ? 'successContrast' : 'warningContrast'} />
-      <Text
-        variant="subhead"
-        weight="semibold"
-        tone="inherit"
-        className={tone === 'success' ? 'text-success-contrast' : 'text-warning-contrast'}
+      <AnimatedView
+        className={cn('flex-1 flex-row items-center gap-2 px-6', atEnd ? 'justify-end' : 'justify-start')}
+        animatedStyle={content}
       >
-        {label}
-      </Text>
-    </View>
+        <Icon icon={icon} size={20} token={tone === 'success' ? 'successContrast' : 'warningContrast'} />
+        <Text
+          variant="subhead"
+          weight="semibold"
+          tone="inherit"
+          className={tone === 'success' ? 'text-success-contrast' : 'text-warning-contrast'}
+        >
+          {label}
+        </Text>
+      </AnimatedView>
+    </AnimatedView>
   );
 }
 
@@ -112,6 +148,7 @@ export function PlannerRow({
   const { t } = useTranslation();
   const { colors } = useTheme();
   const translation = useSharedValue(0);
+  const width = useSharedValue(0);
   const locked = lockedDone(item);
   const done = isDone(item);
   const toggleLabel = item.markedComplete ? t('planner.markNotDone') : t('planner.markDone');
@@ -150,39 +187,36 @@ export function PlannerRow({
       else if (projected < -88) scheduleOnRN(finishSwipe, false);
     })
     .onFinalize(() => {
-      translation.value = withSpring(0, { damping: 24, stiffness: 240 });
+      // Clamped: an overshoot past zero would flash the opposite action.
+      translation.value = withSpring(0, { damping: 24, stiffness: 240, overshootClamping: true });
     });
   const rowStyle = useAnimatedStyle(() => ({ transform: [{ translateX: translation.value }] }));
-  const leftStyle = useAnimatedStyle(() => ({ opacity: translation.value > 0 ? 1 : 0 }));
-  const rightStyle = useAnimatedStyle(() => ({ opacity: translation.value < 0 ? 1 : 0 }));
 
   return (
-    <View style={{ overflow: 'hidden' }}>
+    <View
+      style={{ overflow: 'hidden' }}
+      onLayout={(event) => {
+        width.value = event.nativeEvent.layout.width;
+      }}
+    >
       {!locked && (
-        <AnimatedView
-          className="absolute inset-0"
-          animatedStyle={leftStyle}
-          pointerEvents="none"
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-        >
-          <SwipeAction
-            icon={item.markedComplete ? RotateCcw : Check}
-            label={item.markedComplete ? t('planner.notDone') : t('common.done')}
-            tone="success"
-            side="left"
-          />
-        </AnimatedView>
+        <SwipeAction
+          icon={item.markedComplete ? RotateCcw : Check}
+          label={item.markedComplete ? t('planner.notDone') : t('common.done')}
+          tone="success"
+          side="left"
+          translation={translation}
+          width={width}
+        />
       )}
-      <AnimatedView
-        className="absolute inset-0"
-        animatedStyle={rightStyle}
-        pointerEvents="none"
-        accessibilityElementsHidden
-        importantForAccessibility="no-hide-descendants"
-      >
-        <SwipeAction icon={EyeOff} label={t('common.dismiss')} tone="warning" side="right" />
-      </AnimatedView>
+      <SwipeAction
+        icon={EyeOff}
+        label={t('common.dismiss')}
+        tone="warning"
+        side="right"
+        translation={translation}
+        width={width}
+      />
       <GestureDetector gesture={pan}>
         <AnimatedView animatedStyle={rowStyle} style={{ backgroundColor: colors.surface }}>
           <ListItem

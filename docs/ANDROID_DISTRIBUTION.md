@@ -63,6 +63,7 @@ release `1.0.0` with version code 6 as **completed** (rolled out to internal tes
 | 2026-10-31 | [`dc5abecd`](https://expo.dev/accounts/badbird5907/projects/easel/updates/dc5abecd-d71c-4ef7-8f9e-0233f0865a71) | `12d7d50` | Runtime 1.1.0 (build 7+): pull to refresh re-checks the connection when offline |
 | 2026-11-03 | [`114b7c27`](https://expo.dev/accounts/badbird5907/projects/easel/updates/114b7c27-bd72-4b46-b3fd-f89d675eef42) | `17c9f33` | Runtime 1.1.0: links tapped inside PDFs open in the browser (Canvas links in Easel; in-PDF links jump to their page) |
 | 2026-11-03 | [`e46f8df2`](https://expo.dev/accounts/badbird5907/projects/easel/updates/e46f8df2-9935-4529-b006-b2731154cd44) | `6bce205` | Runtime 1.1.0: Android Save actually writes the file (it reported success with nothing saved); tap saves to the remembered folder, touch and hold chooses where. Saving straight to Downloads needs 1.2.0 |
+| 2026-11-06 | [`5f8999d7`](https://expo.dev/accounts/badbird5907/projects/easel/updates/5f8999d7-07a1-4985-824b-1bad6267ced7) | `b1375d3` | Runtime 1.2.0 (build 8+): To Do swipe shows no colored edge at the rounded corners while a row springs back |
 
 ### Version 5
 
